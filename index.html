@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f5f0">
+<title>自定义标题</title>
+<style>
+:root{--bg:#f7f5f0;--paper:#fffefa;--ink:#292820;--muted:#89877d;--accent:#d85c45;--line:#e8e4da;--soft:#f2e8df}
+*{box-sizing:border-box;overflow-anchor:none} html{scroll-behavior:auto;overflow-anchor:none} body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif}
+button,input,textarea,select{font:inherit} button{cursor:pointer;border:0;border-radius:12px;padding:10px 13px;background:var(--accent);color:white} button.secondary{background:#eee9df;color:#4a473f} button.ghost{background:transparent;color:var(--muted);padding:7px}
+header{position:sticky;top:0;z-index:15;background:rgba(247,245,240,.95);backdrop-filter:blur(14px);padding:calc(env(safe-area-inset-top) + 10px) 16px 10px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{font-weight:800;font-size:19px;letter-spacing:1px;min-width:0}.brand small{display:block;font-size:10px;color:var(--muted);font-weight:500;letter-spacing:2px;margin-top:2px}.brand-titleline{display:flex;align-items:center;gap:4px;min-width:0}.brand-emoji{flex:none}.brand-title{overflow-wrap:anywhere}.brand small{overflow-wrap:anywhere}.header-actions{display:flex;align-items:center;gap:6px;flex:none}.header-actions button{white-space:nowrap}.header-reveal{position:fixed;top:calc(env(safe-area-inset-top) - 38px);right:12px;z-index:25;box-shadow:none;padding:8px 10px;font-size:18px;opacity:.22;background:rgba(238,233,223,.18);color:#4a473f;border-radius:50%;min-width:38px;min-height:38px}body.header-collapsed header{display:none}body.cover-reader.header-collapsed #readerView .chaptertext{height:calc(100dvh - 110px)}
+main{width:100%;max-width:720px;height:var(--main-available-height,calc(100dvh - 220px));min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;overflow-anchor:none;margin:0 auto;padding:16px 15px calc(24px + env(safe-area-inset-bottom));scroll-padding-bottom:24px}.tabs{display:flex;gap:8px;margin:5px 0 18px}.tabs button{flex:1;background:#ece8df;color:#6f6b61}.tabs button.active{background:var(--accent);color:white}
+h1{font-size:24px;margin:8px 0} h2{font-size:18px;margin:20px 0 12px} p{line-height:1.85}.muted{color:var(--muted);font-size:13px}.row{display:flex;gap:10px;align-items:center}.between{justify-content:space-between}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.book{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden}.cover{height:125px;display:flex;align-items:center;justify-content:center;font-size:38px;background:linear-gradient(135deg,#e6c9b6,#f5e7d3);background-size:cover;background-position:center;color:#875f4f}.cover.has-image{font-size:0}.coverbig.has-image{font-size:0;background-size:cover;background-position:center}.bookbody{padding:12px}.booktitle{font-weight:750;margin-bottom:5px}.bookdesc{font-size:12px;line-height:1.55;color:var(--muted);height:38px;overflow:hidden}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:15px;margin:12px 0}
+input,textarea,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:11px;background:#fffefa;color:var(--ink);margin:5px 0 12px;outline-color:var(--accent)}
+textarea{min-height:90px;resize:vertical}.label{font-size:12px;color:var(--muted);display:block}
+.hide{display:none!important}.coverbig{height:160px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:52px;background:linear-gradient(135deg,#e6c9b6,#f5e7d3);margin-bottom:15px}
+#readerView{background:var(--reader-bg-color,#f7f5f0);background-image:var(--reader-bg-image,none);background-size:cover;background-position:center;background-attachment:fixed}.chaptertext{font-family:"Songti SC",STSong,serif;font-size:18px;line-height:2.05;letter-spacing:.2px;white-space:normal}.para{margin:0 0 18px}.para-tools{display:flex;justify-content:flex-end;gap:6px;margin-top:-8px;margin-bottom:15px}.comment{background:#f3eee6;border-radius:12px;padding:10px 12px;margin:8px 0;font-size:13px;line-height:1.7}.comment strong{color:#a45d4b}.authornote{border-left:3px solid var(--accent);padding:10px 13px;background:#f7eee8;border-radius:0 12px 12px 0;line-height:1.8;margin:22px 0}
+.volume-group{background:rgba(255,254,250,.65);border-radius:14px;margin:12px 0;overflow:hidden}.volume-group summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:17px 16px;font-weight:700;color:var(--accent);cursor:pointer}.volume-group summary::-webkit-details-marker{display:none}.volume-group[open] summary{border-bottom:1px solid var(--line)}.volume-chapters{padding:2px 10px}.volume-chapters .card{margin:10px 0}.chapter-item-title{min-width:0;overflow-wrap:anywhere}
+.chapter-switch{display:flex;justify-content:space-between;gap:12px;margin:18px 0 30px;padding:0}
+.chapter-switch button{flex:1;min-height:44px}
+.bottomnav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,254,250,.96);backdrop-filter:blur(15px);border-top:1px solid var(--line);padding:9px 10px calc(env(safe-area-inset-bottom) + 8px);display:flex;justify-content:space-around;z-index:10;transition:transform .18s,opacity .18s}body.reading-active .bottomnav{transform:translateY(110%);opacity:0;pointer-events:none}body.reading-active.nav-awake .bottomnav{transform:translateY(0);opacity:1;pointer-events:auto}.nav-icon{display:block;width:20px;height:20px;margin:0 auto 3px;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}.bottomnav button{min-width:62px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
+.bottomnav button{background:transparent;color:#777368;padding:7px 10px;font-size:12px}.bottomnav button.active{color:var(--accent);font-weight:800}
+.notice{background:#fff4dd;color:#7c5c2c;border-radius:12px;padding:12px;font-size:12px;line-height:1.7;margin-bottom:15px}
+.toolbar{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.toolbar button{font-size:12px;padding:8px 10px}
+hr{border:0;border-top:1px solid var(--line);margin:18px 0}.empty{text-align:center;color:var(--muted);padding:36px 10px}
+@media(min-width:600px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.cover{height:145px}}
+
+/* Reader polish: inline comment bubbles; paragraph comment text stays collapsed */
+.chaptertext .para {
+  margin: 0 0 .82em;
+  padding: 0;
+  display: flow-root;
+}
+.chaptertext .para-text {
+  line-height: 1.85;
+}
+
+.chaptertext .bubble-button { display: inline-flex; vertical-align: baseline; align-items: center; gap: 2px; margin-left: .18em; padding: 0 2px; border: 0; background: transparent; color: #77796f; font: inherit; font-size: .76em; line-height: 1; cursor: pointer; white-space: nowrap; }
+.chaptertext .bubble-button svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.chaptertext .para-action {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+.chaptertext .add-comment-link {
+  display: inline;
+  float: none;
+  margin: 0 0 0 0.35em;
+  border: 0;
+  padding: 0 3px;
+  color: #99958a;
+  background: transparent;
+  font: inherit;
+  font-size: 0.88em;
+  line-height: inherit;
+  cursor: pointer;
+  opacity: 0.65;
+}
+
+.chaptertext .add-comment-link:hover,
+.chaptertext .add-comment-link:focus {
+  opacity: 1;
+  color: #6e7867;
+}
+.chaptertext .para-comments { margin: .4em 0 .2em; padding: .65em .8em; border-radius: 10px; background: #eee9df; font-size: .88em; }
+.chaptertext .para-comments .comment { margin: 0 0 .45em; }
+.chaptertext .para-comments .secondary { margin-top: .3em; }
+
+/* Reading mode keeps the text clean while preserving tiny paragraph-comment entry points. */
+body.read-mode .management-control { display: none !important; }
+body.read-mode .chaptertext .add-comment-link { opacity: .22; color: #bdb8ad; font-size: .62em; padding: 0 1px; vertical-align: baseline; }
+body.read-mode .reader-extra { display: none !important; }
+.mode-switch { display:flex; gap:8px; margin:12px 0; }
+.mode-switch button { flex:1; }
+.mode-switch button.selected { outline:2px solid var(--accent); outline-offset:2px; }
+
+
+/* Reader preferences and horizontal cover-style paging */
+body{--reader-font:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;--reader-size:18px;--reader-line:1.95}
+#readerView{background:var(--reader-bg-color,#f7f5f0);background-image:var(--reader-bg-image,none);background-size:cover;background-position:center;background-attachment:fixed}.chaptertext{font-family:var(--reader-font);font-size:var(--reader-size);line-height:var(--reader-line);}
+.chaptertext .para-text{line-height:inherit}
+.reader-pager{margin:12px 0 16px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.reader-pager button{padding:8px 12px}
+.reader-pager .page-count{font-size:12px;color:var(--muted);white-space:nowrap}
+body.cover-reader #readerView .chapter-switch{display:none}
+body.cover-reader #readerView .chapter-switch.on-last-page{display:flex}
+.cover-reader .chaptertext{height:calc(100dvh - 255px);min-height:280px;overflow-x:auto;overflow-y:hidden;column-width:calc(100vw - 54px);column-gap:28px;column-fill:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;padding:0 2px 10px}
+.cover-reader .chaptertext::-webkit-scrollbar{display:none}
+.cover-reader .chaptertext .para{break-inside:avoid;scroll-snap-align:start}
+.cover-reader .reader-page-area{overflow:hidden}
+.setting-control{margin:10px 0 16px}
+.setting-control select{margin-bottom:3px}
+.setting-range{display:flex;align-items:center;gap:12px}
+.setting-range input{margin:4px 0 10px;padding:0}
+.setting-value{min-width:48px;text-align:right;color:var(--muted);font-size:12px}
+@media(min-width:600px){.cover-reader .chaptertext{column-width:calc(min(720px, 100vw) - 54px)}}
+</style>
+</head>
+<body>
+<header id="appHeader"><div class="brand"><div class="brand-titleline"><span class="brand-emoji" id="brandEmoji">📖</span><span class="brand-title" id="brandTitle">自定义标题</span></div><small id="brandSubtitle">自定义文本</small></div><div class="header-actions"><button class="secondary" id="exportTop">备份</button><button class="ghost" id="hideHeaderBtn" type="button" aria-label="隐藏顶部表头" title="隐藏顶部表头">收起</button></div></header>
+<button class="header-reveal secondary hide" id="showHeaderBtn" type="button" aria-label="显示表头" title="显示表头">☰</button>
+<main>
+<section id="homeView">
+<div class="notice">🔒 本地私人版：小说、段评与评论保存在当前浏览器中，不会自动发布到公共平台。请定期导出备份；清除 Safari 网站数据可能导致内容丢失。</div>
+<div class="tabs"><button class="active" data-filter="all">全部</button><button data-filter="连载中">连载中</button><button data-filter="已完结">已完结</button></div>
+<div class="row between"><div><h1>书架</h1><div class="muted">一间只属于自己的房间。</div></div><button id="newBookBtn">＋ 新建</button></div>
+<div id="bookGrid" class="grid"></div>
+</section>
+<section id="detailView" class="hide"></section>
+<section id="readerView" class="hide"></section>
+<section id="editorView" class="hide"></section>
+<section id="settingsView" class="hide"></section>
+</main>
+<nav class="bottomnav">
+<button class="active" data-view="homeView"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10.5 12 3.8l8.5 6.7"/><path d="M5.5 9.5v10h13v-10M9.5 19.5v-6h5v6"/></svg><span>书架</span></button><button data-action="directory"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14v15H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span>目录</span></button><button data-view="editorView" class="management-control"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m4 16.8-.8 4 4-.8L19 8.2 15.8 5 4 16.8Z"/><path d="m13.8 7 3.2 3.2M4 21h16"/></svg><span>写作</span></button><button data-view="settingsView"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/><path d="M19.1 13.4a7.4 7.4 0 0 0 0-2.8l1.6-1.2-1.8-3.1-1.9.8a7.7 7.7 0 0 0-2.4-1.4L14.3 3h-4.6l-.3 2.7A7.7 7.7 0 0 0 7 7.1l-1.9-.8-1.8 3.1 1.6 1.2a7.4 7.4 0 0 0 0 2.8l-1.6 1.2 1.8 3.1 1.9-.8a7.7 7.7 0 0 0 2.4 1.4l.3 2.7h4.6l.3-2.7a7.7 7.7 0 0 0 2.4-1.4l1.9.8 1.8-3.1-1.6-1.2Z"/></svg><span>设置</span></button>
+</nav>
+<input type="file" id="importFile" accept="application/json" class="hide">
+<script>
+const KEY='private_tomato_v1';
+let db=loadDB(), filter='all', currentBook=null,currentChapter=null, editorBook=null;
+let appMode=localStorage.getItem('private_tomato_mode')||'edit';
+let readerPrefs={
+  pageMode:localStorage.getItem('private_tomato_page_mode')||'scroll',
+  size:Number(localStorage.getItem('private_tomato_font_size')||18),
+  line:Number(localStorage.getItem('private_tomato_line_height')||1.95),
+  bgColor:localStorage.getItem('private_tomato_reader_bg_color')||'#f7f5f0',
+  bgImage:localStorage.getItem('private_tomato_reader_bg_image')||''
+};
+let brandPrefs={
+  emoji:localStorage.getItem('private_tomato_header_emoji') ?? '📖',
+  title:localStorage.getItem('private_tomato_header_title') ?? '自定义标题',
+  subtitle:localStorage.getItem('private_tomato_header_subtitle') ?? '自定义文本'
+};
+function applyBrandPrefs(){
+  const emoji=document.getElementById('brandEmoji');
+  const title=document.getElementById('brandTitle');
+  const subtitle=document.getElementById('brandSubtitle');
+  if(emoji)emoji.textContent=brandPrefs.emoji;
+  if(title)title.textContent=brandPrefs.title;
+  if(subtitle)subtitle.textContent=brandPrefs.subtitle;
+  document.title=brandPrefs.title||'自定义标题';
+}
+function updateBrandPref(key,value){
+  if(!Object.prototype.hasOwnProperty.call(brandPrefs,key))return;
+  brandPrefs[key]=value;
+  const storageKey={emoji:'private_tomato_header_emoji',title:'private_tomato_header_title',subtitle:'private_tomato_header_subtitle'}[key];
+  localStorage.setItem(storageKey,value);
+  applyBrandPrefs();
+}
+function hideHeader(){
+  document.body.classList.add('header-collapsed');
+  document.getElementById('showHeaderBtn').classList.remove('hide');
+}
+function showHeader(){
+  document.body.classList.remove('header-collapsed');
+  document.getElementById('showHeaderBtn').classList.add('hide');
+}
+function fontStack(){return '-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif'}
+function applyReaderPrefs(){document.body.style.setProperty('--reader-font',fontStack());document.body.style.setProperty('--reader-size',readerPrefs.size+'px');document.body.style.setProperty('--reader-line',readerPrefs.line);document.body.classList.toggle('cover-reader',readerPrefs.pageMode==='cover');const rv=document.getElementById('readerView');rv.style.setProperty('--reader-bg-color',readerPrefs.bgColor);rv.style.setProperty('--reader-bg-image',readerPrefs.bgImage?'url(\"'+readerPrefs.bgImage+'\")':'none')}
+function updateReaderPref(key,value){if(key==='pageMode'){readerPrefs.pageMode=value;localStorage.setItem('private_tomato_page_mode',value)}else if(key==='size'){readerPrefs.size=Number(value);localStorage.setItem('private_tomato_font_size',String(value))}else if(key==='line'){readerPrefs.line=Number(value);localStorage.setItem('private_tomato_line_height',String(value))}applyReaderPrefs();showSettings();if(currentBook&&currentChapter&&!document.getElementById('readerView').classList.contains('hide'))renderReader()}
+function turnPage(direction){const el=document.querySelector('#readerView .chaptertext');if(!el)return;const step=el.clientWidth;el.scrollBy({left:direction*step,behavior:'smooth'})}
+function updateChapterSwitchVisibility(){const el=document.querySelector('#readerView .chaptertext');const nav=document.querySelector('#readerView .chapter-switch');if(!nav)return;if(readerPrefs.pageMode!=='cover'){nav.classList.add('on-last-page');return}if(!el)return;const atLast=el.scrollLeft+el.clientWidth>=el.scrollWidth-12;nav.classList.toggle('on-last-page',atLast)}
+function bindReaderKeys(){if(window.__readerKeysBound)return;window.__readerKeysBound=true;document.addEventListener('keydown',e=>{if(readerPrefs.pageMode!=='cover'||document.getElementById('readerView').classList.contains('hide'))return;if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))return;if(e.key==='ArrowRight'){e.preventDefault();turnPage(1)}else if(e.key==='ArrowLeft'){e.preventDefault();turnPage(-1)}})}
+function applyMode(){document.body.classList.toggle('read-mode',appMode==='read');document.body.classList.toggle('edit-mode',appMode==='edit')}
+function setMode(mode){appMode=mode;localStorage.setItem('private_tomato_mode',mode);applyMode();showSettings();renderHome();if(currentBook&&currentChapter&&!document.getElementById('readerView').classList.contains('hide'))renderReader();if(currentBook&&!document.getElementById('detailView').classList.contains('hide'))openDetail(currentBook)}
+function uid(){return Math.random().toString(36).slice(2,10)}
+function loadDB(){try{return JSON.parse(localStorage.getItem(KEY))||{books:[]}}catch(e){return {books:[]}}}
+function save(){localStorage.setItem(KEY,JSON.stringify(db));renderHome()}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function forceSettingsTop(){
+  // Keep scrolling inside <main>; never scroll the Safari page itself.
+  const main=document.querySelector('main');
+  if(main)main.scrollTop=0;
+}
+
+function sizeMainArea(){const main=document.querySelector('main'),header=document.querySelector('header'),nav=document.querySelector('.bottomnav');if(!main)return;const vh=window.visualViewport?window.visualViewport.height:window.innerHeight;const headerH=(header&&!document.body.classList.contains('header-collapsed'))?header.getBoundingClientRect().height:0;const navH=(nav&&!document.body.classList.contains('reading-active'))?nav.getBoundingClientRect().height:0;main.style.setProperty('--main-available-height',Math.max(120,vh-headerH-navH)+'px')}
+window.addEventListener('resize',sizeMainArea);window.addEventListener('orientationchange',()=>setTimeout(sizeMainArea,100));if(window.visualViewport)window.visualViewport.addEventListener('resize',sizeMainArea);
+function show(id){['homeView','detailView','readerView','editorView','settingsView'].forEach(x=>document.getElementById(x).classList.toggle('hide',x!==id));document.querySelectorAll('.bottomnav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id||(b.dataset.action==='directory'&&(id==='detailView'||id==='readerView'))));document.body.classList.toggle('reading-active',id==='readerView');document.body.classList.remove('nav-awake');sizeMainArea();const main=document.querySelector('main');if(main)main.scrollTop=0;}
+function bookBy(id){return db.books.find(b=>b.id===id)}
+function renderHome(){const grid=document.getElementById('bookGrid');let books=db.books.filter(b=>filter==='all'||b.status===filter);grid.innerHTML=books.length?books.map(b=>`<article class="book"><div class="cover ${b.coverImage?'has-image':''}" style="${b.coverImage?`background-image:url('${b.coverImage}')`:`background:${esc(b.color||'linear-gradient(135deg,#e6c9b6,#f5e7d3)')}`} ">${b.coverImage?'':esc(b.emoji||'📖')}</div><div class="bookbody"><div class="booktitle">${esc(b.title)}</div><div class="muted">${esc(b.author||'佚名')} · ${esc(b.status)}</div><p class="bookdesc">${esc(b.desc||'还没有简介')}</p><div class="row"><button onclick="openDetail('${b.id}')">阅读</button><button class="secondary management-control" onclick="editBook('${b.id}')">编辑</button></div></div></article>`).join(''):'<div class="empty" style="grid-column:1/-1">这里还空着。<br>点「新建」，创建你的第一篇故事吧。</div>'}
+function openDetail(id){currentBook=id;const b=bookBy(id);if(!b)return;const volumes=[];b.chapters.forEach((c,i)=>{const v=(c.volume||'').trim()||'未分卷';let item=volumes.find(x=>x.name===v);if(!item){item={name:v,chapters:[]};volumes.push(item)}item.chapters.push({c,i})});document.getElementById('detailView').innerHTML=`<button class="ghost" onclick="show('homeView')">‹ 返回书架</button><div class="coverbig ${b.coverImage?'has-image':''}" style="${b.coverImage?`background-image:url('${b.coverImage}')`: ''}">${b.coverImage?'':esc(b.emoji||'📖')}</div><h1>${esc(b.title)}</h1><div class="muted">${esc(b.author||'佚名')} · ${esc(b.status)} · ${b.chapters.length} 章</div><p>${esc(b.desc||'暂无简介')}</p><div class="toolbar"><button onclick="readBook('${b.id}', '${b.chapters[0]?.id||''}')">开始阅读</button><button class="secondary management-control" onclick="editBook('${b.id}')">编辑作品</button><button class="secondary management-control" onclick="addChapter('${b.id}')">＋ 添加章节</button></div><h2>目录 <span class="muted">共 ${b.chapters.length} 章</span></h2>${b.chapters.length?volumes.map((v,vi)=>`<details class="volume-group" ${vi===0?'open':''}><summary><span>${esc(v.name==='未分卷'?'未分卷':v.name)}</span><span class="muted">${v.chapters.length} 章　⌄</span></summary><div class="volume-chapters">${v.chapters.map(({c,i})=>`<div class="card row between"><div class="chapter-item-title"><b>第${i+1}章　${esc(c.title)}</b><div class="muted">${c.paragraphs.length} 段</div></div><button class="secondary" onclick="readBook('${b.id}','${c.id}')">阅读</button></div>`).join('')}</div></details>`).join(''):'<div class="empty">还没有章节。<span class="management-control">请切换到编辑模式添加第一章。</span></div>'}`;show('detailView')}
+function editBook(id){editorBook=id||null;const b=id?bookBy(id):{title:'',author:'',desc:'',status:'连载中',emoji:'📖',chapters:[]};document.getElementById('editorView').innerHTML=`<button class="ghost" onclick="${id?`openDetail('${id}')`:`show('homeView')`}">‹ 返回</button><h1>${id?'编辑小说':'新建小说'}</h1><label class="label">书名</label><input id="fTitle" value="${esc(b.title)}" placeholder="给故事起个名字"><label class="label">作者名</label><input id="fAuthor" value="${esc(b.author)}" placeholder="作者名 / 笔名"><label class="label">简介</label><textarea id="fDesc" placeholder="写一段吸引自己的简介">${esc(b.desc)}</textarea><div class="row"><div style="flex:1"><label class="label">状态</label><select id="fStatus"><option ${b.status==='连载中'?'selected':''}>连载中</option><option ${b.status==='已完结'?'selected':''}>已完结</option></select></div><div style="width:90px"><label class="label">封面符号</label><input id="fEmoji" value="${esc(b.emoji||'📖')}" maxlength="4"></div></div><label class="label">封面图片（可选）</label><input id="fCoverImage" type="file" accept="image/*" onchange="previewCoverImage(this)"><div id="coverPreview" class="cover ${b.coverImage?'has-image':''}" style="${b.coverImage?`background-image:url('${b.coverImage}')`: ''}margin:8px 0 14px">${b.coverImage?'':esc(b.emoji||'📖')}</div><button class="secondary" type="button" onclick="clearCoverImage()">移除封面图片</button><button onclick="saveBookForm()">保存作品</button> ${id?`<button class="secondary" onclick="addChapter('${id}')">＋ 添加章节</button><button class="secondary" onclick="deleteBook('${id}')">删除作品</button>`:''}`;show('editorView')}
+function saveBookForm(){const title=document.getElementById('fTitle').value.trim();if(!title){alert('请先填写书名');return}let b=editorBook?bookBy(editorBook):null;if(!b){b={id:uid(),chapters:[]};db.books.unshift(b)}Object.assign(b,{title,author:document.getElementById('fAuthor').value.trim()||'佚名',desc:document.getElementById('fDesc').value.trim(),status:document.getElementById('fStatus').value,emoji:document.getElementById('fEmoji').value.trim()||'📖'});if(window.pendingCoverImage!==undefined){if(window.pendingCoverImage)b.coverImage=window.pendingCoverImage;else delete b.coverImage;window.pendingCoverImage=undefined}save();openDetail(b.id)}
+function previewCoverImage(input){const file=input.files&&input.files[0];if(!file)return;if(file.size>8*1024*1024){alert('图片请尽量选择 8MB 以内的文件。');input.value='';return}const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas'),m=800,sc=Math.min(1,m/Math.max(im.width,im.height));c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext('2d').drawImage(im,0,0,c.width,c.height);window.pendingCoverImage=c.toDataURL('image/jpeg',.82);const el=document.getElementById('coverPreview');el.classList.add('has-image');el.style.backgroundImage=`url('${window.pendingCoverImage}')`;el.textContent=''};im.src=r.result};r.readAsDataURL(file)}
+function clearCoverImage(){window.pendingCoverImage='';const el=document.getElementById('coverPreview');if(el){el.classList.remove('has-image');el.style.backgroundImage='';el.textContent=document.getElementById('fEmoji').value||'📖'}}
+function deleteBook(id){if(confirm('确定删除这本小说及其章节、段评和模拟评论吗？此操作不可撤销（除非你有备份）。')){db.books=db.books.filter(b=>b.id!==id);save();show('homeView')}}
+function addChapter(bookId,chapterId){
+ const b=bookBy(bookId), old=chapterId?b.chapters.find(c=>c.id===chapterId):null;
+ const existingText=old?old.paragraphs.map(p=>p.text).join('\n\n'):'';
+ const detail=document.getElementById('detailView');
+ detail.innerHTML=`<button class="ghost" onclick="openDetail('${b.id}')">‹ 返回目录</button>
+ <h1>${old?'编辑章节':'添加章节'}</h1>
+ <label class="label">章节标题</label>
+ <input id="chapterTitleInput" value="${esc(old?.title||`第${b.chapters.length+1}章`)}" placeholder="例如：第一章">
+ <label class="label">所属分卷</label>
+ <input id="chapterVolumeInput" value="${esc(old?.volume||'第一卷') }" placeholder="例如：第一卷：XXXX（可留空）">
+ <p class="muted">相同分卷名称的章节会自动归在一起；分卷名留空时归入「未分卷」。</p>
+ <label class="label">正文内容</label>
+ <p class="muted">直接把整章文字粘贴到下面的大文本框里。段落之间空一行，阅读时就会分成不同段落；如果原文没有空行，也可以在这里手动分段。</p>
+ <textarea id="chapterBodyInput" style="min-height:48vh;line-height:1.8" placeholder="在这里粘贴或输入正文……">${esc(existingText)}</textarea>
+ <label class="label">作者有话说（可留空）</label>
+ <textarea id="chapterNoteInput" placeholder="写给读者的话">${esc(old?.note||'')}</textarea>
+ <div class="toolbar"><button onclick="saveChapterForm('${b.id}','${old?.id||''}')">保存章节</button><button class="secondary" onclick="openDetail('${b.id}')">取消</button></div>`;
+ show('detailView');
+}
+function saveChapterForm(bookId,chapterId){
+ const b=bookBy(bookId), old=chapterId?b.chapters.find(c=>c.id===chapterId):null;
+ const title=document.getElementById('chapterTitleInput').value.trim();
+ const raw=document.getElementById('chapterBodyInput').value;
+ const note=document.getElementById('chapterNoteInput').value.trim();
+ const volume=document.getElementById('chapterVolumeInput').value.trim();
+ if(!title){alert('请先填写章节标题');return}
+ // Empty line(s) split paragraphs; normalize Windows and Mac line endings first.
+ const normalized=raw.replace(/\r\n?/g,'\n');
+ const texts=normalized.split(/\n[\t \u3000]*\n+/).map(s=>s.trim()).filter(Boolean);
+ const paras=texts.map((text,i)=>({id:old?.paragraphs[i]?.id||uid(),text,comments:old?.paragraphs[i]?.comments||[]}));
+ if(old){Object.assign(old,{title,volume,paragraphs:paras,note})}
+ else{b.chapters.push({id:uid(),title,volume,paragraphs:paras,note,comments:[]})}
+ save();openDetail(bookId);
+}
+function readBook(bookId,chapterId){currentBook=bookId;const b=bookBy(bookId);currentChapter=chapterId||b.chapters[0]?.id;renderReader();show('readerView');hideHeader()}
+function switchChapter(direction){const b=bookBy(currentBook);if(!b)return;const idx=b.chapters.findIndex(c=>c.id===currentChapter);const next=b.chapters[idx+direction];if(!next)return;currentChapter=next.id;renderReader();const el=document.querySelector('#readerView .chaptertext');if(el){el.scrollLeft=0;el.scrollTop=0;}window.scrollTo(0,0)}
+function renderReader(){
+  const b=bookBy(currentBook);
+  if(!b)return;
+  let idx=b.chapters.findIndex(c=>c.id===currentChapter);
+  if(idx<0)idx=0;
+  const c=b.chapters[idx];
+  if(!c){
+    document.getElementById('readerView').innerHTML=`<button class="ghost" onclick="openDetail('${b.id}')">‹ 返回目录</button><div class="empty">还没有章节。<br><button onclick="addChapter('${b.id}')">添加第一章</button></div>`;
+    return;
+  }
+  currentChapter=c.id;
+  document.getElementById('readerView').innerHTML=`
+    <button class="ghost" onclick="openDetail('${b.id}')">‹ 返回目录</button>
+    <div class="muted">${esc(b.title)} · ${esc(c.title)}</div>
+    <div class="chaptertext">${c.paragraphs.map((p,i)=>`
+      <div class="para">
+        <div class="para-text">${esc(p.text).replace(/\n/g,'<br>')} ${p.comments.length
+          ? `<button class="bubble-button inline-bubble" aria-label="查看段评 ${p.comments.length} 条" title="查看段评" onclick="toggleParaComments('${p.id}')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14a2.5 2.5 0 0 1 2.5 2.5v8a2.5 2.5 0 0 1-2.5 2.5h-8l-5 3v-3A2.5 2.5 0 0 1 3.5 15V7A2.5 2.5 0 0 1 5 4.5Z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg><span>${p.comments.length}</span></button>`
+          : `<button class="add-comment-link" onclick="addParaComment('${b.id}','${c.id}','${p.id}')" aria-label="添加段评" title="添加段评">＋</button>`
+        }</div>
+        ${p.comments.length ? `<div class="para-comments hide" id="comments-${p.id}">${p.comments.map((cm,j)=>`<div class="comment"><strong>${esc(cm.name||'读者')}</strong>：${esc(cm.text)} <button class="ghost management-control" onclick="deleteParaComment('${b.id}','${c.id}','${p.id}',${j})">删除</button></div>`).join('')}<button class="secondary management-control" onclick="addParaComment('${b.id}','${c.id}','${p.id}')">＋ 添加段评</button></div>` : ''}
+      </div>`).join('')||'<p class="muted">本章还没有正文。可通过编辑章节添加。</p>'}</div>
+    ${c.note?`<div class="authornote"><b>作者有话说</b><br>${esc(c.note).replace(/\n/g,'<br>')}</div>`:''}
+    <!-- Chapter-end navigation: immediately after the chapter text and author's note, before comments/tools. -->
+    <div class="chapter-switch toolbar">
+      <button class="secondary" ${idx===0?'disabled':''} onclick="switchChapter(-1)">‹ 上一章</button>
+      <button class="secondary" ${idx===b.chapters.length-1?'disabled':''} onclick="switchChapter(1)">下一章 ›</button>
+    </div>
+    <div class="reader-extra"><hr><h2>本章评论区</h2>
+    ${(c.comments||[]).map((cm,j)=>`<div class="comment"><strong>${esc(cm.name||'读者')}</strong>：${esc(cm.text)} <button class="ghost management-control" onclick="deleteChapterComment('${b.id}','${c.id}',${j})">删除</button></div>`).join('')}
+    <button class="secondary management-control" onclick="addChapterComment('${b.id}','${c.id}')">＋ 模拟读者评论</button></div>
+    <div class="toolbar management-control"><button class="secondary" onclick="addChapter('${b.id}','${c.id}')">编辑本章</button><button class="secondary" onclick="editBook('${b.id}')">编辑作品</button></div>
+`;
+  applyReaderPrefs();bindReaderKeys();
+  const pageArea=document.querySelector('#readerView .chaptertext');if(pageArea){pageArea.addEventListener('scroll',updateChapterSwitchVisibility,{passive:true});requestAnimationFrame(updateChapterSwitchVisibility)}
+  const rv=document.getElementById('readerView');
+  rv.onclick=function(e){if(e.target.closest('button, input, textarea, select, a'))return;document.body.classList.toggle('nav-awake')};
+}
+function toggleParaComments(paragraphId){const el=document.getElementById('comments-'+paragraphId);if(el)el.classList.toggle('hide')}
+function addParaComment(bid,cid,pid){const p=bookBy(bid).chapters.find(c=>c.id===cid).paragraphs.find(p=>p.id===pid);const text=prompt('写下这段的段评：');if(!text?.trim())return;const name=prompt('显示的读者昵称：','我')||'我';p.comments.push({name,text:text.trim()});save();renderReader()}
+function deleteParaComment(bid,cid,pid,j){const p=bookBy(bid).chapters.find(c=>c.id===cid).paragraphs.find(p=>p.id===pid);p.comments.splice(j,1);save();renderReader()}
+function addChapterComment(bid,cid){const c=bookBy(bid).chapters.find(c=>c.id===cid);const text=prompt('模拟读者评论：');if(!text?.trim())return;const name=prompt('读者昵称：','读者A')||'读者';c.comments=c.comments||[];c.comments.push({name,text:text.trim()});save();renderReader()}
+function deleteChapterComment(bid,cid,j){const c=bookBy(bid).chapters.find(c=>c.id===cid);c.comments.splice(j,1);save();renderReader()}
+function showSettings(){document.getElementById('settingsView').innerHTML=`<h1>设置与数据</h1><div class="card"><h2 style="margin-top:0">阅读设置</h2>
+<label class="label">翻页方式</label><div class="mode-switch"><button class="${readerPrefs.pageMode==='scroll'?'selected':'secondary'}" onclick="updateReaderPref('pageMode','scroll')">上下</button><button class="${readerPrefs.pageMode==='cover'?'selected':'secondary'}" onclick="updateReaderPref('pageMode','cover')">覆盖</button></div><p class="muted">「上下」为纵向滚动阅读；「覆盖」为左右分页，可点击上一页／下一页，也可用键盘左右方向键，手机上可横向滑动。</p>
+
+<div class="setting-control"><label class="label" for="fontSizeChoice">字号</label><div class="setting-range"><input id="fontSizeChoice" type="range" min="14" max="28" step="1" value="${readerPrefs.size}" oninput="updateReaderPrefLive('size',this.value)"><span class="setting-value" id="fontSizeValue">${readerPrefs.size}px</span></div></div>
+<div class="setting-control"><label class="label" for="lineHeightChoice">行距</label><div class="setting-range"><input id="lineHeightChoice" type="range" min="1.4" max="2.5" step="0.05" value="${readerPrefs.line}" oninput="updateReaderPrefLive('line',this.value)"><span class="setting-value" id="lineHeightValue">${Number(readerPrefs.line).toFixed(2)}</span></div></div>
+<div class="setting-control"><label class="label" for="readerBgColor">阅读背景颜色</label><input id="readerBgColor" type="color" value="${readerPrefs.bgColor}" onchange="updateReaderBackgroundColor(this.value)"><p class="muted">可以直接选择喜欢的纯色背景。</p></div><div class="setting-control"><label class="label" for="readerBgImage">阅读背景图片（可选）</label><input id="readerBgImage" type="file" accept="image/*" onchange="updateReaderBackgroundImage(this)"><button class="secondary" type="button" onclick="clearReaderBackgroundImage()">移除背景图片</button><p class="muted">图片会压缩后保存在当前浏览器本地。建议使用柔和、低对比度的图片。封面推荐 600×800 像素（3:4 竖版）；更大的图片也可以，系统会自动压缩。</p></div><p class="muted">以上选择会自动保存。字号、行距和背景只影响阅读界面。</p></div>
+<div class="card"><h2 style="margin-top:0">界面模式</h2><p class="muted">阅读模式会隐藏作品和章节管理按钮，保留正文、段评气泡、作者有话说，以及淡色的小「＋」。编辑模式会显示全部管理功能。</p><div class="mode-switch"><button class="${appMode==='read'?'selected':'secondary'}" onclick="setMode('read')">阅读模式</button><button class="${appMode==='edit'?'selected':'secondary'}" onclick="setMode('edit')">编辑模式</button></div><p class="muted">会自动记住你的选择，下次打开时继续使用上次的模式。</p></div>
+<div class="card"><h2 style="margin-top:0">顶部表头</h2><p class="muted">可以自定义顶部显示的 emoji、标题和副标题。修改后会自动保存。</p>
+<div class="setting-control"><label class="label" for="headerEmojiChoice">Emoji</label><input id="headerEmojiChoice" type="text" maxlength="12" value="${esc(brandPrefs.emoji)}" placeholder="例如：🍅" onchange="updateBrandPref('emoji',this.value)"></div>
+<div class="setting-control"><label class="label" for="headerTitleChoice">标题</label><input id="headerTitleChoice" type="text" maxlength="40" value="${esc(brandPrefs.title)}" placeholder="输入标题" onchange="updateBrandPref('title',this.value)"></div>
+<div class="setting-control"><label class="label" for="headerSubtitleChoice">副标题</label><input id="headerSubtitleChoice" type="text" maxlength="80" value="${esc(brandPrefs.subtitle)}" placeholder="输入副标题" onchange="updateBrandPref('subtitle',this.value)"></div>
+<p class="muted">顶部的「备份」和「收起」按钮不受标题设置影响。收起表头后，点击屏幕上方的 ☰ 图标即可重新打开。</p></div>
+<div class="card"><h2 style="margin-top:0">本地数据</h2><p class="muted">当前保存 ${db.books.length} 本小说。内容保存在此浏览器的本地存储中，不会自动同步到云端。</p><div class="toolbar"><button onclick="exportDB()">导出备份 JSON</button><button class="secondary" onclick="document.getElementById('importFile').click()">导入备份</button></div><p class="muted">建议定期导出备份到「文件」App。导入备份会用备份内容替换当前书库，请先导出当前版本。</p></div><div class="card"><h2 style="margin-top:0">使用提示</h2><p class="muted">1. 建议在 Safari 中使用。<br>2. 通过 Safari 的分享菜单添加到主屏幕。<br>3. 清除 Safari 网站数据可能删除书库。<br>4. 本版是原型，不会自动上传或公开内容。</p></div><div class="card"><h2 style="margin-top:0">危险操作</h2><button class="secondary" onclick="if(confirm('确定清空所有书籍吗？请先备份。')){db={books:[]};save();showSettings()}">清空书库</button></div>`;show('settingsView')}
+function updateReaderBackgroundColor(value){readerPrefs.bgColor=value;localStorage.setItem('private_tomato_reader_bg_color',value);applyReaderPrefs()}
+function updateReaderBackgroundImage(input){const file=input.files&&input.files[0];if(!file)return;if(file.size>8*1024*1024){alert('图片请尽量选择 8MB 以内的文件。');input.value='';return}const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas'),m=1400,sc=Math.min(1,m/Math.max(im.width,im.height));c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext('2d').drawImage(im,0,0,c.width,c.height);readerPrefs.bgImage=c.toDataURL('image/jpeg',.78);localStorage.setItem('private_tomato_reader_bg_image',readerPrefs.bgImage);applyReaderPrefs()};im.src=r.result};r.readAsDataURL(file)}
+function clearReaderBackgroundImage(){readerPrefs.bgImage='';localStorage.removeItem('private_tomato_reader_bg_image');applyReaderPrefs();const i=document.getElementById('readerBgImage');if(i)i.value=''}
+function updateReaderPrefLive(key,value){if(key==='size'){readerPrefs.size=Number(value);localStorage.setItem('private_tomato_font_size',String(value));document.getElementById('fontSizeValue').textContent=value+'px'}else{readerPrefs.line=Number(value);localStorage.setItem('private_tomato_line_height',String(value));document.getElementById('lineHeightValue').textContent=Number(value).toFixed(2)}applyReaderPrefs();if(currentBook&&currentChapter&&!document.getElementById('readerView').classList.contains('hide')){const el=document.querySelector('#readerView .chaptertext');if(el&&readerPrefs.pageMode==='cover')el.scrollLeft=0}}
+
+function exportDB(){const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='这是一个备份.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+function importDB(file){const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.books))throw 0;if(!confirm('导入将替换当前书库，确定继续吗？'))return;db=d;save();show('homeView');alert('导入成功')}catch(e){alert('文件格式不正确，无法导入')}};r.readAsText(file)}
+document.getElementById('newBookBtn').onclick=()=>editBook(null);document.getElementById('exportTop').onclick=exportDB;document.getElementById('importFile').onchange=e=>{if(e.target.files[0])importDB(e.target.files[0]);e.target.value=''};
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{filter=b.dataset.filter;document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x===b));renderHome()});
+sizeMainArea();
+document.querySelectorAll('.bottomnav button').forEach(b=>b.onclick=()=>{if(b.dataset.view==='settingsView'){showSettings();return}if(b.dataset.action==='directory'){if(currentBook)openDetail(currentBook);else alert('先从书架选择一本小说，进入后这里就会打开它的目录。')}else if(b.dataset.view==='editorView')editBook(null);else if(b.dataset.view==='settingsView')showSettings();else show('homeView')});
+applyMode();
+applyReaderPrefs();
+applyBrandPrefs();
+document.getElementById('hideHeaderBtn').onclick=hideHeader;
+document.getElementById('showHeaderBtn').onclick=showHeader;
+bindReaderKeys();
+renderHome();
+</script>
+</body></html>
