@@ -51,12 +51,19 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}.empty{text-align:cen
   margin: 0;
   padding: 0;
 }
+.chaptertext .para-text:has(.add-comment-link) {
+  position: relative;
+  padding-right: 1.05em;
+}
 .chaptertext .add-comment-link {
-  display: inline;
-  float: none;
-  margin: 0 0 0 0.35em;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: inline-block;
+  white-space: nowrap;
+  margin: 0;
   border: 0;
-  padding: 0 3px;
+  padding: 0;
   color: #99958a;
   background: transparent;
   font: inherit;
