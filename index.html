@@ -17,8 +17,8 @@ button,input,textarea,select{font:inherit} button{cursor:pointer;border:0;border
 header{position:sticky;top:0;z-index:15;background:rgba(247,245,240,.95);backdrop-filter:blur(14px);padding:calc(env(safe-area-inset-top) + 10px) 16px 10px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}
 .brand{font-weight:800;font-size:19px;letter-spacing:1px;min-width:0}.brand small{display:block;font-size:10px;color:var(--muted);font-weight:500;letter-spacing:2px;margin-top:2px}.brand-titleline{display:flex;align-items:center;gap:4px;min-width:0}.brand-emoji{flex:none}.brand-title{overflow-wrap:anywhere}.brand small{overflow-wrap:anywhere}.header-actions{display:flex;align-items:center;gap:6px;flex:none}.header-actions button{white-space:nowrap}.header-reveal{position:fixed;top:calc(env(safe-area-inset-top) - 38px);right:12px;z-index:25;box-shadow:none;padding:8px 10px;font-size:18px;opacity:.22;background:rgba(238,233,223,.18);color:#4a473f;border-radius:50%;min-width:38px;min-height:38px}body.header-collapsed header{display:none}
 main{width:100%;max-width:720px;height:var(--main-available-height,calc(100dvh - 220px));min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;overflow-anchor:none;margin:0 auto;padding:16px 15px calc(24px + env(safe-area-inset-bottom));scroll-padding-bottom:24px}.tabs{display:flex;gap:8px;margin:5px 0 18px}.tabs button{flex:1;background:#ece8df;color:#6f6b61}.tabs button.active{background:var(--accent);color:white}
-h1{font-size:24px;margin:8px 0} h2{font-size:18px;margin:20px 0 12px} p{line-height:1.85}.muted{color:var(--muted);font-size:13px}.row{display:flex;gap:10px;align-items:center}.between{justify-content:space-between}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.book{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden}.cover{height:125px;display:flex;align-items:center;justify-content:center;font-size:38px;background:linear-gradient(135deg,#e6c9b6,#f5e7d3);background-size:cover;background-position:center;color:#875f4f}.cover.has-image{font-size:0}.coverbig.has-image{font-size:0;background-size:cover;background-position:center}.bookbody{padding:12px}.booktitle{font-weight:750;margin-bottom:5px}.bookdesc{font-size:12px;line-height:1.55;color:var(--muted);height:38px;overflow:hidden}
+h1{font-size:24px;margin:8px 0} h2{font-size:18px;margin:20px 0 12px} p{line-height:1.85}.muted{color:var(--muted);font-size:13px}.row{display:flex;gap:10px;align-items:center}.between{justify-content:space-between}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.home-heading{margin-bottom:14px}
+.book{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden}.cover{height:190px;display:flex;align-items:center;justify-content:center;font-size:38px;background:linear-gradient(135deg,#e6c9b6,#f5e7d3);background-size:cover;background-position:center;color:#875f4f}.cover.has-image{font-size:0}.coverbig.has-image{font-size:0;background-size:cover;background-position:center}.bookbody{padding:10px 12px 10px;display:flex;flex-direction:column}.booktitle{font-weight:750;margin-bottom:4px;line-height:1.4}.bookmeta{line-height:1.5;margin-bottom:7px}.book-actions{margin-top:auto;gap:10px}.bookdesc{font-size:12px;line-height:1.55;color:var(--muted);height:38px;overflow:hidden}
 .card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:15px;margin:12px 0}
 input,textarea,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:11px;background:#fffefa;color:var(--ink);margin:5px 0 12px;outline-color:var(--accent)}
 textarea{min-height:90px;resize:vertical}.label{font-size:12px;color:var(--muted);display:block}
@@ -32,7 +32,7 @@ textarea{min-height:90px;resize:vertical}.label{font-size:12px;color:var(--muted
 .notice{background:#fff4dd;color:#7c5c2c;border-radius:12px;padding:12px;font-size:12px;line-height:1.7;margin-bottom:15px}
 .toolbar{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.toolbar button{font-size:12px;padding:8px 10px}
 hr{border:0;border-top:1px solid var(--line);margin:18px 0}.empty{text-align:center;color:var(--muted);padding:36px 10px}
-@media(min-width:600px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.cover{height:145px}}
+@media(min-width:600px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.cover{height:210px}}
 
 /* Reader polish: inline comment bubbles; paragraph comment text stays collapsed */
 .chaptertext .para {
@@ -108,7 +108,7 @@ body{--reader-font:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neu
 <section id="homeView">
 <div class="notice">🔒 本地私人版：小说、段评与评论保存在当前浏览器中，不会自动发布到公共平台。请定期导出备份；清除 Safari 网站数据可能导致内容丢失。</div>
 <div class="tabs"><button class="active" data-filter="all">全部</button><button data-filter="连载中">连载中</button><button data-filter="已完结">已完结</button></div>
-<div class="row between"><div><h1>书架</h1><div class="muted">一间只属于自己的房间。</div></div><button id="newBookBtn" class="management-control">＋ 新建</button></div>
+<div class="row between home-heading"><div><h1>书架</h1><div class="muted">一间只属于自己的房间。</div></div><button id="newBookBtn" class="management-control">＋ 新建</button></div>
 <div id="bookGrid" class="grid"></div>
 </section>
 <section id="detailView" class="hide"></section>
@@ -181,8 +181,8 @@ function sizeMainArea(){const main=document.querySelector('main'),header=documen
 window.addEventListener('resize',sizeMainArea);window.addEventListener('orientationchange',()=>setTimeout(sizeMainArea,100));if(window.visualViewport)window.visualViewport.addEventListener('resize',sizeMainArea);
 function show(id){['homeView','detailView','readerView','editorView','settingsView'].forEach(x=>document.getElementById(x).classList.toggle('hide',x!==id));document.querySelectorAll('.bottomnav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id||(b.dataset.action==='directory'&&(id==='detailView'||id==='readerView'))));document.body.classList.toggle('reading-active',id==='readerView');document.body.classList.remove('nav-awake');sizeMainArea();const main=document.querySelector('main');if(main)main.scrollTop=0;}
 function bookBy(id){return db.books.find(b=>b.id===id)}
-function renderHome(){const grid=document.getElementById('bookGrid');let books=db.books.filter(b=>filter==='all'||b.status===filter);grid.innerHTML=books.length?books.map(b=>`<article class="book"><div class="cover ${b.coverImage?'has-image':''}" style="${b.coverImage?`background-image:url('${b.coverImage}')`:`background:${esc(b.color||'linear-gradient(135deg,#e6c9b6,#f5e7d3)')}`} ">${b.coverImage?'':esc(b.emoji||'📖')}</div><div class="bookbody"><div class="booktitle">${esc(b.title)}</div><div class="muted">${esc(b.author||'佚名')} · ${esc(b.status)}</div><p class="bookdesc">${esc(b.desc||'还没有简介')}</p><div class="row"><button onclick="openDetail('${b.id}')">阅读</button><button class="secondary management-control" onclick="editBook('${b.id}')">编辑</button></div></div></article>`).join(''):'<div class="empty" style="grid-column:1/-1">这里还空着。<br>点「新建小说」，创建你的第一本书吧。</div>'}
-function openDetail(id){currentBook=id;const b=bookBy(id);if(!b)return;const volumes=[];b.chapters.forEach((c,i)=>{const v=(c.volume||'').trim()||'未分卷';let item=volumes.find(x=>x.name===v);if(!item){item={name:v,chapters:[]};volumes.push(item)}item.chapters.push({c,i})});document.getElementById('detailView').innerHTML=`<button class="ghost" onclick="show('homeView')">‹ 返回书架</button><div class="coverbig ${b.coverImage?'has-image':''}" style="${b.coverImage?`background-image:url('${b.coverImage}')`: ''}">${b.coverImage?'':esc(b.emoji||'📖')}</div><h1>${esc(b.title)}</h1><div class="muted">${esc(b.author||'佚名')} · ${esc(b.status)} · ${b.chapters.length} 章</div><p>${esc(b.desc||'暂无简介')}</p><div class="toolbar"><button onclick="readBook('${b.id}', '${b.chapters[0]?.id||''}')">开始阅读</button><button class="secondary management-control" onclick="editBook('${b.id}')">编辑作品</button><button class="secondary management-control" onclick="addChapter('${b.id}')">＋ 添加章节</button></div><h2>目录 <span class="muted">共 ${b.chapters.length} 章</span></h2>${b.chapters.length?volumes.map((v,vi)=>`<details class="volume-group" ${vi===0?'open':''}><summary><span>${esc(v.name==='未分卷'?'未分卷':v.name)}</span><span class="muted">${v.chapters.length} 章　⌄</span></summary><div class="volume-chapters">${v.chapters.map(({c,i})=>`<div class="card row between"><div class="chapter-item-title"><b>第${i+1}章　${esc(c.title)}</b><div class="muted">${c.paragraphs.length} 段</div></div><button class="secondary" onclick="readBook('${b.id}','${c.id}')">阅读</button></div>`).join('')}</div></details>`).join(''):'<div class="empty">还没有章节。<span class="management-control">请切换到编辑模式添加第一章。</span></div>'}`;show('detailView')}
+function renderHome(){const grid=document.getElementById('bookGrid');let books=db.books.filter(b=>filter==='all'||b.status===filter);grid.innerHTML=books.length?books.map(b=>`<article class="book"><div class="cover ${b.coverImage?'has-image':''}" style="${b.coverImage?`background-image:url('${b.coverImage}')`:`background:${esc(b.color||'linear-gradient(135deg,#e6c9b6,#f5e7d3)')}`} ">${b.coverImage?'':esc(b.emoji||'📖')}</div><div class="bookbody"><div class="booktitle">${esc(b.title)}</div><div class="muted bookmeta">${esc(b.author||'佚名')} · ${esc(b.status)}</div><div class="row book-actions"><button onclick="openDetail('${b.id}')">阅读</button><button class="secondary management-control" onclick="editBook('${b.id}')">编辑</button></div></div></article>`).join(''):'<div class="empty" style="grid-column:1/-1">这里还空着。<br>点「新建小说」，创建你的第一本书吧。</div>'}
+function openDetail(id){currentBook=id;const b=bookBy(id);if(!b)return;const volumes=[];b.chapters.forEach((c,i)=>{const v=(c.volume||'').trim()||'未分卷';let item=volumes.find(x=>x.name===v);if(!item){item={name:v,chapters:[]};volumes.push(item)}item.chapters.push({c,i})});document.getElementById('detailView').innerHTML=`<button class="ghost" onclick="show('homeView')">‹ 返回书架</button><div class="coverbig ${b.coverImage?'has-image':''}" style="${b.coverImage?`background-image:url('${b.coverImage}')`: ''}">${b.coverImage?'':esc(b.emoji||'📖')}</div><h1>${esc(b.title)}</h1><div class="muted">${esc(b.author||'佚名')} · ${esc(b.status)} · ${b.chapters.length} 章</div><p>${esc(b.desc||'暂无简介')}</p><div class="toolbar"><button onclick="readBook('${b.id}', '${b.chapters[0]?.id||''}')">开始阅读</button><button class="secondary management-control" onclick="editBook('${b.id}')">编辑作品</button><button class="secondary management-control" onclick="addChapter('${b.id}')">＋ 添加章节</button></div><h2>目录 <span class="muted">共 ${b.chapters.length} 章</span></h2>${b.chapters.length?volumes.map((v,vi)=>`<details class="volume-group" ${vi===0?'open':''}><summary><span>${esc(v.name==='未分卷'?'未分卷':v.name)}</span><span class="muted">${v.chapters.length} 章　⌄</span></summary><div class="volume-chapters">${v.chapters.map(({c,i})=>`<div class="card row between"><div class="chapter-item-title"><b>第${esc(c.chapterNumber??(i+1))}章　${esc(c.title)}</b><div class="muted">${c.paragraphs.length} 段</div></div><button class="secondary" onclick="readBook('${b.id}','${c.id}')">阅读</button></div>`).join('')}</div></details>`).join(''):'<div class="empty">还没有章节。<span class="management-control">请切换到编辑模式添加第一章。</span></div>'}`;show('detailView')}
 function editBook(id){editorBook=id||null;const b=id?bookBy(id):{title:'',author:'',desc:'',status:'连载中',emoji:'📖',chapters:[]};document.getElementById('editorView').innerHTML=`<button class="ghost" onclick="${id?`openDetail('${id}')`:`show('homeView')`}">‹ 返回</button><h1>${id?'编辑小说':'新建小说'}</h1><label class="label">书名</label><input id="fTitle" value="${esc(b.title)}" placeholder="给故事起个名字"><label class="label">作者名</label><input id="fAuthor" value="${esc(b.author)}" placeholder="作者名 / 笔名"><label class="label">简介</label><textarea id="fDesc" placeholder="写一段吸引自己的简介">${esc(b.desc)}</textarea><div class="row"><div style="flex:1"><label class="label">状态</label><select id="fStatus"><option ${b.status==='连载中'?'selected':''}>连载中</option><option ${b.status==='已完结'?'selected':''}>已完结</option></select></div><div style="width:90px"><label class="label">封面符号</label><input id="fEmoji" value="${esc(b.emoji||'📖')}" maxlength="4"></div></div><label class="label">封面图片（可选）</label><input id="fCoverImage" type="file" accept="image/*" onchange="previewCoverImage(this)"><div id="coverPreview" class="cover ${b.coverImage?'has-image':''}" style="${b.coverImage?`background-image:url('${b.coverImage}')`: ''}margin:8px 0 14px">${b.coverImage?'':esc(b.emoji||'📖')}</div><button class="secondary" type="button" onclick="clearCoverImage()">移除封面图片</button><button onclick="saveBookForm()">保存作品</button> ${id?`<button class="secondary" onclick="addChapter('${id}')">＋ 添加章节</button><button class="secondary" onclick="deleteBook('${id}')">删除作品</button>`:''}`;show('editorView')}
 function saveBookForm(){const title=document.getElementById('fTitle').value.trim();if(!title){alert('请先填写书名');return}let b=editorBook?bookBy(editorBook):null;if(!b){b={id:uid(),chapters:[]};db.books.unshift(b)}Object.assign(b,{title,author:document.getElementById('fAuthor').value.trim()||'佚名',desc:document.getElementById('fDesc').value.trim(),status:document.getElementById('fStatus').value,emoji:document.getElementById('fEmoji').value.trim()||'📖'});if(window.pendingCoverImage!==undefined){if(window.pendingCoverImage)b.coverImage=window.pendingCoverImage;else delete b.coverImage;window.pendingCoverImage=undefined}save();openDetail(b.id)}
 function previewCoverImage(input){const file=input.files&&input.files[0];if(!file)return;if(file.size>8*1024*1024){alert('图片请尽量选择 8MB 以内的文件。');input.value='';return}const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas'),m=800,sc=Math.min(1,m/Math.max(im.width,im.height));c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext('2d').drawImage(im,0,0,c.width,c.height);window.pendingCoverImage=c.toDataURL('image/jpeg',.82);const el=document.getElementById('coverPreview');el.classList.add('has-image');el.style.backgroundImage=`url('${window.pendingCoverImage}')`;el.textContent=''};im.src=r.result};r.readAsDataURL(file)}
@@ -194,8 +194,11 @@ function addChapter(bookId,chapterId){
  const detail=document.getElementById('detailView');
  detail.innerHTML=`<button class="ghost" onclick="openDetail('${b.id}')">‹ 返回目录</button>
  <h1>${old?'编辑章节':'添加章节'}</h1>
+ <label class="label">章节序号（可自定义）</label>
+ <input id="chapterNumberInput" type="number" min="1" step="1" value="${esc(old?.chapterNumber??(old?b.chapters.findIndex(c=>c.id===old.id)+1:b.chapters.length+1))}" placeholder="例如：1">
+ <p class="muted">分卷后可以重新填写序号，例如第二卷从第 1 章开始。阅读进度仍按整本书的总章节数计算。</p>
  <label class="label">章节标题</label>
- <input id="chapterTitleInput" value="${esc(old?.title||`第${b.chapters.length+1}章`)}" placeholder="例如：第一章">
+ <input id="chapterTitleInput" value="${esc(old?.title||'')}" placeholder="只填写章节名称，不用写“第几章”">
  <label class="label">所属分卷</label>
  <input id="chapterVolumeInput" value="${esc(old?.volume||'第一卷') }" placeholder="例如：第一卷  XXXX（可留空）">
  <p class="muted">相同分卷名称的章节会自动归在一起；分卷名留空时归入「未分卷」。</p>
@@ -204,12 +207,22 @@ function addChapter(bookId,chapterId){
  <textarea id="chapterBodyInput" style="min-height:48vh;line-height:1.8" placeholder="在这里粘贴或输入正文……">${esc(existingText)}</textarea>
  <label class="label">作者有话说（可留空）</label>
  <textarea id="chapterNoteInput" placeholder="写给读者的话">${esc(old?.note||'')}</textarea>
- <div class="toolbar"><button onclick="saveChapterForm('${b.id}','${old?.id||''}')">保存章节</button><button class="secondary" onclick="openDetail('${b.id}')">取消</button></div>`;
+ <div class="toolbar"><button onclick="saveChapterForm('${b.id}','${old?.id||''}')">保存章节</button><button class="secondary" onclick="openDetail('${b.id}')">取消</button>${old?`<button class="secondary" onclick="deleteChapter('${b.id}','${old.id}')">删除章节</button>`:''}</div>`;
  show('detailView');
+}
+function deleteChapter(bookId,chapterId){
+ const b=bookBy(bookId);if(!b)return;
+ const c=b.chapters.find(item=>item.id===chapterId);if(!c)return;
+ if(!confirm(`确定删除“第${c.chapterNumber??(b.chapters.findIndex(item=>item.id===chapterId)+1)}章 ${c.title}”吗？本章正文、作者有话说、段评和章评都会一起删除，且无法撤销（除非你有备份）。`))return;
+ b.chapters=b.chapters.filter(item=>item.id!==chapterId);
+ if(currentBook===bookId&&currentChapter===chapterId)currentChapter=b.chapters[0]?.id||null;
+ save();openDetail(bookId);
 }
 function saveChapterForm(bookId,chapterId){
  const b=bookBy(bookId), old=chapterId?b.chapters.find(c=>c.id===chapterId):null;
  const title=document.getElementById('chapterTitleInput').value.trim();
+ const chapterNumberRaw=document.getElementById('chapterNumberInput').value.trim();
+ const chapterNumber=chapterNumberRaw?Math.max(1,parseInt(chapterNumberRaw,10)||1):(old?b.chapters.findIndex(c=>c.id===old.id)+1:b.chapters.length+1);
  const raw=document.getElementById('chapterBodyInput').value;
  const note=document.getElementById('chapterNoteInput').value.trim();
  const volume=document.getElementById('chapterVolumeInput').value.trim();
@@ -218,8 +231,8 @@ function saveChapterForm(bookId,chapterId){
  const normalized=raw.replace(/\r\n?/g,'\n');
  const texts=normalized.split(/\n[\t \u3000]*\n+/).map(s=>s.trim()).filter(Boolean);
  const paras=texts.map((text,i)=>({id:old?.paragraphs[i]?.id||uid(),text,comments:old?.paragraphs[i]?.comments||[]}));
- if(old){Object.assign(old,{title,volume,paragraphs:paras,note})}
- else{b.chapters.push({id:uid(),title,volume,paragraphs:paras,note,comments:[]})}
+ if(old){Object.assign(old,{title,chapterNumber,volume,paragraphs:paras,note})}
+ else{b.chapters.push({id:uid(),title,chapterNumber,volume,paragraphs:paras,note,comments:[]})}
  save();openDetail(bookId);
 }
 function readBook(bookId,chapterId){currentBook=bookId;const b=bookBy(bookId);currentChapter=chapterId||b.chapters[0]?.id;renderReader();show('readerView');hideHeader()}
@@ -237,7 +250,7 @@ function renderReader(){
   currentChapter=c.id;
   document.getElementById('readerView').innerHTML=`
     <button class="ghost" onclick="openDetail('${b.id}')">‹ 返回目录</button>
-    <div class="muted">${esc(b.title)} · ${esc(c.title)}</div>
+    <div class="muted">${esc(b.title)} · 第${esc(c.chapterNumber??(idx+1))}章 ${esc(c.title)} · ${idx+1}/${b.chapters.length}</div>
     <div class="chaptertext">${c.paragraphs.map((p,i)=>`
       <div class="para">
         <div class="para-text">${esc(p.text).replace(/\n/g,'<br>')} ${p.comments.length
