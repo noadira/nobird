@@ -23,7 +23,7 @@ h1{font-size:24px;margin:8px 0} h2{font-size:18px;margin:20px 0 12px} p{line-hei
 input,textarea,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:11px;background:#fffefa;color:var(--ink);margin:5px 0 12px;outline-color:var(--accent)}
 textarea{min-height:90px;resize:vertical;max-width:100%}#editorView{padding-bottom:calc(100px + env(safe-area-inset-bottom))}#editorView button{margin-bottom:8px}#settingsView,#detailView,#readerView{padding-bottom:calc(90px + env(safe-area-inset-bottom))}.label{font-size:12px;color:var(--muted);display:block}
 .hide{display:none!important}.coverbig{height:160px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:52px;background:linear-gradient(135deg,#e6c9b6,#f5e7d3);margin-bottom:15px}
-#readerView{background:var(--reader-bg-color,#f7f5f0);background-image:var(--reader-bg-image,none);background-size:cover;background-position:center;background-attachment:fixed}.chaptertext{font-family:"Songti SC",STSong,serif;font-size:18px;line-height:2.05;letter-spacing:.2px;white-space:normal}.para{margin:0 0 18px}.para-tools{display:flex;justify-content:flex-end;gap:6px;margin-top:-8px;margin-bottom:15px}.comment{background:#f3eee6;border-radius:12px;padding:10px 12px;margin:8px 0;font-size:13px;line-height:1.7}.comment strong{color:#a45d4b}.authornote{border-left:3px solid var(--accent);padding:10px 13px;background:#f7eee8;border-radius:0 12px 12px 0;line-height:1.8;margin:22px 0}
+#readerView{background:var(--reader-bg-color,#f7f5f0);background-image:var(--reader-bg-image,none);background-size:cover;background-position:center;background-attachment:fixed}.chaptertext{font-family:"Songti SC",STSong,serif;font-size:18px;line-height:2.05;letter-spacing:.2px;white-space:normal}.para{margin:0 0 18px}.para-tools{display:flex;justify-content:flex-end;gap:6px;margin-top:-8px;margin-bottom:15px}.comment{background:#f3eee6;border-radius:12px;padding:10px 12px;margin:8px 0;font-size:13px;line-height:1.7}.comment strong{color:#a45d4b}.authornote{border-left:3px solid var(--accent);padding:10px 13px;background:#f7eee8;border-radius:0 12px 12px 0;line-height:1.8;margin:22px 0}.authornote-image{display:block;max-width:100%;height:auto;max-height:360px;object-fit:contain;border-radius:9px;margin:12px auto;cursor:zoom-in}.image-lightbox{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding:18px;cursor:zoom-out}.image-lightbox img{display:block;max-width:100%;max-height:100%;object-fit:contain;border-radius:4px}.image-lightbox button{position:absolute;top:calc(env(safe-area-inset-top) + 12px);right:14px;border-radius:50%;width:42px;height:42px;font-size:24px;padding:0;background:rgba(255,255,255,.2)}
 .volume-group{background:rgba(255,254,250,.65);border-radius:14px;margin:12px 0;overflow:hidden}.volume-group summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:17px 16px;font-weight:700;color:var(--accent);cursor:pointer}.volume-group summary::-webkit-details-marker{display:none}.volume-group[open] summary{border-bottom:1px solid var(--line)}.volume-chapters{padding:2px 10px}.volume-chapters .card{margin:10px 0}.chapter-item-title{min-width:0;overflow-wrap:anywhere}
 .chapter-switch{display:flex;justify-content:space-between;gap:12px;margin:18px 0 30px;padding:0}
 .chapter-switch button{flex:1;min-height:44px}
@@ -191,6 +191,7 @@ function deleteBook(id){if(confirm('确定删除这本小说及其章节、段�
 function addChapter(bookId,chapterId){
  const b=bookBy(bookId), old=chapterId?b.chapters.find(c=>c.id===chapterId):null;
  const existingText=old?old.paragraphs.map(p=>p.text).join('\n\n'):'';
+ window.pendingAuthorNoteImages=(old&&Array.isArray(old.noteImages))?old.noteImages.slice():[];
  const detail=document.getElementById('detailView');
  detail.innerHTML=`<button class="ghost" onclick="openDetail('${b.id}')">‹ 返回目录</button>
  <h1>${old?'编辑章节':'添加章节'}</h1>
@@ -207,9 +208,44 @@ function addChapter(bookId,chapterId){
  <textarea id="chapterBodyInput" style="min-height:48vh;line-height:1.8" placeholder="在这里粘贴或输入正文……">${esc(existingText)}</textarea>
  <label class="label">作者有话说（可留空）</label>
  <textarea id="chapterNoteInput" placeholder="写给读者的话">${esc(old?.note||'')}</textarea>
+ <div class="toolbar"><button type="button" class="secondary" onclick="document.getElementById('chapterNoteImageInput').click()">插入图片</button><input id="chapterNoteImageInput" type="file" accept="image/*" hidden onchange="insertAuthorNoteImage(this)"></div>
+ <p class="muted">图片会插入到光标位置；阅读时点击图片可放大查看。建议选择较小的图片以节省本地存储空间。</p>
  <div class="toolbar"><button onclick="saveChapterForm('${b.id}','${old?.id||''}')">保存章节</button><button class="secondary" onclick="openDetail('${b.id}')">取消</button>${old?`<button class="secondary" onclick="deleteChapter('${b.id}','${old.id}')">删除章节</button>`:''}</div>`;
  show('detailView');
 }
+
+function insertAuthorNoteImage(input){
+ const file=input.files&&input.files[0];if(!file)return;
+ if(file.size>8*1024*1024){alert('图片请尽量选择 8MB 以内的文件。');input.value='';return}
+ const reader=new FileReader();reader.onload=()=>{
+  const img=new Image();img.onload=()=>{
+   const max=1400,scale=Math.min(1,max/Math.max(img.width,img.height));
+   const canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));
+   canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+   const data=canvas.toDataURL('image/jpeg',.82);
+   if(!Array.isArray(window.pendingAuthorNoteImages))window.pendingAuthorNoteImages=[];
+   const imageIndex=window.pendingAuthorNoteImages.length;window.pendingAuthorNoteImages.push(data);
+   const token='\n[[NOTE_IMAGE:'+imageIndex+']]\n';
+   const area=document.getElementById('chapterNoteInput');if(!area)return;
+   const start=area.selectionStart??area.value.length,end=area.selectionEnd??start;
+   area.value=area.value.slice(0,start)+token+area.value.slice(end);const pos=start+token.length;area.focus();area.setSelectionRange(pos,pos);input.value='';
+  };img.onerror=()=>alert('无法读取这张图片，请换一张试试。');img.src=reader.result;
+ };reader.readAsDataURL(file);
+}
+function renderAuthorNote(note, images=[]){
+ return String(note).split(/(\[\[NOTE_IMAGE:\d+\]\])/g).map(part=>{
+  const m=part.match(/^\[\[NOTE_IMAGE:(\d+)\]\]$/);
+  if(m){const src=images[Number(m[1])];return src?`<img class="authornote-image" src="${src}" alt="作者插入的图片" onclick="openImageLightbox(this.src)">`:'';}
+  return esc(part).replace(/\n/g,'<br>');
+ }).join('');
+}
+
+function openImageLightbox(src){
+ const layer=document.createElement('div');layer.className='image-lightbox';layer.setAttribute('role','dialog');layer.setAttribute('aria-label','图片放大查看');
+ layer.innerHTML=`<button type="button" aria-label="关闭图片">×</button><img src="${src}" alt="放大图片">`;
+ layer.addEventListener('click',()=>layer.remove());layer.querySelector('img').addEventListener('click',e=>e.stopPropagation());layer.querySelector('button').addEventListener('click',()=>layer.remove());document.body.appendChild(layer);
+}
+
 function deleteChapter(bookId,chapterId){
  const b=bookBy(bookId);if(!b)return;
  const c=b.chapters.find(item=>item.id===chapterId);if(!c)return;
@@ -225,14 +261,15 @@ function saveChapterForm(bookId,chapterId){
  const chapterNumber=chapterNumberRaw?Math.max(1,parseInt(chapterNumberRaw,10)||1):(old?b.chapters.findIndex(c=>c.id===old.id)+1:b.chapters.length+1);
  const raw=document.getElementById('chapterBodyInput').value;
  const note=document.getElementById('chapterNoteInput').value.trim();
+ const noteImages=Array.isArray(window.pendingAuthorNoteImages)?window.pendingAuthorNoteImages.slice():[];
  const volume=document.getElementById('chapterVolumeInput').value.trim();
  if(!title){alert('请先填写章节标题');return}
  // Empty line(s) split paragraphs; normalize Windows and Mac line endings first.
  const normalized=raw.replace(/\r\n?/g,'\n');
  const texts=normalized.split(/\n[\t \u3000]*\n+/).map(s=>s.trim()).filter(Boolean);
  const paras=texts.map((text,i)=>({id:old?.paragraphs[i]?.id||uid(),text,comments:old?.paragraphs[i]?.comments||[]}));
- if(old){Object.assign(old,{title,chapterNumber,volume,paragraphs:paras,note})}
- else{b.chapters.push({id:uid(),title,chapterNumber,volume,paragraphs:paras,note,comments:[]})}
+ if(old){Object.assign(old,{title,chapterNumber,volume,paragraphs:paras,note,noteImages})}
+ else{b.chapters.push({id:uid(),title,chapterNumber,volume,paragraphs:paras,note,noteImages,comments:[]})}
  save();openDetail(bookId);
 }
 function readBook(bookId,chapterId){currentBook=bookId;const b=bookBy(bookId);currentChapter=chapterId||b.chapters[0]?.id;renderReader();show('readerView');hideHeader()}
@@ -260,7 +297,7 @@ function renderReader(){
         ${p.comments.length ? `<div class="para-comments hide" id="comments-${p.id}">${p.comments.map((cm,j)=>`<div class="comment"><strong>${esc(cm.name||'读者')}</strong>：${esc(cm.text)} <button class="ghost management-control" onclick="deleteParaComment('${b.id}','${c.id}','${p.id}',${j})">删除</button></div>`).join('')}<button class="secondary management-control" onclick="addParaComment('${b.id}','${c.id}','${p.id}')">＋ 添加段评</button></div>` : ''}
       </div>`).join('')||'<p class="muted">本章还没有正文。可通过编辑章节添加。</p>'}</div>
     <div class="chapter-end-matter">
-      ${c.note?`<div class="authornote"><b>作者有话说</b><br>${esc(c.note).replace(/\n/g,'<br>')}</div>`:''}
+      ${c.note?`<div class="authornote"><b>作者有话说</b><br>${renderAuthorNote(c.note,c.noteImages||[])}</div>`:''}
       <div class="chapter-switch toolbar">
         <button class="secondary" ${idx===0?'disabled':''} onclick="switchChapter(-1)">‹ 上一章</button>
         <button class="secondary" ${idx===b.chapters.length-1?'disabled':''} onclick="switchChapter(1)">下一章 ›</button>
