@@ -52,14 +52,12 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}.empty{text-align:cen
   padding: 0;
 }
 .chaptertext .para-text:has(.add-comment-link) {
-  position: relative;
-  padding-right: 1.05em;
+  position: static;
+  padding-right: 0;
 }
 .chaptertext .add-comment-link {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  display: inline-block;
+  position: static;
+  display: inline;
   white-space: nowrap;
   margin: 0;
   border: 0;
@@ -260,7 +258,7 @@ function renderReader(){
     <div class="muted">${esc(b.title)} · 第${esc(c.chapterNumber??(idx+1))}章 ${esc(c.title)} · ${idx+1}/${b.chapters.length}</div>
     <div class="chaptertext">${c.paragraphs.map((p,i)=>`
       <div class="para">
-        <div class="para-text">${esc(p.text).replace(/\n/g,'<br>')} ${p.comments.length
+        <div class="para-text">${esc(p.text).replace(/\n/g,'<br>')}&nbsp;${p.comments.length
           ? `<button class="bubble-button inline-bubble" aria-label="查看段评 ${p.comments.length} 条" title="查看段评" onclick="toggleParaComments('${p.id}')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14a2.5 2.5 0 0 1 2.5 2.5v8a2.5 2.5 0 0 1-2.5 2.5h-8l-5 3v-3A2.5 2.5 0 0 1 3.5 15V7A2.5 2.5 0 0 1 5 4.5Z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg><span>${p.comments.length}</span></button>`
           : `<button class="add-comment-link" onclick="addParaComment('${b.id}','${c.id}','${p.id}')" aria-label="添加段评" title="添加段评">＋</button>`
         }</div>
