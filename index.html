@@ -15,7 +15,7 @@
 *{box-sizing:border-box;overflow-anchor:none} html{scroll-behavior:auto;overflow-anchor:none} body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif}
 button,input,textarea,select{font:inherit} button{cursor:pointer;border:0;border-radius:12px;padding:10px 13px;background:var(--accent);color:white} button.secondary{background:#eee9df;color:#4a473f} button.ghost{background:transparent;color:var(--muted);padding:7px}
 header{position:sticky;top:0;z-index:15;background:rgba(247,245,240,.95);backdrop-filter:blur(14px);padding:calc(env(safe-area-inset-top) + 10px) 16px 10px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}
-.brand{font-weight:800;font-size:19px;letter-spacing:1px;min-width:0}.brand small{display:block;font-size:10px;color:var(--muted);font-weight:500;letter-spacing:2px;margin-top:2px}.brand-titleline{display:flex;align-items:center;gap:4px;min-width:0}.brand-emoji{flex:none}.brand-title{overflow-wrap:anywhere}.brand small{overflow-wrap:anywhere}.header-actions{display:flex;align-items:center;gap:6px;flex:none}.header-actions button{white-space:nowrap}.header-reveal{position:fixed;top:calc(env(safe-area-inset-top) - 38px);right:12px;z-index:25;box-shadow:none;padding:8px 10px;font-size:18px;opacity:.22;background:rgba(238,233,223,.18);color:#4a473f;border-radius:50%;min-width:38px;min-height:38px}body.header-collapsed header{display:none}body.cover-reader.header-collapsed #readerView .chaptertext{height:calc(100dvh - 110px)}
+.brand{font-weight:800;font-size:19px;letter-spacing:1px;min-width:0}.brand small{display:block;font-size:10px;color:var(--muted);font-weight:500;letter-spacing:2px;margin-top:2px}.brand-titleline{display:flex;align-items:center;gap:4px;min-width:0}.brand-emoji{flex:none}.brand-title{overflow-wrap:anywhere}.brand small{overflow-wrap:anywhere}.header-actions{display:flex;align-items:center;gap:6px;flex:none}.header-actions button{white-space:nowrap}.header-reveal{position:fixed;top:calc(env(safe-area-inset-top) - 38px);right:12px;z-index:25;box-shadow:none;padding:8px 10px;font-size:18px;opacity:.22;background:rgba(238,233,223,.18);color:#4a473f;border-radius:50%;min-width:38px;min-height:38px}body.header-collapsed header{display:none}
 main{width:100%;max-width:720px;height:var(--main-available-height,calc(100dvh - 220px));min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;overflow-anchor:none;margin:0 auto;padding:16px 15px calc(24px + env(safe-area-inset-bottom));scroll-padding-bottom:24px}.tabs{display:flex;gap:8px;margin:5px 0 18px}.tabs button{flex:1;background:#ece8df;color:#6f6b61}.tabs button.active{background:var(--accent);color:white}
 h1{font-size:24px;margin:8px 0} h2{font-size:18px;margin:20px 0 12px} p{line-height:1.85}.muted{color:var(--muted);font-size:13px}.row{display:flex;gap:10px;align-items:center}.between{justify-content:space-between}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .book{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden}.cover{height:125px;display:flex;align-items:center;justify-content:center;font-size:38px;background:linear-gradient(135deg,#e6c9b6,#f5e7d3);background-size:cover;background-position:center;color:#875f4f}.cover.has-image{font-size:0}.coverbig.has-image{font-size:0;background-size:cover;background-position:center}.bookbody{padding:12px}.booktitle{font-weight:750;margin-bottom:5px}.bookdesc{font-size:12px;line-height:1.55;color:var(--muted);height:38px;overflow:hidden}
@@ -78,7 +78,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}.empty{text-align:cen
 /* Reading mode keeps the text clean while preserving tiny paragraph-comment entry points. */
 body.read-mode .management-control { display: none !important; }
 body.read-mode .chaptertext .add-comment-link { opacity: .22; color: #bdb8ad; font-size: .62em; padding: 0 1px; vertical-align: baseline; }
-body.read-mode .reader-extra { display: none !important; }
+/* Chapter comments remain visible in reading mode; management buttons are hidden individually. */
 .mode-switch { display:flex; gap:8px; margin:12px 0; }
 .mode-switch button { flex:1; }
 .mode-switch button.selected { outline:2px solid var(--accent); outline-offset:2px; }
@@ -91,18 +91,14 @@ body{--reader-font:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neu
 .reader-pager{margin:12px 0 16px;display:flex;align-items:center;justify-content:space-between;gap:8px}
 .reader-pager button{padding:8px 12px}
 .reader-pager .page-count{font-size:12px;color:var(--muted);white-space:nowrap}
-body.cover-reader #readerView .chapter-switch{display:none}
-body.cover-reader #readerView .chapter-switch.on-last-page{display:flex}
-.cover-reader .chaptertext{height:calc(100dvh - 255px);min-height:280px;overflow-x:auto;overflow-y:hidden;column-width:calc(100vw - 54px);column-gap:28px;column-fill:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;padding:0 2px 10px}
-.cover-reader .chaptertext::-webkit-scrollbar{display:none}
-.cover-reader .chaptertext .para{break-inside:avoid;scroll-snap-align:start}
-.cover-reader .reader-page-area{overflow:hidden}
+#readerView .chaptertext{height:auto;min-height:0;overflow:visible;overflow-x:visible;overflow-y:visible;column-width:auto;column-count:auto;column-gap:normal;column-fill:initial;scroll-snap-type:none;overscroll-behavior:auto;padding:0 12px 10px}
+#readerView .chapter-end-matter{display:block}
 .setting-control{margin:10px 0 16px}
 .setting-control select{margin-bottom:3px}
 .setting-range{display:flex;align-items:center;gap:12px}
 .setting-range input{margin:4px 0 10px;padding:0}
 .setting-value{min-width:48px;text-align:right;color:var(--muted);font-size:12px}
-@media(min-width:600px){.cover-reader .chaptertext{column-width:calc(min(720px, 100vw) - 54px)}}
+
 </style>
 </head>
 <body>
@@ -129,7 +125,7 @@ const KEY='private_tomato_v1';
 let db=loadDB(), filter='all', currentBook=null,currentChapter=null, editorBook=null;
 let appMode=localStorage.getItem('private_tomato_mode')||'edit';
 let readerPrefs={
-  pageMode:localStorage.getItem('private_tomato_page_mode')||'scroll',
+  pageMode:'scroll',
   size:Number(localStorage.getItem('private_tomato_font_size')||18),
   line:Number(localStorage.getItem('private_tomato_line_height')||1.95),
   bgColor:localStorage.getItem('private_tomato_reader_bg_color')||'#f7f5f0',
@@ -165,11 +161,10 @@ function showHeader(){
   document.getElementById('showHeaderBtn').classList.add('hide');
 }
 function fontStack(){return '-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif'}
-function applyReaderPrefs(){document.body.style.setProperty('--reader-font',fontStack());document.body.style.setProperty('--reader-size',readerPrefs.size+'px');document.body.style.setProperty('--reader-line',readerPrefs.line);document.body.classList.toggle('cover-reader',readerPrefs.pageMode==='cover');const rv=document.getElementById('readerView');rv.style.setProperty('--reader-bg-color',readerPrefs.bgColor);rv.style.setProperty('--reader-bg-image',readerPrefs.bgImage?'url(\"'+readerPrefs.bgImage+'\")':'none')}
-function updateReaderPref(key,value){if(key==='pageMode'){readerPrefs.pageMode=value;localStorage.setItem('private_tomato_page_mode',value)}else if(key==='size'){readerPrefs.size=Number(value);localStorage.setItem('private_tomato_font_size',String(value))}else if(key==='line'){readerPrefs.line=Number(value);localStorage.setItem('private_tomato_line_height',String(value))}applyReaderPrefs();showSettings();if(currentBook&&currentChapter&&!document.getElementById('readerView').classList.contains('hide'))renderReader()}
-function turnPage(direction){const el=document.querySelector('#readerView .chaptertext');if(!el)return;const step=el.clientWidth;el.scrollBy({left:direction*step,behavior:'smooth'})}
-function updateChapterSwitchVisibility(){const el=document.querySelector('#readerView .chaptertext');const nav=document.querySelector('#readerView .chapter-switch');if(!nav)return;if(readerPrefs.pageMode!=='cover'){nav.classList.add('on-last-page');return}if(!el)return;const atLast=el.scrollLeft+el.clientWidth>=el.scrollWidth-12;nav.classList.toggle('on-last-page',atLast)}
-function bindReaderKeys(){if(window.__readerKeysBound)return;window.__readerKeysBound=true;document.addEventListener('keydown',e=>{if(readerPrefs.pageMode!=='cover'||document.getElementById('readerView').classList.contains('hide'))return;if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))return;if(e.key==='ArrowRight'){e.preventDefault();turnPage(1)}else if(e.key==='ArrowLeft'){e.preventDefault();turnPage(-1)}})}
+function applyReaderPrefs(){readerPrefs.pageMode='scroll';localStorage.setItem('private_tomato_page_mode','scroll');document.body.classList.remove('cover-reader');document.body.style.setProperty('--reader-font',fontStack());document.body.style.setProperty('--reader-size',readerPrefs.size+'px');document.body.style.setProperty('--reader-line',readerPrefs.line);const rv=document.getElementById('readerView');rv.style.setProperty('--reader-bg-color',readerPrefs.bgColor);rv.style.setProperty('--reader-bg-image',readerPrefs.bgImage?'url(\"'+readerPrefs.bgImage+'\")':'none')}
+function updateReaderPref(key,value){if(key==='size'){readerPrefs.size=Number(value);localStorage.setItem('private_tomato_font_size',String(value))}else if(key==='line'){readerPrefs.line=Number(value);localStorage.setItem('private_tomato_line_height',String(value))}applyReaderPrefs();showSettings();if(currentBook&&currentChapter&&!document.getElementById('readerView').classList.contains('hide'))renderReader()}
+function updateChapterSwitchVisibility(){const endMatter=document.querySelector('#readerView .chapter-end-matter');if(endMatter)endMatter.classList.add('on-last-page')}
+function bindReaderKeys(){}
 function applyMode(){document.body.classList.toggle('read-mode',appMode==='read');document.body.classList.toggle('edit-mode',appMode==='edit')}
 function setMode(mode){appMode=mode;localStorage.setItem('private_tomato_mode',mode);applyMode();showSettings();renderHome();if(currentBook&&currentChapter&&!document.getElementById('readerView').classList.contains('hide'))renderReader();if(currentBook&&!document.getElementById('detailView').classList.contains('hide'))openDetail(currentBook)}
 function uid(){return Math.random().toString(36).slice(2,10)}
@@ -202,7 +197,7 @@ function addChapter(bookId,chapterId){
  <label class="label">章节标题</label>
  <input id="chapterTitleInput" value="${esc(old?.title||`第${b.chapters.length+1}章`)}" placeholder="例如：第一章">
  <label class="label">所属分卷</label>
- <input id="chapterVolumeInput" value="${esc(old?.volume||'第一卷') }" placeholder="例如：第一卷：游戏成真（可留空）">
+ <input id="chapterVolumeInput" value="${esc(old?.volume||'第一卷') }" placeholder="例如：第一卷  XXXX（可留空）">
  <p class="muted">相同分卷名称的章节会自动归在一起；分卷名留空时归入「未分卷」。</p>
  <label class="label">正文内容</label>
  <p class="muted">直接把整章文字粘贴到下面的大文本框里。段落之间空一行，阅读时就会分成不同段落；如果原文没有空行，也可以在这里手动分段。</p>
@@ -228,7 +223,7 @@ function saveChapterForm(bookId,chapterId){
  save();openDetail(bookId);
 }
 function readBook(bookId,chapterId){currentBook=bookId;const b=bookBy(bookId);currentChapter=chapterId||b.chapters[0]?.id;renderReader();show('readerView');hideHeader()}
-function switchChapter(direction){const b=bookBy(currentBook);if(!b)return;const idx=b.chapters.findIndex(c=>c.id===currentChapter);const next=b.chapters[idx+direction];if(!next)return;currentChapter=next.id;renderReader();const el=document.querySelector('#readerView .chaptertext');if(el){el.scrollLeft=0;el.scrollTop=0;}window.scrollTo(0,0)}
+function switchChapter(direction){const b=bookBy(currentBook);if(!b)return;const idx=b.chapters.findIndex(c=>c.id===currentChapter);const next=b.chapters[idx+direction];if(!next)return;currentChapter=next.id;renderReader();const el=document.querySelector('#readerView .chaptertext');if(el){el.scrollLeft=0;el.scrollTop=0;}const main=document.querySelector('main');if(main)main.scrollTop=0;window.scrollTo(0,0)}
 function renderReader(){
   const b=bookBy(currentBook);
   if(!b)return;
@@ -251,16 +246,17 @@ function renderReader(){
         }</div>
         ${p.comments.length ? `<div class="para-comments hide" id="comments-${p.id}">${p.comments.map((cm,j)=>`<div class="comment"><strong>${esc(cm.name||'读者')}</strong>：${esc(cm.text)} <button class="ghost management-control" onclick="deleteParaComment('${b.id}','${c.id}','${p.id}',${j})">删除</button></div>`).join('')}<button class="secondary management-control" onclick="addParaComment('${b.id}','${c.id}','${p.id}')">＋ 添加段评</button></div>` : ''}
       </div>`).join('')||'<p class="muted">本章还没有正文。可通过编辑章节添加。</p>'}</div>
-    ${c.note?`<div class="authornote"><b>作者有话说</b><br>${esc(c.note).replace(/\n/g,'<br>')}</div>`:''}
-    <!-- Chapter-end navigation: immediately after the chapter text and author's note, before comments/tools. -->
-    <div class="chapter-switch toolbar">
-      <button class="secondary" ${idx===0?'disabled':''} onclick="switchChapter(-1)">‹ 上一章</button>
-      <button class="secondary" ${idx===b.chapters.length-1?'disabled':''} onclick="switchChapter(1)">下一章 ›</button>
+    <div class="chapter-end-matter">
+      ${c.note?`<div class="authornote"><b>作者有话说</b><br>${esc(c.note).replace(/\n/g,'<br>')}</div>`:''}
+      <div class="chapter-switch toolbar">
+        <button class="secondary" ${idx===0?'disabled':''} onclick="switchChapter(-1)">‹ 上一章</button>
+        <button class="secondary" ${idx===b.chapters.length-1?'disabled':''} onclick="switchChapter(1)">下一章 ›</button>
+      </div>
+      <div class="reader-extra"><hr><h2>本章评论区</h2>
+      ${(c.comments||[]).map((cm,j)=>`<div class="comment"><strong>${esc(cm.name||'读者')}</strong>：${esc(cm.text)} <button class="ghost management-control" onclick="deleteChapterComment('${b.id}','${c.id}',${j})">删除</button></div>`).join('')}
+      <button class="secondary management-control" onclick="addChapterComment('${b.id}','${c.id}')">＋ 模拟读者评论</button></div>
+      <div class="toolbar management-control"><button class="secondary" onclick="addChapter('${b.id}','${c.id}')">编辑本章</button><button class="secondary" onclick="editBook('${b.id}')">编辑作品</button></div>
     </div>
-    <div class="reader-extra"><hr><h2>本章评论区</h2>
-    ${(c.comments||[]).map((cm,j)=>`<div class="comment"><strong>${esc(cm.name||'读者')}</strong>：${esc(cm.text)} <button class="ghost management-control" onclick="deleteChapterComment('${b.id}','${c.id}',${j})">删除</button></div>`).join('')}
-    <button class="secondary management-control" onclick="addChapterComment('${b.id}','${c.id}')">＋ 模拟读者评论</button></div>
-    <div class="toolbar management-control"><button class="secondary" onclick="addChapter('${b.id}','${c.id}')">编辑本章</button><button class="secondary" onclick="editBook('${b.id}')">编辑作品</button></div>
 `;
   applyReaderPrefs();bindReaderKeys();
   const pageArea=document.querySelector('#readerView .chaptertext');if(pageArea){pageArea.addEventListener('scroll',updateChapterSwitchVisibility,{passive:true});requestAnimationFrame(updateChapterSwitchVisibility)}
@@ -273,7 +269,7 @@ function deleteParaComment(bid,cid,pid,j){const p=bookBy(bid).chapters.find(c=>c
 function addChapterComment(bid,cid){const c=bookBy(bid).chapters.find(c=>c.id===cid);const text=prompt('模拟读者评论：');if(!text?.trim())return;const name=prompt('读者昵称：','读者A')||'读者';c.comments=c.comments||[];c.comments.push({name,text:text.trim()});save();renderReader()}
 function deleteChapterComment(bid,cid,j){const c=bookBy(bid).chapters.find(c=>c.id===cid);c.comments.splice(j,1);save();renderReader()}
 function showSettings(){document.getElementById('settingsView').innerHTML=`<h1>设置与数据</h1><div class="card"><h2 style="margin-top:0">阅读设置</h2>
-<label class="label">翻页方式</label><div class="mode-switch"><button class="${readerPrefs.pageMode==='scroll'?'selected':'secondary'}" onclick="updateReaderPref('pageMode','scroll')">上下</button><button class="${readerPrefs.pageMode==='cover'?'selected':'secondary'}" onclick="updateReaderPref('pageMode','cover')">平移</button></div><p class="muted"></p>
+<p class="muted">阅读方式：上下滚动</p>
 
 <div class="setting-control"><label class="label" for="fontSizeChoice">字号</label><div class="setting-range"><input id="fontSizeChoice" type="range" min="14" max="28" step="1" value="${readerPrefs.size}" oninput="updateReaderPrefLive('size',this.value)"><span class="setting-value" id="fontSizeValue">${readerPrefs.size}px</span></div></div>
 <div class="setting-control"><label class="label" for="lineHeightChoice">行距</label><div class="setting-range"><input id="lineHeightChoice" type="range" min="1.4" max="2.5" step="0.05" value="${readerPrefs.line}" oninput="updateReaderPrefLive('line',this.value)"><span class="setting-value" id="lineHeightValue">${Number(readerPrefs.line).toFixed(2)}</span></div></div>
