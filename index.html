@@ -16,12 +16,12 @@
 button,input,textarea,select{font:inherit} button{cursor:pointer;border:0;border-radius:12px;padding:10px 13px;background:var(--accent);color:white} button.secondary{background:#eee9df;color:#4a473f} button.ghost{background:transparent;color:var(--muted);padding:7px}
 header{position:sticky;top:0;z-index:15;background:rgba(247,245,240,.95);backdrop-filter:blur(14px);padding:calc(env(safe-area-inset-top) + 10px) 16px 10px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}
 .brand{font-weight:800;font-size:19px;letter-spacing:1px;min-width:0}.brand small{display:block;font-size:10px;color:var(--muted);font-weight:500;letter-spacing:2px;margin-top:2px}.brand-titleline{display:flex;align-items:center;gap:4px;min-width:0}.brand-emoji{flex:none}.brand-title{overflow-wrap:anywhere}.brand small{overflow-wrap:anywhere}.header-actions{display:flex;align-items:center;gap:6px;flex:none}.header-actions button{white-space:nowrap}.header-reveal{position:fixed;top:calc(env(safe-area-inset-top) - 38px);right:12px;z-index:25;box-shadow:none;padding:8px 10px;font-size:18px;opacity:.22;background:rgba(238,233,223,.18);color:#4a473f;border-radius:50%;min-width:38px;min-height:38px}body.header-collapsed header{display:none}
-main{width:100%;max-width:720px;height:var(--main-available-height,calc(100dvh - 220px));min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;overflow-anchor:none;margin:0 auto;padding:16px 15px calc(24px + env(safe-area-inset-bottom));scroll-padding-bottom:24px}.tabs{display:flex;gap:8px;margin:5px 0 18px}.tabs button{flex:1;background:#ece8df;color:#6f6b61}.tabs button.active{background:var(--accent);color:white}
+main{width:100%;max-width:720px;height:var(--main-available-height,calc(100dvh - 220px));min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;overflow-anchor:none;margin:0 auto;padding:16px 15px calc(90px + env(safe-area-inset-bottom));scroll-padding-bottom:90px;position:relative;isolation:isolate}.tabs{display:flex;gap:8px;margin:5px 0 18px}.tabs button{flex:1;background:#ece8df;color:#6f6b61}.tabs button.active{background:var(--accent);color:white}
 h1{font-size:24px;margin:8px 0} h2{font-size:18px;margin:20px 0 12px} p{line-height:1.85}.muted{color:var(--muted);font-size:13px}.row{display:flex;gap:10px;align-items:center}.between{justify-content:space-between}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.home-heading{margin-bottom:14px}
 .book{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden}.cover{width:100%;height:auto;aspect-ratio:12 / 11;display:flex;align-items:center;justify-content:center;font-size:38px;background:linear-gradient(135deg,#e6c9b6,#f5e7d3);background-size:cover;background-position:center;color:#875f4f}.cover.has-image{font-size:0}.coverbig.has-image{font-size:0;background-size:cover;background-position:center}.bookbody{padding:10px 12px 10px;display:flex;flex-direction:column}.booktitle{font-weight:750;margin-bottom:4px;line-height:1.4}.bookmeta{line-height:1.5;margin-bottom:7px}.book-actions{margin-top:auto;gap:10px}.bookdesc{font-size:12px;line-height:1.55;color:var(--muted);height:38px;overflow:hidden}
 .card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:15px;margin:12px 0}
 input,textarea,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:11px;background:#fffefa;color:var(--ink);margin:5px 0 12px;outline-color:var(--accent)}
-textarea{min-height:90px;resize:vertical}.label{font-size:12px;color:var(--muted);display:block}
+textarea{min-height:90px;resize:vertical;max-width:100%}#editorView{padding-bottom:calc(100px + env(safe-area-inset-bottom))}#editorView button{margin-bottom:8px}#settingsView,#detailView,#readerView{padding-bottom:calc(90px + env(safe-area-inset-bottom))}.label{font-size:12px;color:var(--muted);display:block}
 .hide{display:none!important}.coverbig{height:160px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:52px;background:linear-gradient(135deg,#e6c9b6,#f5e7d3);margin-bottom:15px}
 #readerView{background:var(--reader-bg-color,#f7f5f0);background-image:var(--reader-bg-image,none);background-size:cover;background-position:center;background-attachment:fixed}.chaptertext{font-family:"Songti SC",STSong,serif;font-size:18px;line-height:2.05;letter-spacing:.2px;white-space:normal}.para{margin:0 0 18px}.para-tools{display:flex;justify-content:flex-end;gap:6px;margin-top:-8px;margin-bottom:15px}.comment{background:#f3eee6;border-radius:12px;padding:10px 12px;margin:8px 0;font-size:13px;line-height:1.7}.comment strong{color:#a45d4b}.authornote{border-left:3px solid var(--accent);padding:10px 13px;background:#f7eee8;border-radius:0 12px 12px 0;line-height:1.8;margin:22px 0}
 .volume-group{background:rgba(255,254,250,.65);border-radius:14px;margin:12px 0;overflow:hidden}.volume-group summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:17px 16px;font-weight:700;color:var(--accent);cursor:pointer}.volume-group summary::-webkit-details-marker{display:none}.volume-group[open] summary{border-bottom:1px solid var(--line)}.volume-chapters{padding:2px 10px}.volume-chapters .card{margin:10px 0}.chapter-item-title{min-width:0;overflow-wrap:anywhere}
@@ -51,17 +51,12 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}.empty{text-align:cen
   margin: 0;
   padding: 0;
 }
-.chaptertext .para-text:has(.add-comment-link) {
-  position: static;
-  padding-right: 0;
-}
 .chaptertext .add-comment-link {
-  position: static;
   display: inline;
-  white-space: nowrap;
-  margin: 0;
+  float: none;
+  margin: 0 0 0 0.35em;
   border: 0;
-  padding: 0;
+  padding: 0 3px;
   color: #99958a;
   background: transparent;
   font: inherit;
@@ -182,8 +177,8 @@ function forceSettingsTop(){
   if(main)main.scrollTop=0;
 }
 
-function sizeMainArea(){const main=document.querySelector('main'),header=document.querySelector('header'),nav=document.querySelector('.bottomnav');if(!main)return;const vh=window.visualViewport?window.visualViewport.height:window.innerHeight;const headerH=(header&&!document.body.classList.contains('header-collapsed'))?header.getBoundingClientRect().height:0;const navH=(nav&&!document.body.classList.contains('reading-active'))?nav.getBoundingClientRect().height:0;main.style.setProperty('--main-available-height',Math.max(120,vh-headerH-navH)+'px')}
-window.addEventListener('resize',sizeMainArea);window.addEventListener('orientationchange',()=>setTimeout(sizeMainArea,100));if(window.visualViewport)window.visualViewport.addEventListener('resize',sizeMainArea);
+function sizeMainArea(){const main=document.querySelector('main'),header=document.querySelector('header'),nav=document.querySelector('.bottomnav');if(!main)return;const vv=window.visualViewport;const keyboardOpen=!!(vv&&window.innerHeight-vv.height>140);const vh=keyboardOpen?vv.height:Math.max(window.innerHeight,document.documentElement.clientHeight);const headerH=(header&&!document.body.classList.contains('header-collapsed'))?header.getBoundingClientRect().height:0;const navH=(nav&&!document.body.classList.contains('reading-active'))?nav.getBoundingClientRect().height:0;const available=Math.max(220,vh-headerH-navH);main.style.setProperty('--main-available-height',available+'px')}
+window.addEventListener('resize',sizeMainArea);window.addEventListener('orientationchange',()=>setTimeout(sizeMainArea,100));if(window.visualViewport){window.visualViewport.addEventListener('resize',sizeMainArea);window.visualViewport.addEventListener('scroll',sizeMainArea)}document.addEventListener('focusin',e=>{if(e.target.matches('input,textarea,select'))setTimeout(()=>{sizeMainArea();e.target.scrollIntoView({block:'nearest',behavior:'auto'})},250)});document.addEventListener('focusout',()=>setTimeout(sizeMainArea,250));
 function show(id){['homeView','detailView','readerView','editorView','settingsView'].forEach(x=>document.getElementById(x).classList.toggle('hide',x!==id));document.querySelectorAll('.bottomnav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id||(b.dataset.action==='directory'&&(id==='detailView'||id==='readerView'))));document.body.classList.toggle('reading-active',id==='readerView');document.body.classList.remove('nav-awake');sizeMainArea();const main=document.querySelector('main');if(main)main.scrollTop=0;}
 function bookBy(id){return db.books.find(b=>b.id===id)}
 function renderHome(){const grid=document.getElementById('bookGrid');let books=db.books.filter(b=>filter==='all'||b.status===filter);grid.innerHTML=books.length?books.map(b=>`<article class="book"><div class="cover ${b.coverImage?'has-image':''}" style="${b.coverImage?`background-image:url('${b.coverImage}')`:`background:${esc(b.color||'linear-gradient(135deg,#e6c9b6,#f5e7d3)')}`} ">${b.coverImage?'':esc(b.emoji||'📖')}</div><div class="bookbody"><div class="booktitle">${esc(b.title)}</div><div class="muted bookmeta">${esc(b.author||'佚名')} · ${esc(b.status)}</div><div class="row book-actions"><button onclick="openDetail('${b.id}')">阅读</button><button class="secondary management-control" onclick="editBook('${b.id}')">编辑</button></div></div></article>`).join(''):'<div class="empty" style="grid-column:1/-1">这里还空着。<br>点「新建小说」，创建你的第一本书吧。</div>'}
@@ -258,7 +253,7 @@ function renderReader(){
     <div class="muted">${esc(b.title)} · 第${esc(c.chapterNumber??(idx+1))}章 ${esc(c.title)} · ${idx+1}/${b.chapters.length}</div>
     <div class="chaptertext">${c.paragraphs.map((p,i)=>`
       <div class="para">
-        <div class="para-text">${esc(p.text).replace(/\n/g,'<br>')}&nbsp;${p.comments.length
+        <div class="para-text">${esc(p.text).replace(/\n/g,'<br>')} ${p.comments.length
           ? `<button class="bubble-button inline-bubble" aria-label="查看段评 ${p.comments.length} 条" title="查看段评" onclick="toggleParaComments('${p.id}')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14a2.5 2.5 0 0 1 2.5 2.5v8a2.5 2.5 0 0 1-2.5 2.5h-8l-5 3v-3A2.5 2.5 0 0 1 3.5 15V7A2.5 2.5 0 0 1 5 4.5Z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg><span>${p.comments.length}</span></button>`
           : `<button class="add-comment-link" onclick="addParaComment('${b.id}','${c.id}','${p.id}')" aria-label="添加段评" title="添加段评">＋</button>`
         }</div>
