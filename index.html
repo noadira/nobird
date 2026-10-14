@@ -352,11 +352,12 @@ function renderReader(){
   rv.onclick=function(e){if(e.target.closest('button, input, textarea, select, a'))return;document.body.classList.toggle('nav-awake')};
 }
 
+
 function applyLineEndPunctuation(){
   const root=document.querySelector('#readerView .chaptertext');
   if(!root)return;
 
-  // Remove the previous pass before measuring the natural text layout.
+  // 清除上一次处理，恢复原始文字布局
   root.querySelectorAll('br.line-end-break').forEach(br=>br.remove());
   root.querySelectorAll('.line-end-pair').forEach(w=>{
     const parent=w.parentNode;
@@ -365,7 +366,8 @@ function applyLineEndPunctuation(){
   });
   root.normalize();
 
-  const punctuation=/[。！？；，、：）》」』】〕〉…％.!?;,：:\)\]}]/;
+  // 末尾标点及各种中英文引号
+  const punctuation=/[。！？；，、：）》」』】〕〉…％.!?;,:)\]}“”‘’「」『』《》〈〉]/;
   const rootStyle=getComputedStyle(root);
   const isPaged=document.body.classList.contains('cover-reader');
   const colWidth=parseFloat(rootStyle.columnWidth);
@@ -373,68 +375,108 @@ function applyLineEndPunctuation(){
   const rootRect=root.getBoundingClientRect();
   const padLeft=parseFloat(rootStyle.paddingLeft)||0;
 
-  // Only consider the final non-whitespace character of each paragraph.
-  // Mid-paragraph punctuation must never trigger a line-end adjustment.
   root.querySelectorAll('.para-text').forEach(host=>{
     const walker=document.createTreeWalker(host,NodeFilter.SHOW_TEXT,{
       acceptNode(node){
-        if(!node.nodeValue || !node.nodeValue.trim())return NodeFilter.FILTER_REJECT;
-        if(node.parentElement?.closest('button,.para-comments,.line-end-pair'))return NodeFilter.FILTER_REJECT;
+        if(!node.nodeValue || !node.nodeValue.trim()){
+          return NodeFilter.FILTER_REJECT;
+        }
+        if(node.parentElement?.closest(
+          'button,.para-comments,.line-end-pair'
+        )){
+          return NodeFilter.FILTER_REJECT;
+        }
         return NodeFilter.FILTER_ACCEPT;
       }
     });
+
     const nodes=[];
     while(walker.nextNode())nodes.push(walker.currentNode);
     if(!nodes.length)return;
 
+    // 找到文段最后一个非空白字符
     let finalNode=null, finalIndex=-1;
     for(let n=nodes.length-1;n>=0;n--){
       const value=nodes[n].nodeValue;
       for(let i=value.length-1;i>=0;i--){
-        if(!/\s/.test(value[i])){finalNode=nodes[n];finalIndex=i;break;}
+        if(!/\s/.test(value[i])){
+          finalNode=nodes[n];
+          finalIndex=i;
+          break;
+        }
       }
       if(finalNode)break;
     }
-    if(!finalNode || finalIndex<1)return;
+    if(!finalNode)return;
+
     const text=finalNode.nodeValue;
-    const i=finalIndex;
-    if(!punctuation.test(text[i]) || /\s/.test(text[i-1]))return;
+    if(!punctuation.test(text[finalIndex]))return;
 
-    const prev=document.createRange(), mark=document.createRange();
-    prev.setStart(finalNode,i-1);prev.setEnd(finalNode,i);
-    mark.setStart(finalNode,i);mark.setEnd(finalNode,i+1);
-    const a=prev.getBoundingClientRect(), b=mark.getBoundingClientRect();
-    if(!a.width||!b.width||Math.abs(a.top-b.top)>1.5)return;
+    // 将末尾连续标点和引号作为一个整体
+    let clusterStart=finalIndex;
+    while(
+      clusterStart>0 &&
+      punctuation.test(text[clusterStart-1])
+    ){
+      clusterStart--;
+    }
 
+    // 至少保留一个前置字符，且不跨越空白
+    if(clusterStart<1 || /\s/.test(text[clusterStart-1]))return;
+
+    const prev=document.createRange();
+    prev.setStart(finalNode,clusterStart-1);
+    prev.setEnd(finalNode,clusterStart);
+
+    const mark=document.createRange();
+    mark.setStart(finalNode,clusterStart);
+    mark.setEnd(finalNode,finalIndex+1);
+
+    const a=prev.getBoundingClientRect();
+    const rects=mark.getClientRects();
+    if(!a.width || !rects.length)return;
+
+    const b=rects[rects.length-1];
+    if(!b.width || Math.abs(a.top-b.top)>1.5)return;
+
+    // 计算当前文字列的右边界
     let right=host.getBoundingClientRect().right;
-    // In horizontal paging mode, measure the right edge of this text column,
-    // not the union of a paragraph's rectangles across multiple columns.
     if(isPaged && Number.isFinite(colWidth) && colWidth>0){
       const period=colWidth+colGap;
       const local=b.left-(rootRect.left+padLeft);
       const col=Math.floor(local/period);
       right=rootRect.left+padLeft+col*period+colWidth;
     }
-    const gap=right-b.right;
-    const fontSize=parseFloat(getComputedStyle(host).fontSize)||18;
-    // A wider tolerance accommodates different fonts, zoom levels and CJK
-    // punctuation hanging slightly beyond the content edge.
-    if(gap < -fontSize*0 || gap > fontSize*1.1)return;
 
+    const gap=right-b.right;
+    const fontSize=parseFloat(
+      getComputedStyle(host).fontSize
+    )||18;
+
+    // 仅在真正靠近右边界时触发
+    // 容许轻微超出边界，但收窄边界内的触发范围
+    if(gap < -fontSize*0.3 || gap > fontSize*0.35)return;
+
+    // 将前一个字符与整组末尾标点一起移动
     const range=document.createRange();
-    range.setStart(finalNode,i-1);range.setEnd(finalNode,i+1);
+    range.setStart(finalNode,clusterStart-1);
+    range.setEnd(finalNode,finalIndex+1);
+
     const pair=document.createElement('span');
     pair.className='line-end-pair';
     pair.style.whiteSpace='nowrap';
+
     try{
       pair.appendChild(range.extractContents());
       range.insertNode(pair);
+
       const br=document.createElement('br');
       br.className='line-end-break';
       pair.parentNode.insertBefore(br,pair);
     }catch(e){}
   });
 }
+
 let lineEndPunctuationFrame=0;
 function scheduleLineEndPunctuation(){
   cancelAnimationFrame(lineEndPunctuationFrame);
