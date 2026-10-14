@@ -419,7 +419,7 @@ function applyLineEndPunctuation(){
     const fontSize=parseFloat(getComputedStyle(host).fontSize)||18;
     // A wider tolerance accommodates different fonts, zoom levels and CJK
     // punctuation hanging slightly beyond the content edge.
-    if(gap < -fontSize*1.5 || gap > fontSize*2.5)return;
+    if(gap < -fontSize*1.5 || gap > fontSize*2.0)return;
 
     const range=document.createRange();
     range.setStart(finalNode,i-1);range.setEnd(finalNode,i+1);
