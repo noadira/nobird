@@ -455,7 +455,7 @@ function applyLineEndPunctuation(){
 
     // 仅在真正靠近右边界时触发
     // 容许轻微超出边界，但收窄边界内的触发范围
-    if(gap < -fontSize*0.3 || gap > fontSize*0.35)return;
+    if(gap < -fontSize*0.3 || gap > fontSize*1.35)return;
 
     // 将前一个字符与整组末尾标点一起移动
     const range=document.createRange();
