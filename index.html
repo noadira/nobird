@@ -346,11 +346,68 @@ function renderReader(){
       <div class="toolbar management-control"><button class="secondary" onclick="addChapter('${b.id}','${c.id}')">编辑本章</button><button class="secondary" onclick="editBook('${b.id}')">编辑作品</button></div>
     </div>
 `;
-  applyReaderPrefs();bindReaderKeys();
+  applyReaderPrefs();bindReaderKeys();scheduleLineEndPunctuation();
   const pageArea=document.querySelector('#readerView .chaptertext');if(pageArea){pageArea.addEventListener('scroll',updateChapterSwitchVisibility,{passive:true});requestAnimationFrame(updateChapterSwitchVisibility)}
   const rv=document.getElementById('readerView');
   rv.onclick=function(e){if(e.target.closest('button, input, textarea, select, a'))return;document.body.classList.toggle('nav-awake')};
 }
+
+function applyLineEndPunctuation(){
+  const root=document.querySelector('#readerView .chaptertext');
+  if(!root)return;
+  // Undo this feature's previous wrappers before measuring the current layout.
+  root.querySelectorAll('.line-end-pair').forEach(w=>{
+    const parent=w.parentNode;
+    while(w.firstChild)parent.insertBefore(w.firstChild,w);
+    parent.removeChild(w);
+  });
+  const punctuation=/[。！？；，、：）》」』】〕〉…％.!?;,:)\]}]/;
+  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{
+    acceptNode(node){
+      if(!node.nodeValue || !node.nodeValue.trim())return NodeFilter.FILTER_REJECT;
+      if(node.parentElement?.closest('button,.para-comments,.line-end-pair'))return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  const nodes=[];
+  while(walker.nextNode())nodes.push(walker.currentNode);
+  for(const node of nodes){
+    const text=node.nodeValue;
+    const candidates=[];
+    for(let i=1;i<text.length;i++){
+      if(!punctuation.test(text[i]))continue;
+      const prevRange=document.createRange(),punctRange=document.createRange();
+      prevRange.setStart(node,i-1);prevRange.setEnd(node,i);
+      punctRange.setStart(node,i);punctRange.setEnd(node,i+1);
+      const a=prevRange.getBoundingClientRect(),b=punctRange.getBoundingClientRect();
+      const host=node.parentElement?.closest('.para-text');
+      if(!host||!a.width||!b.width)continue;
+      const right=host.getBoundingClientRect().right;
+      // Only act when the punctuation is genuinely at the right edge,
+      // and the preceding character is on the same visual line.
+      if(Math.abs(a.top-b.top)<2 && right-b.right>=-0.5 && right-b.right<=2.5){
+        candidates.push(i);
+      }
+    }
+    // Work backwards so earlier text offsets remain valid.
+    for(const i of candidates.reverse()){
+      if(!node.isConnected||i>=node.nodeValue.length)continue;
+      const range=document.createRange();
+      range.setStart(node,i-1);range.setEnd(node,i+1);
+      const wrapper=document.createElement('span');
+      wrapper.className='line-end-pair';
+      wrapper.style.whiteSpace='nowrap';
+      try{wrapper.appendChild(range.extractContents());range.insertNode(wrapper)}catch(e){}
+    }
+  }
+}
+let lineEndPunctuationFrame=0;
+function scheduleLineEndPunctuation(){
+  cancelAnimationFrame(lineEndPunctuationFrame);
+  lineEndPunctuationFrame=requestAnimationFrame(()=>requestAnimationFrame(applyLineEndPunctuation));
+}
+window.addEventListener('resize',scheduleLineEndPunctuation);
+
 function toggleParaComments(paragraphId){const el=document.getElementById('comments-'+paragraphId);if(el)el.classList.toggle('hide')}
 function addParaComment(bid,cid,pid){const p=bookBy(bid).chapters.find(c=>c.id===cid).paragraphs.find(p=>p.id===pid);const text=prompt('写下这段的段评：');if(!text?.trim())return;const name=prompt('显示的读者昵称：','我')||'我';p.comments.push({name,text:text.trim()});save();renderReader()}
 function deleteParaComment(bid,cid,pid,j){const p=bookBy(bid).chapters.find(c=>c.id===cid).paragraphs.find(p=>p.id===pid);p.comments.splice(j,1);save();renderReader()}
