@@ -355,13 +355,17 @@ function renderReader(){
 function applyLineEndPunctuation(){
   const root=document.querySelector('#readerView .chaptertext');
   if(!root)return;
-  // Undo this feature's previous wrappers before measuring the current layout.
+
+  // Remove the previous pass before measuring the natural text layout.
+  root.querySelectorAll('br.line-end-break').forEach(br=>br.remove());
   root.querySelectorAll('.line-end-pair').forEach(w=>{
     const parent=w.parentNode;
     while(w.firstChild)parent.insertBefore(w.firstChild,w);
     parent.removeChild(w);
   });
-  const punctuation=/[。！？；，、：）》」』】〕〉…％.!?;,:)\]}]/;
+  root.normalize();
+
+  const punctuation=/[。！？；，、：）》」』】〕〉…％.!?;,:\)\]}]/;
   const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{
     acceptNode(node){
       if(!node.nodeValue || !node.nodeValue.trim())return NodeFilter.FILTER_REJECT;
@@ -371,33 +375,60 @@ function applyLineEndPunctuation(){
   });
   const nodes=[];
   while(walker.nextNode())nodes.push(walker.currentNode);
+
+  // Work from the end of each text node backwards so offsets remain valid.
   for(const node of nodes){
+    if(!node.isConnected)continue;
     const text=node.nodeValue;
-    const candidates=[];
+    const hits=[];
+    const host=node.parentElement?.closest('.para-text');
+    if(!host)continue;
+    const rootStyle=getComputedStyle(root);
+    const isPaged=document.body.classList.contains('cover-reader');
+    const colWidth=parseFloat(rootStyle.columnWidth);
+    const colGap=parseFloat(rootStyle.columnGap)||0;
+    const rootRect=root.getBoundingClientRect();
+    const padLeft=parseFloat(rootStyle.paddingLeft)||0;
+
     for(let i=1;i<text.length;i++){
-      if(!punctuation.test(text[i]))continue;
-      const prevRange=document.createRange(),punctRange=document.createRange();
-      prevRange.setStart(node,i-1);prevRange.setEnd(node,i);
-      punctRange.setStart(node,i);punctRange.setEnd(node,i+1);
-      const a=prevRange.getBoundingClientRect(),b=punctRange.getBoundingClientRect();
-      const host=node.parentElement?.closest('.para-text');
-      if(!host||!a.width||!b.width)continue;
-      const right=host.getBoundingClientRect().right;
-      // Only act when the punctuation is genuinely at the right edge,
-      // and the preceding character is on the same visual line.
-      if(Math.abs(a.top-b.top)<2 && right-b.right>=-0.5 && right-b.right<=2.5){
-        candidates.push(i);
+      if(!punctuation.test(text[i]) || /\s/.test(text[i-1]))continue;
+      const prev=document.createRange(), mark=document.createRange();
+      prev.setStart(node,i-1);prev.setEnd(node,i);
+      mark.setStart(node,i);mark.setEnd(node,i+1);
+      const a=prev.getBoundingClientRect(), b=mark.getBoundingClientRect();
+      if(!a.width||!b.width||Math.abs(a.top-b.top)>1.5)continue;
+
+      let right=host.getBoundingClientRect().right;
+      // In horizontal paging mode, measure the right edge of this text column,
+      // not the union of a paragraph's rectangles across multiple columns.
+      if(isPaged && Number.isFinite(colWidth) && colWidth>0){
+        const period=colWidth+colGap;
+        const local=b.left-(rootRect.left+padLeft);
+        const col=Math.floor(local/period);
+        right=rootRect.left+padLeft+col*period+colWidth;
       }
+      const gap=right-b.right;
+      const fontSize=parseFloat(getComputedStyle(host).fontSize)||18;
+      // Browsers may hang CJK closing punctuation outside the content edge.
+      // Allow both that negative overhang and a small positive gap; a fixed
+      // 5px window is too narrow for different fonts, zoom levels and glyphs.
+      if(gap>=-fontSize*0.8 && gap<=fontSize*0.8)hits.push(i);
     }
-    // Work backwards so earlier text offsets remain valid.
-    for(const i of candidates.reverse()){
-      if(!node.isConnected||i>=node.nodeValue.length)continue;
+
+    for(const i of hits.reverse()){
+      if(!node.isConnected || i>=node.nodeValue.length)continue;
       const range=document.createRange();
       range.setStart(node,i-1);range.setEnd(node,i+1);
-      const wrapper=document.createElement('span');
-      wrapper.className='line-end-pair';
-      wrapper.style.whiteSpace='nowrap';
-      try{wrapper.appendChild(range.extractContents());range.insertNode(wrapper)}catch(e){}
+      const pair=document.createElement('span');
+      pair.className='line-end-pair';
+      pair.style.whiteSpace='nowrap';
+      try{
+        pair.appendChild(range.extractContents());
+        range.insertNode(pair);
+        const br=document.createElement('br');
+        br.className='line-end-break';
+        pair.parentNode.insertBefore(br,pair);
+      }catch(e){}
     }
   }
 }
