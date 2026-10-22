@@ -788,7 +788,7 @@ function showSettings(){document.getElementById('settingsView').innerHTML=`<h1>�
   --ink: #292820;
   --accent: #d85c45;
 }"></textarea><div class="toolbar"><button type="button" onclick="saveGlobalThemeCSS()">保存并应用</button><button type="button" class="secondary" onclick="resetGlobalThemeCSS()">恢复默认</button></div><p class="muted">CSS 只在此浏览器中保存。若要移到另一台设备，请复制这段 CSS。</p></div>
-<div class="card"><h2 style="margin-top:0">导出整本小说</h2><p class="muted">选择要导出的小说。每本小说会保留卷名、章节编号与标题、正文、作者有话说，以及作者有话说中的图片。导出为一个 ZIP，图片会与对应小说一起保存。</p><div class="toolbar"><button type="button" onclick="openBookExportPicker()">选择小说并导出 ZIP</button></div></div>
+<div class="card"><h2 style="margin-top:0">按卷导出小说</h2><p class="muted">选择要导出的卷。每一卷会分别生成一个纯净 TXT 和一个含评论 TXT，保留章节、正文、作者有话说及图片；含评论版会在对应段落后保留段评，并在章节末保留章评。</p><div class="toolbar"><button type="button" onclick="openBookExportPicker()">选择卷并导出 ZIP</button></div></div>
 <div class="card"><h2 style="margin-top:0">本地数据</h2><p class="muted">当前保存 ${db.books.length} 本小说。内容保存在此浏览器的本地存储中，不会自动同步到云端。</p><div class="toolbar"><button onclick="exportDB()">导出备份 JSON</button><button class="secondary" onclick="document.getElementById('importFile').click()">导入备份</button></div><p class="muted">建议定期导出备份到「文件」App。导入备份会用备份内容替换当前书架，请先导出当前版本。</p></div><div class="card"><h2 style="margin-top:0">使用提示</h2><p class="muted">1. 建议在 Safari 中使用。<br>2. 通过 Safari 的分享菜单添加到主屏幕。<br>3. 清除 Safari 网站数据可能删除书库。<br>4. 本版是原型，不会自动上传或公开内容。</p></div><div class="card"><h2 style="margin-top:0">危险操作</h2><button class="secondary" onclick="if(confirm('确定清空所有书籍吗？请先备份。')){db={books:[]};save();showSettings()}">清空书架</button></div>`;const cssField=document.getElementById('globalThemeCSS');if(cssField)cssField.value=localStorage.getItem(GLOBAL_THEME_CSS_KEY)||DEFAULT_GLOBAL_THEME_CSS;show('settingsView')}
 
 function sanitizeExportName(name,fallback='未命名'){return String(name||fallback).replace(/[\\/:*?"<>|\u0000-\u001f]/g,'_').replace(/[. ]+$/g,'').trim()||fallback}
@@ -807,24 +807,41 @@ function exportTextForNote(note,images,bookName,chapterNo){
  }).join('');
  return {text,images:used};
 }
-function buildBookTxt(book){
- let out=[];out.push(book.title||'未命名小说');if(book.author)out.push(`作者：${book.author}`);out.push('');
- let currentVolume=null;
+function buildVolumeTxt(book,volumeName,includeComments){
+ let out=[];
+ out.push(volumeName||'未分卷','');
  const imageFiles=[];
- (book.chapters||[]).forEach((c,index)=>{
-  const volume=String(c.volume||'').trim()||'未分卷';
-  if(volume!==currentVolume){currentVolume=volume;out.push(`========== ${volume} ==========`,'');}
-  const no=c.chapterNumber??(index+1);out.push(`第${no}章　${c.title||'未命名章节'}`,'');
-  (c.paragraphs||[]).forEach(p=>{if(String(p.text||'').trim())out.push(String(p.text).trim(),'');});
+ const chapters=(book.chapters||[]).filter(c=>(String(c.volume||'').trim()||'未分卷')===volumeName);
+ chapters.forEach((c,index)=>{
+  const no=c.chapterNumber??(index+1);
+  out.push(`第${no}章　${c.title||'未命名章节'}`,'');
+  (c.paragraphs||[]).forEach((p,paragraphIndex)=>{
+   const text=String(p.text||'').trim();
+   if(!text)return;
+   out.push(text,'');
+   if(includeComments&&(p.comments||[]).length){
+    out.push(`【第${paragraphIndex+1}段段评】`,'');
+    (p.comments||[]).forEach((cm,j)=>{out.push(`${j+1}L`,String(cm.text||'').trim(),'');});
+   }
+  });
   if(String(c.note||'').trim()||((c.noteImages||[]).length)){
    out.push('【作者有话说】','');
    const note=exportTextForNote(c.note||'',c.noteImages||[],book.title,no);
    out.push(note.text.trimEnd(),'');
    note.images.forEach(img=>imageFiles.push(img));
   }
+  if(includeComments&&(c.comments||[]).length){
+   out.push('【章评】','');
+   (c.comments||[]).forEach((cm,j)=>{out.push(`${j+1}L`,String(cm.text||'').trim(),'');});
+  }
   out.push('');
  });
  return {text:out.join('\n').replace(/\n{4,}/g,'\n\n\n').trimEnd()+'\n',images:imageFiles};
+}
+function getBookVolumes(book){
+ const seen=new Set(),volumes=[];
+ (book.chapters||[]).forEach(c=>{const name=String(c.volume||'').trim()||'未分卷';if(!seen.has(name)){seen.add(name);volumes.push(name)}});
+ return volumes;
 }
 function dataUrlToBytes(dataUrl){const m=String(dataUrl||'').match(/^data:([^;]+);base64,(.*)$/s);if(!m)return null;const bin=atob(m[2]);const bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);return {mime:m[1],bytes}}
 function crc32(bytes){let c=0xffffffff;for(let i=0;i<bytes.length;i++){c^=bytes[i];for(let k=0;k<8;k++)c=(c>>>1)^((c&1)?0xedb88320:0)}return (c^0xffffffff)>>>0}
@@ -846,20 +863,34 @@ function openBookExportPicker(){
  if(!db.books.length){alert('当前书架没有小说可导出。');return}
  const old=document.getElementById('bookExportModal');if(old)old.remove();
  const modal=document.createElement('div');modal.id='bookExportModal';modal.className='export-modal';
- modal.innerHTML=`<div class="export-modal-card"><div class="export-modal-head"><h2>选择要导出的小说</h2><button type="button" class="secondary" onclick="closeBookExportPicker()">×</button></div><label class="export-select-all"><input id="exportSelectAll" type="checkbox" onchange="toggleAllBookExports(this.checked)"> 全选</label><div class="export-book-list">${db.books.map(b=>`<label class="export-book-item"><input class="export-book-check" type="checkbox" value="${esc(b.id)}"><span class="export-book-meta"><span class="export-book-title">${esc(b.title||'未命名小说')}</span><span class="export-book-sub">${b.chapters?.length||0} 章${b.author?`　·　${esc(b.author)}`:''}</span></span></label>`).join('')}</div><p class="muted">会生成一个 ZIP。每本小说一个文件夹，TXT 与作者有话说图片都放在里面。</p><div class="export-modal-actions"><button type="button" class="secondary" onclick="closeBookExportPicker()">取消</button><button type="button" onclick="exportSelectedBooksZip()">导出选中的小说</button></div></div>`;
+ modal.innerHTML=`<div class="export-modal-card"><div class="export-modal-head"><h2>选择要导出的卷</h2><button type="button" class="secondary" onclick="closeBookExportPicker()">×</button></div><label class="export-select-all"><input id="exportSelectAll" type="checkbox" onchange="toggleAllVolumeExports(this.checked)"> 全选所有卷</label><div class="export-book-list">${db.books.map(b=>{const vols=getBookVolumes(b);return `<div class="export-book-item export-book-group"><label><input class="export-book-check-all" type="checkbox" onchange="toggleBookVolumeExports('${esc(b.id)}',this.checked)"><span class="export-book-meta"><span class="export-book-title">${esc(b.title||'未命名小说')}</span><span class="export-book-sub">${vols.length} 卷</span></span></label><div class="export-volume-list">${vols.map(v=>`<label class="export-volume-item"><input class="export-volume-check" data-book-id="${esc(b.id)}" data-volume="${esc(v)}" type="checkbox"><span>${esc(v)}</span></label>`).join('')}</div></div>`}).join('')}</div><p class="muted">每一卷会分别生成一个纯净 TXT 和一个含评论 TXT。作者有话说中的图片会与对应卷一起保存。</p><div class="export-modal-actions"><button type="button" class="secondary" onclick="closeBookExportPicker()">取消</button><button type="button" onclick="exportSelectedVolumesZip()">导出选中的卷</button></div></div>`;
  modal.addEventListener('click',e=>{if(e.target===modal)closeBookExportPicker()});document.body.appendChild(modal);
 }
-function toggleAllBookExports(checked){document.querySelectorAll('#bookExportModal .export-book-check').forEach(x=>x.checked=checked)}
+function toggleAllVolumeExports(checked){document.querySelectorAll('#bookExportModal .export-volume-check').forEach(x=>x.checked=checked);document.querySelectorAll('#bookExportModal .export-book-check-all').forEach(x=>x.checked=checked)}
+function toggleBookVolumeExports(bookId,checked){document.querySelectorAll(`#bookExportModal .export-volume-check[data-book-id="${CSS.escape(bookId)}"]`).forEach(x=>x.checked=checked);updateExportSelectAllState()}
+function updateExportSelectAllState(){const all=[...document.querySelectorAll('#bookExportModal .export-volume-check')],checked=all.filter(x=>x.checked);const allBox=document.getElementById('exportSelectAll');if(allBox)allBox.checked=all.length>0&&checked.length===all.length;document.querySelectorAll('#bookExportModal .export-book-check-all').forEach(box=>{const bookId=box.closest('.export-book-group')?.querySelector('.export-volume-check')?.dataset.bookId;if(!bookId)return;const vols=[...document.querySelectorAll(`#bookExportModal .export-volume-check[data-book-id="${CSS.escape(bookId)}"]`)];box.checked=vols.length>0&&vols.every(x=>x.checked)})}
 function closeBookExportPicker(){document.getElementById('bookExportModal')?.remove()}
-function exportSelectedBooksZip(){
- const ids=[...document.querySelectorAll('#bookExportModal .export-book-check:checked')].map(x=>x.value);if(!ids.length){alert('请至少选择一本小说。');return}
- const files=[],usedNames=new Set();
- ids.map(id=>bookBy(id)).filter(Boolean).forEach(book=>{
-  const folder=sanitizeExportName(book.title||'未命名小说');let unique=folder,seq=2;while(usedNames.has(unique.toLowerCase()))unique=`${folder}_${seq++}`;usedNames.add(unique.toLowerCase());
-  const built=buildBookTxt(book);const txtBytes=new Uint8Array([0xef,0xbb,0xbf,...new TextEncoder().encode(built.text)]);files.push({name:`${unique}/${unique}.txt`,data:txtBytes});
-  built.images.forEach(img=>{const decoded=dataUrlToBytes(img.dataUrl);if(decoded)files.push({name:`${unique}/${img.path}`,data:decoded.bytes})});
+function exportSelectedVolumesZip(){
+ const selected=[...document.querySelectorAll('#bookExportModal .export-volume-check:checked')].map(x=>({bookId:x.dataset.bookId,volume:x.dataset.volume}));
+ if(!selected.length){alert('请至少选择一卷。');return}
+ const files=[],usedBookNames=new Map();
+ const grouped=new Map();
+ selected.forEach(item=>{if(!grouped.has(item.bookId))grouped.set(item.bookId,[]);grouped.get(item.bookId).push(item.volume)});
+ grouped.forEach((volumes,bookId)=>{
+  const book=bookBy(bookId);if(!book)return;
+  const base=sanitizeExportName(book.title||'未命名小说');let folder=base,seq=2;while(usedBookNames.has(folder.toLowerCase()))folder=`${base}_${seq++}`;usedBookNames.set(folder.toLowerCase(),true);
+  const usedVolumeNames=new Set();
+  volumes.forEach(volumeName=>{
+   const vb=sanitizeExportName(volumeName||'未分卷');let vf=vb,vseq=2;while(usedVolumeNames.has(vf.toLowerCase()))vf=`${vb}_${vseq++}`;usedVolumeNames.add(vf.toLowerCase());
+   const clean=buildVolumeTxt(book,volumeName,false),comments=buildVolumeTxt(book,volumeName,true);
+   const enc=new TextEncoder();
+   files.push({name:`${folder}/${vf}/${vf}.txt`,data:new Uint8Array([0xef,0xbb,0xbf,...enc.encode(clean.text)])});
+   files.push({name:`${folder}/${vf}/${vf}_含评论.txt`,data:new Uint8Array([0xef,0xbb,0xbf,...enc.encode(comments.text)])});
+   const images=clean.images.concat(comments.images.filter((img,i)=>!clean.images.some(x=>x.path===img.path)));
+   images.forEach(img=>{const decoded=dataUrlToBytes(img.dataUrl);if(decoded)files.push({name:`${folder}/${vf}/${img.path}`,data:decoded.bytes})});
+  });
  });
- try{const blob=zipStore(files);const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`小说导出_${new Date().toISOString().slice(0,10)}.zip`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);closeBookExportPicker()}catch(e){console.error(e);alert('导出失败：'+(e?.message||e))}
+ try{const blob=zipStore(files);const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`小说分卷导出_${new Date().toISOString().slice(0,10)}.zip`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);closeBookExportPicker()}catch(e){console.error(e);alert('导出失败：'+(e?.message||e))}
 }
 function updateReaderBackgroundColor(value){readerPrefs.bgColor=value;localStorage.setItem('private_tomato_reader_bg_color',value);applyReaderPrefs()}
 function updateReaderBackgroundImage(input){const file=input.files&&input.files[0];if(!file)return;if(file.size>8*1024*1024){alert('图片请尽量选择 8MB 以内的文件。');input.value='';return}const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas'),m=1400,sc=Math.min(1,m/Math.max(im.width,im.height));c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext('2d').drawImage(im,0,0,c.width,c.height);readerPrefs.bgImage=c.toDataURL('image/jpeg',.78);localStorage.setItem('private_tomato_reader_bg_image',readerPrefs.bgImage);applyReaderPrefs()};im.src=r.result};r.readAsDataURL(file)}
