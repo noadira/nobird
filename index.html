@@ -23,7 +23,7 @@ h1{font-size:24px;margin:8px 0} h2{font-size:18px;margin:20px 0 12px} p{line-hei
 input,textarea,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:11px;background:#fffefa;color:var(--ink);margin:5px 0 12px;outline-color:var(--accent)}
 textarea{min-height:90px;resize:vertical;max-width:100%}#editorView{padding-bottom:calc(100px + env(safe-area-inset-bottom))}#editorView button{margin-bottom:8px}#settingsView,#detailView,#readerView{padding-bottom:calc(90px + env(safe-area-inset-bottom))}.label{font-size:12px;color:var(--muted);display:block}
 .hide{display:none!important}.coverbig{height:160px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:52px;background:linear-gradient(135deg,#e6c9b6,#f5e7d3);margin-bottom:15px}
-#readerView{background:var(--reader-bg-color,#f7f5f0);background-image:var(--reader-bg-image,none);background-size:cover;background-position:center;background-attachment:fixed}.chaptertext{font-family:"Songti SC",STSong,serif;font-size:18px;line-height:2.05;letter-spacing:.2px;white-space:normal}.para{margin:0 0 18px}.para-tools{display:flex;justify-content:flex-end;gap:6px;margin-top:-8px;margin-bottom:15px}.comment{background:#f3eee6;border-radius:12px;padding:10px 12px;margin:8px 0;font-size:13px;line-height:1.7}.comment-floor{display:block;font-size:.72em;line-height:1.2;color:#bdb8ad;opacity:.72;margin-bottom:3px}.comment-body{display:block}.para-comments .comment-floor{display:inline;font-size:.72em;line-height:1;color:#bdb8ad;opacity:.72;margin:0 .45em 0 0}.para-comments .comment-body{display:inline}.comment strong{color:#a45d4b}.authornote{border-left:3px solid var(--accent);padding:10px 13px;background:#f7eee8;border-radius:0 12px 12px 0;line-height:1.8;margin:22px 0}.authornote-image{display:block;max-width:100%;height:auto;max-height:360px;object-fit:contain;border-radius:9px;margin:12px auto;cursor:zoom-in}.image-lightbox{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding:18px;cursor:zoom-out}.image-lightbox img{display:block;max-width:100%;max-height:100%;object-fit:contain;border-radius:4px}.image-lightbox button{position:absolute;top:calc(env(safe-area-inset-top) + 12px);right:14px;border-radius:50%;width:42px;height:42px;font-size:24px;padding:0;background:rgba(255,255,255,.2)}
+#readerView{background:var(--reader-bg-color,#f7f5f0);background-image:var(--reader-bg-image,none);background-size:cover;background-position:center;background-attachment:fixed}.chaptertext{font-family:"Songti SC",STSong,serif;font-size:18px;line-height:2.05;letter-spacing:.2px;white-space:normal}.para{margin:0 0 18px}.para-tools{display:flex;justify-content:flex-end;gap:6px;margin-top:-8px;margin-bottom:15px}.comment{background:#f3eee6;border-radius:12px;padding:8px 10px;margin:5px 0;font-size:13px;line-height:1.6}.comment-floor{display:block;font-size:.72em;line-height:1.2;color:#bdb8ad;opacity:.75;margin-bottom:2px}.comment-body{display:block}.para-comments .comment-floor{display:inline;font-size:.72em;line-height:1;color:#bdb8ad;opacity:.75;margin:0 .45em 0 0}.para-comments .comment-body{display:inline}.comment strong{color:#a45d4b}.authornote{border-left:3px solid var(--accent);padding:10px 13px;background:#f7eee8;border-radius:0 12px 12px 0;line-height:1.8;margin:22px 0}.authornote-image{display:block;max-width:100%;height:auto;max-height:360px;object-fit:contain;border-radius:9px;margin:12px auto;cursor:zoom-in}.image-lightbox{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding:18px;cursor:zoom-out}.image-lightbox img{display:block;max-width:100%;max-height:100%;object-fit:contain;border-radius:4px}.image-lightbox button{position:absolute;top:calc(env(safe-area-inset-top) + 12px);right:14px;border-radius:50%;width:42px;height:42px;font-size:24px;padding:0;background:rgba(255,255,255,.2)}
 .volume-group{background:rgba(255,254,250,.65);border-radius:14px;margin:12px 0;overflow:hidden}.volume-group summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:17px 16px;font-weight:700;color:var(--accent);cursor:pointer}.volume-group summary::-webkit-details-marker{display:none}.volume-group[open] summary{border-bottom:1px solid var(--line)}.volume-chapters{padding:2px 10px}.volume-chapters .card{margin:10px 0}.chapter-item-title{min-width:0;overflow-wrap:anywhere}
 .chapter-switch{display:flex;justify-content:space-between;gap:12px;margin:18px 0 30px;padding:0}
 .chapter-switch button{flex:1;min-height:44px}
@@ -71,9 +71,22 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}.empty{text-align:cen
   opacity: 1;
   color: #6e7867;
 }
-.chaptertext .para-comments { margin: .4em 0 .2em; padding: .65em .8em; border-radius: 10px; background: #eee9df; font-size: .88em; }
-.chaptertext .para-comments .comment { margin: 0 0 .45em; }
-.chaptertext .para-comments .secondary { margin-top: .3em; }
+.chaptertext .para-comments { margin: .08em 0 .03em; padding: .20em .38em; border-radius: 7px; background: #eee9df; font-size: .88em; }
+.chaptertext .para-comments .comment { margin: 0; }
+.reader-extra .comment-floor{display:inline;font-size:.72em;line-height:1;color:rgba(70,68,64,.75);opacity:1;margin:0 .45em 0 0}
+.reader-extra .comment .comment-floor{display:inline;font-size:.72em;line-height:1;color:rgba(70,68,64,.75);opacity:1;margin:0 .45em 0 0}
+.reader-extra .comment-reply-prefix .comment-floor{display:inline;font-size:.72em;line-height:1;color:rgba(70,68,64,.75);opacity:1;margin:0}
+.chaptertext .para-comments .secondary { margin-top: .08em; }
+.chaptertext .para-comments .comment-reply,.reader-extra .comment-reply{margin-left:.8em;padding-left:0;border-left:0;margin-top:-1px;margin-bottom:-3px}
+.comment-actions{display:inline-flex;gap:6px;margin-left:6px}
+.comment-actions button{font-size:.9em}
+.comment-floor{color:rgba(70,68,64,.75);opacity:1}
+.comment-reply-label,.comment-actions button{opacity:.42}
+.comment-text{color:#000;opacity:1}
+.comment-reply-prefix{color:rgba(70,68,64,.85);opacity:1}
+.comment-reply-prefix .comment-floor{display:inline;font-size:.72em;line-height:1;color:rgba(70,68,64,.75);opacity:1;margin:0}
+.chaptertext .para-comments .comment-reply,.reader-extra .comment-reply{margin-left:.65em;padding-left:0;border-left:0;margin-top:-3px;margin-bottom:-4px}
+.reader-extra .comment-floor,.reader-extra .comment-body,.reader-extra .comment-text,.reader-extra .comment-reply-prefix{display:inline}
 
 
 body.read-mode .management-control { display: none !important; }
@@ -108,6 +121,33 @@ body.keyboard-open #chapterBodyInput{min-height:120px;height:30vh}
 
 
 .export-book-list{display:flex;flex-direction:column;gap:8px;margin:10px 0 14px}.export-book-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:#fffefa}.export-book-item input{width:auto;margin:0;flex:none}.export-book-item .export-book-meta{min-width:0;flex:1}.export-book-item .export-book-title{font-weight:700;overflow-wrap:anywhere}.export-book-item .export-book-sub{font-size:12px;color:var(--muted);margin-top:2px}.export-modal{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.38);display:flex;align-items:flex-end;justify-content:center;padding:14px}.export-modal-card{width:min(720px,100%);max-height:min(82dvh,720px);overflow:auto;background:var(--paper);border-radius:18px;padding:18px;box-shadow:0 16px 50px rgba(0,0,0,.2)}.export-modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.export-modal-head h2{margin:0}.export-select-all{display:flex;align-items:center;gap:8px;margin:14px 0 8px;font-size:13px}.export-select-all input{width:auto;margin:0}.export-modal-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:14px}.export-modal-actions button{margin:0}
+</style>
+
+<style id="comment-unified-opacity-fix">
+/* 评论楼层与“回复”统一为同一色值与 82% 透明度；正文保持纯黑 */
+.comment-floor,
+.comment-reply-prefix,
+.comment-reply-prefix .comment-floor,
+.reader-extra .comment-floor,
+.reader-extra .comment-reply-prefix {
+  color: rgba(70,68,64,.75) !important;
+  opacity: 1 !important;
+}
+.comment-text,
+.comment-body {
+  color: #111 !important;
+}
+</style>
+<style id="comment-opacity-final">
+/* 评论编号与回复文字再减淡一档：70% */
+.comment-floor,
+.comment-reply-prefix,
+.comment-reply-prefix .comment-floor,
+.reader-extra .comment-floor,
+.reader-extra .comment-reply-prefix {
+  color: rgba(70,68,64,.55) !important;
+  opacity: 1 !important;
+}
 </style>
 </head>
 <body>
@@ -333,7 +373,7 @@ function renderReader(){
           ? `<button class="bubble-button inline-bubble" aria-label="查看段评 ${p.comments.length} 条" title="查看段评" onclick="toggleParaComments('${p.id}')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14a2.5 2.5 0 0 1 2.5 2.5v8a2.5 2.5 0 0 1-2.5 2.5h-8l-5 3v-3A2.5 2.5 0 0 1 3.5 15V7A2.5 2.5 0 0 1 5 4.5Z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg><span>${p.comments.length}</span></button>`
           : `<button class="add-comment-link" onclick="addParaComment('${b.id}','${c.id}','${p.id}')" aria-label="添加段评" title="添加段评">＋</button>`
         }</div>
-        ${p.comments.length ? `<div class="para-comments hide" id="comments-${p.id}">${p.comments.map((cm,j)=>`<div class="comment"><span class="comment-floor">#${j+1}</span><span class="comment-body">${esc(cm.text)} <button class="ghost management-control" onclick="deleteParaComment('${b.id}','${c.id}','${p.id}',${j})">删除</button></span></div>`).join('')}<button class="secondary management-control" onclick="addParaComment('${b.id}','${c.id}','${p.id}')">＋ 添加段评</button></div>` : ''}
+        ${p.comments.length ? `<div class="para-comments hide" id="comments-${p.id}">${p.comments.map((cm,j)=>`<div class="comment"><span class="comment-floor">#${j+1}</span><span class="comment-body"><span class="comment-text">${esc(cm.text)}</span> <span class="comment-actions"><button class="ghost management-control" onclick="addParaCommentReply('${b.id}','${c.id}','${p.id}',${j})">回复</button><button class="ghost management-control" onclick="deleteParaComment('${b.id}','${c.id}','${p.id}',${j})">删除</button></span></span>${(cm.replies||[]).map((rp,k)=>{const raw=String(rp.text||'');const m=raw.match(/^回复(##?\d+)\s*(?:.*?：)?\s*(.*)$/s);const targetLevel=rp.replyLevel||((m&&m[1].startsWith('##'))?'reply':'top');const targetNo=rp.replyTo||(m?Number(m[1].replace(/^##?/,'')):j+1);const targetLabel=targetLevel==='top'?`#${targetNo}`:`##${targetNo}`;const body=m?m[2]:raw;return `<div class="comment comment-reply"><span class="comment-floor">##${k+1}</span> <span class="comment-reply-prefix">回复 <span class="comment-floor">${targetLabel}</span></span> <span class="comment-text">${esc(body.replace(/^回复##?\d+\s*/,'').replace(/^.*?：/,'').trim())}</span> <span class="comment-actions"><button class="ghost management-control" onclick="addParaCommentReply('${b.id}','${c.id}','${p.id}',${j},${k})">回复</button><button class="ghost management-control" onclick="deleteParaCommentReply('${b.id}','${c.id}','${p.id}',${j},${k})">删除</button></span></div>`}).join('')}</div>`).join('')}<button class="secondary management-control" onclick="addParaComment('${b.id}','${c.id}','${p.id}')">＋ 添加段评</button></div>` : ''}
       </div>`).join('')||'<p class="muted">本章还没有正文。可通过编辑章节添加。</p>'}</div>
     <div class="chapter-end-matter">
       ${c.note?`<div class="authornote"><b>作者有话说</b><br>${renderAuthorNote(c.note,c.noteImages||[])}</div>`:''}
@@ -342,7 +382,7 @@ function renderReader(){
         <button class="secondary" ${idx===b.chapters.length-1?'disabled':''} onclick="switchChapter(1)">下一章 ›</button>
       </div>
       <div class="reader-extra"><hr><h2>本章评论区</h2>
-      ${(c.comments||[]).map((cm,j)=>`<div class="comment"><span class="comment-floor">#${j+1}</span><span class="comment-body">${esc(cm.text)} <button class="ghost management-control" onclick="deleteChapterComment('${b.id}','${c.id}',${j})">删除</button></span></div>`).join('')}
+      ${(c.comments||[]).map((cm,j)=>`<div class="comment"><span class="comment-floor">#${j+1}</span> <span class="comment-text">${esc(cm.text)}</span> <span class="comment-actions"><button class="ghost management-control" onclick="addChapterCommentReply('${b.id}','${c.id}',${j})">回复</button><button class="ghost management-control" onclick="deleteChapterComment('${b.id}','${c.id}',${j})">删除</button></span>${(cm.replies||[]).map((rp,k)=>{const raw=String(rp.text||'');const m=raw.match(/^回复(##?\d+)\s*(?:.*?：)?\s*(.*)$/s);const targetLevel=rp.replyLevel||((m&&m[1].startsWith('##'))?'reply':'top');const targetNo=rp.replyTo||(m?Number(m[1].replace(/^##?/,'')):j+1);const targetLabel=targetLevel==='top'?`#${targetNo}`:`##${targetNo}`;const body=m?m[2]:raw;return `<div class="comment comment-reply"><span class="comment-floor">##${k+1}</span> <span class="comment-reply-prefix">回复 <span class="comment-floor">${targetLabel}</span></span> <span class="comment-text">${esc(body.replace(/^回复##?\d+\s*/,'').replace(/^.*?：/,'').trim())}</span> <span class="comment-actions"><button class="ghost management-control" onclick="addChapterCommentReply('${b.id}','${c.id}',${j},${k})">回复</button><button class="ghost management-control" onclick="deleteChapterCommentReply('${b.id}','${c.id}',${j},${k})">删除</button></span></div>`}).join('')}</div>`).join('')}
       <button class="secondary management-control" onclick="addChapterComment('${b.id}','${c.id}')">＋ 模拟读者评论</button></div>
       <div class="toolbar management-control"><button class="secondary" onclick="addChapter('${b.id}','${c.id}')">编辑本章</button><button class="secondary" onclick="editBook('${b.id}')">编辑作品</button></div>
     </div>
@@ -438,10 +478,14 @@ function scheduleLineEndPunctuation(){
 window.addEventListener('resize',scheduleLineEndPunctuation);
 
 function toggleParaComments(paragraphId){const el=document.getElementById('comments-'+paragraphId);if(el)el.classList.toggle('hide')}
-function addParaComment(bid,cid,pid){const p=bookBy(bid).chapters.find(c=>c.id===cid).paragraphs.find(p=>p.id===pid);const text=prompt('写下这段的段评：');if(!text?.trim())return;p.comments=p.comments||[];p.comments.push({text:text.trim()});save();renderReader()}
+function addParaComment(bid,cid,pid){const p=bookBy(bid).chapters.find(c=>c.id===cid).paragraphs.find(p=>p.id===pid);const text=prompt('写下这段的段评：');if(!text?.trim())return;p.comments=p.comments||[];p.comments.push({text:text.trim(),replies:[]});save();renderReader()}
+function addParaCommentReply(bid,cid,pid,j,k){const p=bookBy(bid).chapters.find(c=>c.id===cid).paragraphs.find(p=>p.id===pid);const cm=p.comments?.[j];if(!cm)return;const targetNo=k==null?(j+1):(k+1);const targetLevel=k==null?'top':'reply';const targetLabel=targetLevel==='top'?`#${targetNo}`:`##${targetNo}`;const text=prompt(`回复 ${targetLabel}`);if(!text?.trim())return;cm.replies=cm.replies||[];cm.replies.push({text:text.trim(),replyTo:targetNo,replyLevel:targetLevel});save();renderReader()}
 function deleteParaComment(bid,cid,pid,j){const p=bookBy(bid).chapters.find(c=>c.id===cid).paragraphs.find(p=>p.id===pid);p.comments.splice(j,1);save();renderReader()}
-function addChapterComment(bid,cid){const c=bookBy(bid).chapters.find(c=>c.id===cid);const text=prompt('写下本章的章评：');if(!text?.trim())return;c.comments=c.comments||[];c.comments.push({text:text.trim()});save();renderReader()}
+function deleteParaCommentReply(bid,cid,pid,j,k){const p=bookBy(bid).chapters.find(c=>c.id===cid).paragraphs.find(p=>p.id===pid);const cm=p.comments?.[j];if(!cm?.replies)return;cm.replies.splice(k,1);save();renderReader()}
+function addChapterComment(bid,cid){const c=bookBy(bid).chapters.find(c=>c.id===cid);const text=prompt('写下本章的章评：');if(!text?.trim())return;c.comments=c.comments||[];c.comments.push({text:text.trim(),replies:[]});save();renderReader()}
+function addChapterCommentReply(bid,cid,j,k){const c=bookBy(bid).chapters.find(c=>c.id===cid);const cm=c.comments?.[j];if(!cm)return;const targetNo=k==null?(j+1):(k+1);const targetLevel=k==null?'top':'reply';const targetLabel=targetLevel==='top'?`#${targetNo}`:`##${targetNo}`;const text=prompt(`回复 ${targetLabel}`);if(!text?.trim())return;cm.replies=cm.replies||[];cm.replies.push({text:text.trim(),replyTo:targetNo,replyLevel:targetLevel});save();renderReader()}
 function deleteChapterComment(bid,cid,j){const c=bookBy(bid).chapters.find(c=>c.id===cid);c.comments.splice(j,1);save();renderReader()}
+function deleteChapterCommentReply(bid,cid,j,k){const c=bookBy(bid).chapters.find(c=>c.id===cid);const cm=c.comments?.[j];if(!cm?.replies)return;cm.replies.splice(k,1);save();renderReader()}
 const DEFAULT_GLOBAL_THEME_CSS=String.raw`/* ==================== 全局主题 CSS：颜色 ==================== */
 :root{
   /* 页面总背景色 */
@@ -634,7 +678,7 @@ input,textarea,select{
   /* 评论圆角 */
   border-radius:12px;
   /* 评论内部间距 */
-  padding:10px 12px;
+  padding:7px 10px;
   /* 评论文字颜色 */
   color:var(--ink);
   /* 评论文字大小 */
@@ -646,7 +690,7 @@ input,textarea,select{
   /* 楼层颜色 */
   color:#bdb8ad;
   /* 楼层透明度 */
-  opacity:.72;
+  opacity:.75;
 }
 .chaptertext .para-comments{
   /* 段评区域背景 */
@@ -654,7 +698,7 @@ input,textarea,select{
   /* 段评区域圆角 */
   border-radius:10px;
   /* 段评区域内部间距 */
-  padding:.65em .8em;
+  padding:.35em .55em;
 }
 
 /* ==================== 作者有话说 ==================== */
@@ -819,7 +863,7 @@ function buildVolumeTxt(book,volumeName,includeComments){
    out.push(text,'');
    if(includeComments&&(p.comments||[]).length){
     out.push(`【第${paragraphIndex+1}段段评】`,'');
-    (p.comments||[]).forEach((cm,j)=>{out.push(`#${j+1}`,String(cm.text||'').trim(),'');});
+    (p.comments||[]).forEach((cm,j)=>{out.push(`#${j+1}`,String(cm.text||'').trim(),'');(cm.replies||[]).forEach((rp,k)=>{out.push(`##${k+1}`,String(rp.text||'').trim(),'');});});
    }
   });
   if(String(c.note||'').trim()||((c.noteImages||[]).length)){
@@ -830,7 +874,7 @@ function buildVolumeTxt(book,volumeName,includeComments){
   }
   if(includeComments&&(c.comments||[]).length){
    out.push('【章评】','');
-   (c.comments||[]).forEach((cm,j)=>{out.push(`#${j+1}`,String(cm.text||'').trim(),'');});
+   (c.comments||[]).forEach((cm,j)=>{out.push(`#${j+1}`,String(cm.text||'').trim(),'');(cm.replies||[]).forEach((rp,k)=>{out.push(`##${k+1}`,String(rp.text||'').trim(),'');});});
   }
   out.push('');
  });
