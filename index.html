@@ -111,7 +111,7 @@ body.keyboard-open #chapterBodyInput{min-height:120px;height:30vh}
 </style>
 </head>
 <body>
-<header id="appHeader"><div class="brand"><div class="brand-titleline"><span class="brand-emoji" id="brandEmoji">📖</span><span class="brand-title" id="brandTitle">自定义标题</span></div><small id="brandSubtitle">自定义文本</small></div><div class="header-actions"><button class="secondary" id="exportTop">备份</button><button class="ghost" id="hideHeaderBtn" type="button" aria-label="隐藏顶部表头" title="隐藏顶部表头">收起</button></div></header>
+<header id="appHeader"><div class="brand"><div class="brand-titleline"><span class="brand-emoji" id="brandEmoji">📖</span><span class="brand-title" id="brandTitle">自定义标题</span></div><small id="brandSubtitle">自定义文本</small></div><div class="header-actions"><button class="ghost" id="hideHeaderBtn" type="button" aria-label="隐藏顶部表头" title="隐藏顶部表头">收起</button></div></header>
 <button class="header-reveal secondary hide" id="showHeaderBtn" type="button" aria-label="显示表头" title="显示表头">☰</button>
 <main>
 <section id="homeView">
@@ -778,7 +778,7 @@ function showSettings(){document.getElementById('settingsView').innerHTML=`<h1>�
 <div class="setting-control"><label class="label" for="headerEmojiChoice">Emoji</label><input id="headerEmojiChoice" type="text" maxlength="12" value="${esc(brandPrefs.emoji)}" placeholder="例如：📖" onchange="updateBrandPref('emoji',this.value)"></div>
 <div class="setting-control"><label class="label" for="headerTitleChoice">标题</label><input id="headerTitleChoice" type="text" maxlength="40" value="${esc(brandPrefs.title)}" placeholder="输入标题" onchange="updateBrandPref('title',this.value)"></div>
 <div class="setting-control"><label class="label" for="headerSubtitleChoice">副标题</label><input id="headerSubtitleChoice" type="text" maxlength="80" value="${esc(brandPrefs.subtitle)}" placeholder="输入副标题" onchange="updateBrandPref('subtitle',this.value)"></div>
-<p class="muted">顶部的「备份」和「收起」按钮不受标题设置影响。收起表头后，点击屏幕上方的 ☰ 图标即可重新打开。</p></div>
+<p class="muted">顶部的「收起」按钮不受标题设置影响。收起表头后，点击屏幕上方的 ☰ 图标即可重新打开。</p></div>
 <div class="card"><h2 style="margin-top:0">全局主题 CSS</h2><p class="muted">在这里填写自定义 CSS，可以调整全站颜色、间距、圆角、字体大小等外观。保存后立即生效，并保存在当前浏览器本地。只影响界面样式，不会修改小说正文或数据。建议先备份；CSS 写错可能影响页面显示，可点击「恢复默认」撤销。</p><label class="label" for="globalThemeCSS">自定义 CSS</label><textarea id="globalThemeCSS" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="例如：
 :root {
   --bg: #f7f5f0;
@@ -897,7 +897,7 @@ function updateReaderPrefLive(key,value){if(key==='size'){readerPrefs.size=Numbe
 
 function exportDB(){const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='自定义标题备份.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 function importDB(file){const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.books))throw 0;if(!confirm('导入将替换当前书架，确定继续吗？'))return;db=d;save();show('homeView');alert('导入成功')}catch(e){alert('文件格式不正确，无法导入')}};r.readAsText(file)}
-document.getElementById('newBookBtn').onclick=()=>editBook(null);document.getElementById('exportTop').onclick=exportDB;document.getElementById('importFile').onchange=e=>{if(e.target.files[0])importDB(e.target.files[0]);e.target.value=''};
+document.getElementById('newBookBtn').onclick=()=>editBook(null);document.getElementById('importFile').onchange=e=>{if(e.target.files[0])importDB(e.target.files[0]);e.target.value=''};
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{filter=b.dataset.filter;document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x===b));renderHome()});
 sizeMainArea();
 document.querySelectorAll('.bottomnav button').forEach(b=>b.onclick=()=>{if(b.dataset.view==='settingsView'){showSettings();return}if(b.dataset.action==='directory'){if(currentBook)openDetail(currentBook);else alert('先从书架选择一本小说，进入后这里就会打开它的目录。')}else if(b.dataset.view==='editorView')editBook(null);else if(b.dataset.view==='settingsView')showSettings();else show('homeView')});
