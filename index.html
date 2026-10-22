@@ -23,7 +23,7 @@ h1{font-size:24px;margin:8px 0} h2{font-size:18px;margin:20px 0 12px} p{line-hei
 input,textarea,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:11px;background:#fffefa;color:var(--ink);margin:5px 0 12px;outline-color:var(--accent)}
 textarea{min-height:90px;resize:vertical;max-width:100%}#editorView{padding-bottom:calc(100px + env(safe-area-inset-bottom))}#editorView button{margin-bottom:8px}#settingsView,#detailView,#readerView{padding-bottom:calc(90px + env(safe-area-inset-bottom))}.label{font-size:12px;color:var(--muted);display:block}
 .hide{display:none!important}.coverbig{height:160px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:52px;background:linear-gradient(135deg,#e6c9b6,#f5e7d3);margin-bottom:15px}
-#readerView{background:var(--reader-bg-color,#f7f5f0);background-image:var(--reader-bg-image,none);background-size:cover;background-position:center;background-attachment:fixed}.chaptertext{font-family:"Songti SC",STSong,serif;font-size:18px;line-height:2.05;letter-spacing:.3px;white-space:normal}.para{margin:0 0 18px}.para-tools{display:flex;justify-content:flex-end;gap:6px;margin-top:-8px;margin-bottom:15px}.comment{background:#f3eee6;border-radius:12px;padding:10px 12px;margin:8px 0;font-size:13px;line-height:1.7}.comment strong{color:#a45d4b}.authornote{border-left:3px solid var(--accent);padding:10px 13px;background:#f7eee8;border-radius:0 12px 12px 0;line-height:1.8;margin:22px 0}.authornote-image{display:block;max-width:100%;height:auto;max-height:360px;object-fit:contain;border-radius:9px;margin:12px auto;cursor:zoom-in}.image-lightbox{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding:18px;cursor:zoom-out}.image-lightbox img{display:block;max-width:100%;max-height:100%;object-fit:contain;border-radius:4px}.image-lightbox button{position:absolute;top:calc(env(safe-area-inset-top) + 12px);right:14px;border-radius:50%;width:42px;height:42px;font-size:24px;padding:0;background:rgba(255,255,255,.2)}
+#readerView{background:var(--reader-bg-color,#f7f5f0);background-image:var(--reader-bg-image,none);background-size:cover;background-position:center;background-attachment:fixed}.chaptertext{font-family:"Songti SC",STSong,serif;font-size:18px;line-height:2.05;letter-spacing:.2px;white-space:normal}.para{margin:0 0 18px}.para-tools{display:flex;justify-content:flex-end;gap:6px;margin-top:-8px;margin-bottom:15px}.comment{background:#f3eee6;border-radius:12px;padding:10px 12px;margin:8px 0;font-size:13px;line-height:1.7}.comment-floor{display:block;font-size:.72em;line-height:1.2;color:#bdb8ad;opacity:.72;margin-bottom:3px}.comment-body{display:block}.para-comments .comment-floor{display:inline;font-size:.72em;line-height:1;color:#bdb8ad;opacity:.72;margin:0 .45em 0 0}.para-comments .comment-body{display:inline}.comment strong{color:#a45d4b}.authornote{border-left:3px solid var(--accent);padding:10px 13px;background:#f7eee8;border-radius:0 12px 12px 0;line-height:1.8;margin:22px 0}.authornote-image{display:block;max-width:100%;height:auto;max-height:360px;object-fit:contain;border-radius:9px;margin:12px auto;cursor:zoom-in}.image-lightbox{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding:18px;cursor:zoom-out}.image-lightbox img{display:block;max-width:100%;max-height:100%;object-fit:contain;border-radius:4px}.image-lightbox button{position:absolute;top:calc(env(safe-area-inset-top) + 12px);right:14px;border-radius:50%;width:42px;height:42px;font-size:24px;padding:0;background:rgba(255,255,255,.2)}
 .volume-group{background:rgba(255,254,250,.65);border-radius:14px;margin:12px 0;overflow:hidden}.volume-group summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:17px 16px;font-weight:700;color:var(--accent);cursor:pointer}.volume-group summary::-webkit-details-marker{display:none}.volume-group[open] summary{border-bottom:1px solid var(--line)}.volume-chapters{padding:2px 10px}.volume-chapters .card{margin:10px 0}.chapter-item-title{min-width:0;overflow-wrap:anywhere}
 .chapter-switch{display:flex;justify-content:space-between;gap:12px;margin:18px 0 30px;padding:0}
 .chapter-switch button{flex:1;min-height:44px}
@@ -34,7 +34,7 @@ textarea{min-height:90px;resize:vertical;max-width:100%}#editorView{padding-bott
 hr{border:0;border-top:1px solid var(--line);margin:18px 0}.empty{text-align:center;color:var(--muted);padding:36px 10px}
 @media(min-width:600px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
-/* Reader polish: inline comment bubbles; paragraph comment text stays collapsed */
+
 .chaptertext .para {
   margin: 0 0 .82em;
   padding: 0;
@@ -75,23 +75,23 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}.empty{text-align:cen
 .chaptertext .para-comments .comment { margin: 0 0 .45em; }
 .chaptertext .para-comments .secondary { margin-top: .3em; }
 
-/* Reading mode keeps the text clean while preserving tiny paragraph-comment entry points. */
+
 body.read-mode .management-control { display: none !important; }
 body.read-mode .chaptertext .add-comment-link { opacity: .22; color: #bdb8ad; font-size: .62em; padding: 0 1px; vertical-align: baseline; }
-/* Chapter comments remain visible in reading mode; management buttons are hidden individually. */
+
 .mode-switch { display:flex; gap:8px; margin:12px 0; }
 .mode-switch button { flex:1; }
 .mode-switch button.selected { outline:2px solid var(--accent); outline-offset:2px; }
 
 
-/* Reader preferences and horizontal cover-style paging */
+
 body{--reader-font:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;--reader-size:18px;--reader-line:1.95}
 #readerView{background:var(--reader-bg-color,#f7f5f0);background-image:var(--reader-bg-image,none);background-size:cover;background-position:center;background-attachment:fixed}.chaptertext{font-family:var(--reader-font);font-size:var(--reader-size);line-height:var(--reader-line);}
 .chaptertext .para-text{line-height:inherit}
 .reader-pager{margin:12px 0 16px;display:flex;align-items:center;justify-content:space-between;gap:8px}
 .reader-pager button{padding:8px 12px}
 .reader-pager .page-count{font-size:12px;color:var(--muted);white-space:nowrap}
-#readerView .chaptertext{height:auto;min-height:0;overflow:visible;overflow-x:visible;overflow-y:visible;column-width:auto;column-count:auto;column-gap:normal;column-fill:initial;scroll-snap-type:none;overscroll-behavior:auto;padding:0 12px 12px}
+#readerView .chaptertext{height:auto;min-height:0;overflow:visible;overflow-x:visible;overflow-y:visible;column-width:auto;column-count:auto;column-gap:normal;column-fill:initial;scroll-snap-type:none;overscroll-behavior:auto;padding:0 12px 10px}
 #readerView .chapter-end-matter{display:block}
 .setting-control{margin:10px 0 16px}
 .setting-control select{margin-bottom:3px}
@@ -105,6 +105,9 @@ body.keyboard-open #globalThemeCSS{min-height:110px;height:24vh;max-height:180px
 body.keyboard-open #chapterBodyInput{min-height:120px;height:30vh}
 
 
+
+
+.export-book-list{display:flex;flex-direction:column;gap:8px;margin:10px 0 14px}.export-book-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:#fffefa}.export-book-item input{width:auto;margin:0;flex:none}.export-book-item .export-book-meta{min-width:0;flex:1}.export-book-item .export-book-title{font-weight:700;overflow-wrap:anywhere}.export-book-item .export-book-sub{font-size:12px;color:var(--muted);margin-top:2px}.export-modal{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.38);display:flex;align-items:flex-end;justify-content:center;padding:14px}.export-modal-card{width:min(720px,100%);max-height:min(82dvh,720px);overflow:auto;background:var(--paper);border-radius:18px;padding:18px;box-shadow:0 16px 50px rgba(0,0,0,.2)}.export-modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.export-modal-head h2{margin:0}.export-select-all{display:flex;align-items:center;gap:8px;margin:14px 0 8px;font-size:13px}.export-select-all input{width:auto;margin:0}.export-modal-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:14px}.export-modal-actions button{margin:0}
 </style>
 </head>
 <body>
@@ -123,7 +126,7 @@ body.keyboard-open #chapterBodyInput{min-height:120px;height:30vh}
 <section id="settingsView" class="hide"></section>
 </main>
 <nav class="bottomnav">
-<button class="active" data-view="homeView"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10.5 12 3.8l8.5 6.7"/><path d="M5.5 9.5v10h13v-10M9.5 19.5v-6h5v6"/></svg><span>书架</span></button><button data-action="directory"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14v15H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span>目录</span></button><button data-view="editorView" class="management-control"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m4 16.8-.8 4 4-.8L19 8.2 15.8 5 4 16.8Z"/><path d="m13.8 7 3.2 3.2M4 21h16"/></svg><span>写作</span></button><button data-view="settingsView"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/><path d="M19.1 13.4a7.4 7.4 0 0 0 0-2.8l1.6-1.2-1.8-3.1-1.9.8a7.7 7.7 0 0 0-2.4-1.4L14.3 3h-4.6l-.3 2.7A7.7 7.7 0 0 0 7 7.1l-1.9-.8-1.8 3.1 1.6 1.2a7.4 7.4 0 0 0 0 2.8l-1.6 1.2 1.8 3.1 1.9-.8a7.7 7.7 0 0 0 2.4 1.4l.3 2.7h4.6l.3-2.7a7.7 7.7 0 0 0 2.4-1.4l1.9.8 1.8-3.1-1.6-1.2Z"/></svg><span>设置</span></button>
+<button class="active" data-view="homeView"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10.5 12 3.8l8.5 6.7"/><path d="M5.5 9.5v10h13v-10M9.5 19.5v-6h5v6"/></svg><span>书架</span></button><button data-action="directory"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14v15H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span>目录</span></button><button data-view="settingsView"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/><path d="M19.1 13.4a7.4 7.4 0 0 0 0-2.8l1.6-1.2-1.8-3.1-1.9.8a7.7 7.7 0 0 0-2.4-1.4L14.3 3h-4.6l-.3 2.7A7.7 7.7 0 0 0 7 7.1l-1.9-.8-1.8 3.1 1.6 1.2a7.4 7.4 0 0 0 0 2.8l-1.6 1.2 1.8 3.1 1.9-.8a7.7 7.7 0 0 0 2.4 1.4l.3 2.7h4.6l.3-2.7a7.7 7.7 0 0 0 2.4-1.4l1.9.8 1.8-3.1-1.6-1.2Z"/></svg><span>设置</span></button>
 </nav>
 <input type="file" id="importFile" accept="application/json" class="hide">
 <script>
@@ -178,7 +181,6 @@ function loadDB(){try{return JSON.parse(localStorage.getItem(KEY))||{books:[]}}c
 function save(){localStorage.setItem(KEY,JSON.stringify(db));renderHome()}
 function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function forceSettingsTop(){
-  // Keep scrolling inside <main>; never scroll the Safari page itself.
   const main=document.querySelector('main');
   if(main)main.scrollTop=0;
 }
@@ -302,7 +304,6 @@ function saveChapterForm(bookId,chapterId){
  const noteImages=Array.isArray(window.pendingAuthorNoteImages)?window.pendingAuthorNoteImages.slice():[];
  const volume=document.getElementById('chapterVolumeInput').value.trim();
  if(!title){alert('请先填写章节标题');return}
- // Empty line(s) split paragraphs; normalize Windows and Mac line endings first.
  const normalized=raw.replace(/\r\n?/g,'\n');
  const texts=normalized.split(/\n[\t \u3000]*\n+/).map(s=>s.trim()).filter(Boolean);
  const paras=texts.map((text,i)=>({id:old?.paragraphs[i]?.id||uid(),text,comments:old?.paragraphs[i]?.comments||[]}));
@@ -332,7 +333,7 @@ function renderReader(){
           ? `<button class="bubble-button inline-bubble" aria-label="查看段评 ${p.comments.length} 条" title="查看段评" onclick="toggleParaComments('${p.id}')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14a2.5 2.5 0 0 1 2.5 2.5v8a2.5 2.5 0 0 1-2.5 2.5h-8l-5 3v-3A2.5 2.5 0 0 1 3.5 15V7A2.5 2.5 0 0 1 5 4.5Z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg><span>${p.comments.length}</span></button>`
           : `<button class="add-comment-link" onclick="addParaComment('${b.id}','${c.id}','${p.id}')" aria-label="添加段评" title="添加段评">＋</button>`
         }</div>
-        ${p.comments.length ? `<div class="para-comments hide" id="comments-${p.id}">${p.comments.map((cm,j)=>`<div class="comment"><strong>${esc(cm.name||'读者')}</strong>：${esc(cm.text)} <button class="ghost management-control" onclick="deleteParaComment('${b.id}','${c.id}','${p.id}',${j})">删除</button></div>`).join('')}<button class="secondary management-control" onclick="addParaComment('${b.id}','${c.id}','${p.id}')">＋ 添加段评</button></div>` : ''}
+        ${p.comments.length ? `<div class="para-comments hide" id="comments-${p.id}">${p.comments.map((cm,j)=>`<div class="comment"><span class="comment-floor">${j+1}L</span><span class="comment-body">${esc(cm.text)} <button class="ghost management-control" onclick="deleteParaComment('${b.id}','${c.id}','${p.id}',${j})">删除</button></span></div>`).join('')}<button class="secondary management-control" onclick="addParaComment('${b.id}','${c.id}','${p.id}')">＋ 添加段评</button></div>` : ''}
       </div>`).join('')||'<p class="muted">本章还没有正文。可通过编辑章节添加。</p>'}</div>
     <div class="chapter-end-matter">
       ${c.note?`<div class="authornote"><b>作者有话说</b><br>${renderAuthorNote(c.note,c.noteImages||[])}</div>`:''}
@@ -341,7 +342,7 @@ function renderReader(){
         <button class="secondary" ${idx===b.chapters.length-1?'disabled':''} onclick="switchChapter(1)">下一章 ›</button>
       </div>
       <div class="reader-extra"><hr><h2>本章评论区</h2>
-      ${(c.comments||[]).map((cm,j)=>`<div class="comment"><strong>${esc(cm.name||'读者')}</strong>：${esc(cm.text)} <button class="ghost management-control" onclick="deleteChapterComment('${b.id}','${c.id}',${j})">删除</button></div>`).join('')}
+      ${(c.comments||[]).map((cm,j)=>`<div class="comment"><span class="comment-floor">${j+1}L</span><span class="comment-body">${esc(cm.text)} <button class="ghost management-control" onclick="deleteChapterComment('${b.id}','${c.id}',${j})">删除</button></span></div>`).join('')}
       <button class="secondary management-control" onclick="addChapterComment('${b.id}','${c.id}')">＋ 模拟读者评论</button></div>
       <div class="toolbar management-control"><button class="secondary" onclick="addChapter('${b.id}','${c.id}')">编辑本章</button><button class="secondary" onclick="editBook('${b.id}')">编辑作品</button></div>
     </div>
@@ -352,12 +353,9 @@ function renderReader(){
   rv.onclick=function(e){if(e.target.closest('button, input, textarea, select, a'))return;document.body.classList.toggle('nav-awake')};
 }
 
-
 function applyLineEndPunctuation(){
   const root=document.querySelector('#readerView .chaptertext');
   if(!root)return;
-
-  // 清除上一次的处理，恢复原始排版
   root.querySelectorAll('br.line-end-break').forEach(br=>br.remove());
   root.querySelectorAll('.line-end-pair').forEach(w=>{
     const parent=w.parentNode;
@@ -366,9 +364,7 @@ function applyLineEndPunctuation(){
   });
   root.normalize();
 
-  // 支持中文标点、英文标点和中英文引号
-  const punctuation=/[。！？；，、：）》」』】〕〉…％.!?;,:)\]}“”‘’「」『』《》〈〉]/;
-
+  const punctuation=/[。！？；，、：）》」』】〕〉…％.!?;,：:\)\]}]/;
   const rootStyle=getComputedStyle(root);
   const isPaged=document.body.classList.contains('cover-reader');
   const colWidth=parseFloat(rootStyle.columnWidth);
@@ -379,82 +375,34 @@ function applyLineEndPunctuation(){
   root.querySelectorAll('.para-text').forEach(host=>{
     const walker=document.createTreeWalker(host,NodeFilter.SHOW_TEXT,{
       acceptNode(node){
-        if(!node.nodeValue || !node.nodeValue.trim()){
-          return NodeFilter.FILTER_REJECT;
-        }
-        if(node.parentElement?.closest(
-          'button,.para-comments,.line-end-pair'
-        )){
-          return NodeFilter.FILTER_REJECT;
-        }
+        if(!node.nodeValue || !node.nodeValue.trim())return NodeFilter.FILTER_REJECT;
+        if(node.parentElement?.closest('button,.para-comments,.line-end-pair'))return NodeFilter.FILTER_REJECT;
         return NodeFilter.FILTER_ACCEPT;
       }
     });
-
     const nodes=[];
     while(walker.nextNode())nodes.push(walker.currentNode);
     if(!nodes.length)return;
 
-    // 将文段文字展开成字符序列，允许连续标点跨文本节点
-    const chars=[];
-    for(const node of nodes){
-      const value=node.nodeValue;
-      for(let i=0;i<value.length;i++){
-        chars.push({
-          node,
-          index:i,
-          char:value[i]
-        });
+    let finalNode=null, finalIndex=-1;
+    for(let n=nodes.length-1;n>=0;n--){
+      const value=nodes[n].nodeValue;
+      for(let i=value.length-1;i>=0;i--){
+        if(!/\s/.test(value[i])){finalNode=nodes[n];finalIndex=i;break;}
       }
+      if(finalNode)break;
     }
+    if(!finalNode || finalIndex<1)return;
+    const text=finalNode.nodeValue;
+    const i=finalIndex;
+    if(!punctuation.test(text[i]) || /\s/.test(text[i-1]))return;
 
-    // 找到文段最后一个非空白字符
-    let end=chars.length-1;
-    while(end>=0 && /\s/.test(chars[end].char))end--;
-    if(end<1)return;
+    const prev=document.createRange(), mark=document.createRange();
+    prev.setStart(finalNode,i-1);prev.setEnd(finalNode,i);
+    mark.setStart(finalNode,i);mark.setEnd(finalNode,i+1);
+    const a=prev.getBoundingClientRect(), b=mark.getBoundingClientRect();
+    if(!a.width||!b.width||Math.abs(a.top-b.top)>1.5)return;
 
-    // 最后一个有效字符必须是标点
-    if(!punctuation.test(chars[end].char))return;
-
-    // 向前收集整组连续末尾标点
-    let clusterStart=end;
-    while(
-      clusterStart>0 &&
-      punctuation.test(chars[clusterStart-1].char)
-    ){
-      clusterStart--;
-    }
-
-    // 标点前至少保留一个非空白字符
-    const prevIndex=clusterStart-1;
-    if(prevIndex<0 || /\s/.test(chars[prevIndex].char))return;
-
-    const startNode=chars[prevIndex].node;
-    const startOffset=chars[prevIndex].index;
-    const endNode=chars[end].node;
-    const endOffset=chars[end].index+1;
-
-    // 测量末尾整组标点的位置
-    const mark=document.createRange();
-    mark.setStart(chars[clusterStart].node,chars[clusterStart].index);
-    mark.setEnd(endNode,endOffset);
-
-    const rects=Array.from(mark.getClientRects()).filter(
-      r=>r.width>0 && r.height>0
-    );
-    if(!rects.length)return;
-
-    const b=rects[rects.length-1];
-
-    // 前一个字符必须与末尾标点处于同一视觉行
-    const prev=document.createRange();
-    prev.setStart(startNode,startOffset);
-    prev.setEnd(startNode,startOffset+1);
-
-    const a=prev.getBoundingClientRect();
-    if(!a.width || Math.abs(a.top-b.top)>1.5)return;
-
-    // 获取当前文本列的右边界
     let right=host.getBoundingClientRect().right;
 
     if(isPaged && Number.isFinite(colWidth) && colWidth>0){
@@ -463,35 +411,25 @@ function applyLineEndPunctuation(){
       const col=Math.floor(local/period);
       right=rootRect.left+padLeft+col*period+colWidth;
     }
-
     const gap=right-b.right;
-    const fontSize=parseFloat(
-      getComputedStyle(host).fontSize
-    )||18;
+    const fontSize=parseFloat(getComputedStyle(host).fontSize)||18;
 
-    // 扩大触发范围，同时允许标点略微超出右边界
-    if(gap < -fontSize*0.8 || gap > fontSize*1.2)return;
+    if(gap < -fontSize*1.2 || gap > fontSize*1.5)return;
 
-    // 将前一个字符与整组末尾标点一起移动到下一行
     const range=document.createRange();
-    range.setStart(startNode,startOffset);
-    range.setEnd(endNode,endOffset);
-
+    range.setStart(finalNode,i-1);range.setEnd(finalNode,i+1);
     const pair=document.createElement('span');
     pair.className='line-end-pair';
     pair.style.whiteSpace='nowrap';
-
     try{
       pair.appendChild(range.extractContents());
       range.insertNode(pair);
-
       const br=document.createElement('br');
       br.className='line-end-break';
       pair.parentNode.insertBefore(br,pair);
     }catch(e){}
   });
 }
-
 let lineEndPunctuationFrame=0;
 function scheduleLineEndPunctuation(){
   cancelAnimationFrame(lineEndPunctuationFrame);
@@ -500,14 +438,337 @@ function scheduleLineEndPunctuation(){
 window.addEventListener('resize',scheduleLineEndPunctuation);
 
 function toggleParaComments(paragraphId){const el=document.getElementById('comments-'+paragraphId);if(el)el.classList.toggle('hide')}
-function addParaComment(bid,cid,pid){const p=bookBy(bid).chapters.find(c=>c.id===cid).paragraphs.find(p=>p.id===pid);const text=prompt('写下这段的段评：');if(!text?.trim())return;const name=prompt('显示的读者昵称：','我')||'我';p.comments.push({name,text:text.trim()});save();renderReader()}
+function addParaComment(bid,cid,pid){const p=bookBy(bid).chapters.find(c=>c.id===cid).paragraphs.find(p=>p.id===pid);const text=prompt('写下这段的段评：');if(!text?.trim())return;p.comments=p.comments||[];p.comments.push({text:text.trim()});save();renderReader()}
 function deleteParaComment(bid,cid,pid,j){const p=bookBy(bid).chapters.find(c=>c.id===cid).paragraphs.find(p=>p.id===pid);p.comments.splice(j,1);save();renderReader()}
-function addChapterComment(bid,cid){const c=bookBy(bid).chapters.find(c=>c.id===cid);const text=prompt('模拟读者评论：');if(!text?.trim())return;const name=prompt('读者昵称：','读者A')||'读者';c.comments=c.comments||[];c.comments.push({name,text:text.trim()});save();renderReader()}
+function addChapterComment(bid,cid){const c=bookBy(bid).chapters.find(c=>c.id===cid);const text=prompt('写下本章的章评：');if(!text?.trim())return;c.comments=c.comments||[];c.comments.push({text:text.trim()});save();renderReader()}
 function deleteChapterComment(bid,cid,j){const c=bookBy(bid).chapters.find(c=>c.id===cid);c.comments.splice(j,1);save();renderReader()}
+const DEFAULT_GLOBAL_THEME_CSS=String.raw`/* ==================== 全局主题 CSS：颜色 ==================== */
+:root{
+  /* 页面总背景色 */
+  --bg:#f7f5f0;
+  /* 卡片、输入框、阅读纸张的基础背景色 */
+  --paper:#fffefa;
+  /* 全局主要文字颜色 */
+  --ink:#292820;
+  /* 次要文字、提示文字颜色 */
+  --muted:#89877d;
+  /* 主按钮、选中状态、强调色 */
+  --accent:#d85c45;
+  /* 分割线、卡片边框颜色 */
+  --line:#e8e4da;
+  /* 柔和的辅助背景色 */
+  --soft:#f2e8df;
+}
+
+/* ==================== 全局字体 ==================== */
+body{
+  /* 全站默认字体 */
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;
+  /* 全站文字颜色 */
+  color:var(--ink);
+  /* 全站页面背景 */
+  background:var(--bg);
+}
+
+/* ==================== 按钮 ==================== */
+button{
+  /* 普通按钮背景 */
+  background:var(--accent);
+  /* 普通按钮文字 */
+  color:#fff;
+  /* 所有按钮圆角 */
+  border-radius:12px;
+  /* 按钮内部上下、左右间距 */
+  padding:10px 13px;
+}
+button.secondary{
+  /* 次级按钮背景 */
+  background:#eee9df;
+  /* 次级按钮文字 */
+  color:#4a473f;
+}
+button.ghost{
+  /* 透明按钮背景 */
+  background:transparent;
+  /* 透明按钮文字 */
+  color:var(--muted);
+}
+
+/* ==================== 顶部表头 ==================== */
+header{
+  /* 表头背景 */
+  background:rgba(247,245,240,.95);
+  /* 表头上下、左右间距 */
+  padding:calc(env(safe-area-inset-top) + 10px) 16px 10px;
+  /* 表头下边框 */
+  border-bottom:1px solid var(--line);
+}
+.brand{
+  /* 标题字号 */
+  font-size:19px;
+  /* 标题字重 */
+  font-weight:800;
+}
+.brand small{
+  /* 副标题颜色 */
+  color:var(--muted);
+  /* 副标题字号 */
+  font-size:10px;
+}
+
+/* ==================== 页面内容区 ==================== */
+main{
+  /* 首页与编辑页的左右内边距 */
+  padding-left:15px;
+  padding-right:15px;
+}
+h1{
+  /* 一级标题字号 */
+  font-size:24px;
+}
+h2{
+  /* 二级标题字号 */
+  font-size:18px;
+}
+
+/* ==================== 标签页按钮 ==================== */
+.tabs button{
+  /* 未选中的标签背景 */
+  background:#ece8df;
+  /* 未选中的标签文字 */
+  color:#6f6b61;
+}
+.tabs button.active{
+  /* 当前选中标签背景 */
+  background:var(--accent);
+  /* 当前选中标签文字 */
+  color:#fff;
+}
+
+/* ==================== 书籍卡片与普通卡片 ==================== */
+.book,.card{
+  /* 卡片背景 */
+  background:var(--paper);
+  /* 卡片边框 */
+  border-color:var(--line);
+  /* 卡片圆角 */
+  border-radius:16px;
+}
+.card{
+  /* 卡片内部间距 */
+  padding:15px;
+}
+.bookbody{
+  /* 书籍信息内部间距 */
+  padding:10px 12px;
+}
+.booktitle{
+  /* 书名颜色 */
+  color:var(--ink);
+}
+.bookdesc,.bookmeta,.muted{
+  /* 次要信息颜色 */
+  color:var(--muted);
+}
+
+/* ==================== 封面 ==================== */
+.cover,.coverbig{
+  /* 默认封面背景 */
+  background:linear-gradient(135deg,#e6c9b6,#f5e7d3);
+  /* 封面圆角 */
+  border-radius:16px;
+}
+.cover{
+  /* 封面上的默认图标颜色 */
+  color:#875f4f;
+}
+
+/* ==================== 输入框 ==================== */
+input,textarea,select{
+  /* 输入框背景 */
+  background:#fffefa;
+  /* 输入框文字 */
+  color:var(--ink);
+  /* 输入框边框 */
+  border-color:var(--line);
+  /* 输入框圆角 */
+  border-radius:11px;
+  /* 输入框内部间距 */
+  padding:12px;
+  /* 输入框之间的上下间距 */
+  margin-top:5px;
+  margin-bottom:12px;
+}
+
+/* ==================== 阅读区 ==================== */
+#readerView{
+  /* 阅读页面背景色 */
+  background:var(--reader-bg-color,#f7f5f0);
+}
+.chaptertext{
+  /* 阅读正文字体 */
+  font-family:var(--reader-font,"Songti SC",STSong,serif);
+  /* 阅读正文颜色 */
+  color:var(--ink);
+  /* 阅读正文大小 */
+  font-size:var(--reader-size,18px);
+  /* 阅读正文行距 */
+  line-height:var(--reader-line,1.95);
+  /* 阅读正文字符间距 */
+  letter-spacing:.2px;
+}
+#readerView .chaptertext{
+  /* 阅读正文左右页边距 */
+  padding-left:12px;
+  padding-right:12px;
+  /* 阅读正文底部留白 */
+  padding-bottom:10px;
+}
+.chaptertext .para{
+  /* 正文段落之间的距离 */
+  margin-bottom:.82em;
+}
+
+/* ==================== 段评与章评 ==================== */
+.comment{
+  /* 评论背景 */
+  background:#f3eee6;
+  /* 评论圆角 */
+  border-radius:12px;
+  /* 评论内部间距 */
+  padding:10px 12px;
+  /* 评论文字颜色 */
+  color:var(--ink);
+  /* 评论文字大小 */
+  font-size:13px;
+}
+.comment-floor{
+  /* 楼层字号 */
+  font-size:.72em;
+  /* 楼层颜色 */
+  color:#bdb8ad;
+  /* 楼层透明度 */
+  opacity:.72;
+}
+.chaptertext .para-comments{
+  /* 段评区域背景 */
+  background:#eee9df;
+  /* 段评区域圆角 */
+  border-radius:10px;
+  /* 段评区域内部间距 */
+  padding:.65em .8em;
+}
+
+/* ==================== 作者有话说 ==================== */
+.authornote{
+  /* 作者有话说背景 */
+  background:#f7eee8;
+  /* 左侧强调线颜色 */
+  border-left-color:var(--accent);
+  /* 作者有话说圆角 */
+  border-radius:0 12px 12px 0;
+  /* 作者有话说内部间距 */
+  padding:10px 13px;
+}
+
+/* ==================== 分卷与目录 ==================== */
+.volume-group{
+  /* 分卷背景 */
+  background:rgba(255,254,250,.65);
+  /* 分卷圆角 */
+  border-radius:14px;
+}
+.volume-group summary{
+  /* 分卷标题颜色 */
+  color:var(--accent);
+  /* 分卷标题内部间距 */
+  padding:17px 16px;
+}
+.volume-group[open] summary{
+  /* 展开后的分隔线 */
+  border-bottom-color:var(--line);
+}
+
+/* ==================== 底部导航 ==================== */
+.bottomnav{
+  /* 导航背景 */
+  background:rgba(255,254,250,.96);
+  /* 导航上边框 */
+  border-top-color:var(--line);
+  /* 导航上下间距 */
+  padding-top:9px;
+  padding-bottom:calc(env(safe-area-inset-bottom) + 8px);
+}
+.bottomnav button{
+  /* 未选中导航文字 */
+  color:#777368;
+}
+.bottomnav button.active{
+  /* 当前导航文字 */
+  color:var(--accent);
+}
+
+/* ==================== 提示框、分割线、空状态 ==================== */
+.notice{
+  /* 提示框背景 */
+  background:#fff4dd;
+  /* 提示框文字 */
+  color:#7c5c2c;
+  /* 提示框圆角 */
+  border-radius:12px;
+  /* 提示框内部间距 */
+  padding:12px;
+}
+hr{
+  /* 分割线颜色 */
+  border-top-color:var(--line);
+}
+.empty{
+  /* 空状态文字颜色 */
+  color:var(--muted);
+}
+
+/* ==================== 阅读器评论按钮 ==================== */
+.chaptertext .bubble-button{
+  /* 段评气泡颜色 */
+  color:#77796f;
+}
+.chaptertext .add-comment-link{
+  /* 添加段评按钮颜色 */
+  color:#99958a;
+}
+.chaptertext .add-comment-link:hover,
+.chaptertext .add-comment-link:focus{
+  /* 鼠标经过添加段评按钮时的颜色 */
+  color:#6e7867;
+}
+
+/* ==================== 弹窗与导出窗口 ==================== */
+.export-modal{
+  /* 弹窗遮罩颜色 */
+  background:rgba(0,0,0,.38);
+}
+.export-modal-card{
+  /* 弹窗背景 */
+  background:var(--paper);
+  /* 弹窗圆角 */
+  border-radius:18px;
+}
+.export-book-item{
+  /* 导出列表项背景 */
+  background:#fffefa;
+  /* 导出列表项边框 */
+  border-color:var(--line);
+  /* 导出列表项圆角 */
+  border-radius:11px;
+}
+`;
+
 const GLOBAL_THEME_CSS_KEY='private_tomato_global_theme_css';
-function applyGlobalThemeCSS(){let node=document.getElementById('userGlobalThemeCSS');if(!node){node=document.createElement('style');node.id='userGlobalThemeCSS';document.head.appendChild(node)}node.textContent=localStorage.getItem(GLOBAL_THEME_CSS_KEY)||''}
+
+function applyGlobalThemeCSS(){let node=document.getElementById('userGlobalThemeCSS');if(!node){node=document.createElement('style');node.id='userGlobalThemeCSS';document.head.appendChild(node)}node.textContent=localStorage.getItem(GLOBAL_THEME_CSS_KEY)||DEFAULT_GLOBAL_THEME_CSS}
 function saveGlobalThemeCSS(){const field=document.getElementById('globalThemeCSS');if(!field)return;const css=field.value;try{localStorage.setItem(GLOBAL_THEME_CSS_KEY,css);applyGlobalThemeCSS();alert('全局主题 CSS 已保存并应用。')}catch(e){alert('保存失败，可能是浏览器本地存储空间不足。')}}
-function resetGlobalThemeCSS(){if(!confirm('确定清除自定义 CSS 并恢复默认主题吗？'))return;localStorage.removeItem(GLOBAL_THEME_CSS_KEY);applyGlobalThemeCSS();const field=document.getElementById('globalThemeCSS');if(field)field.value='';alert('已恢复默认主题。')}
+function resetGlobalThemeCSS(){if(!confirm('确定清除自定义 CSS 并恢复默认主题吗？'))return;localStorage.removeItem(GLOBAL_THEME_CSS_KEY);applyGlobalThemeCSS();const field=document.getElementById('globalThemeCSS');if(field)field.value=DEFAULT_GLOBAL_THEME_CSS;alert('已恢复默认主题。')}
 function showSettings(){document.getElementById('settingsView').innerHTML=`<h1>设置与数据</h1><div class="card"><h2 style="margin-top:0">阅读设置</h2>
 <p class="muted">阅读方式：上下滚动</p>
 
@@ -526,7 +787,80 @@ function showSettings(){document.getElementById('settingsView').innerHTML=`<h1>�
   --paper: #fffefa;
   --ink: #292820;
   --accent: #d85c45;
-}"></textarea><div class="toolbar"><button type="button" onclick="saveGlobalThemeCSS()">保存并应用</button><button type="button" class="secondary" onclick="resetGlobalThemeCSS()">恢复默认</button></div><p class="muted">CSS 只在此浏览器中保存。若要移到另一台设备，请复制这段 CSS。</p></div><div class="card"><h2 style="margin-top:0">本地数据</h2><p class="muted">当前保存 ${db.books.length} 本小说。内容保存在此浏览器的本地存储中，不会自动同步到云端。</p><div class="toolbar"><button onclick="exportDB()">导出备份 JSON</button><button class="secondary" onclick="document.getElementById('importFile').click()">导入备份</button></div><p class="muted">建议定期导出备份到「文件」App。导入备份会用备份内容替换当前书架，请先导出当前版本。</p></div><div class="card"><h2 style="margin-top:0">使用提示</h2><p class="muted">1. 建议在 Safari 中使用。<br>2. 通过 Safari 的分享菜单添加到主屏幕。<br>3. 清除 Safari 网站数据可能删除书库。<br>4. 本版是原型，不会自动上传或公开内容。</p></div><div class="card"><h2 style="margin-top:0">危险操作</h2><button class="secondary" onclick="if(confirm('确定清空所有书籍吗？请先备份。')){db={books:[]};save();showSettings()}">清空书架</button></div>`;const cssField=document.getElementById('globalThemeCSS');if(cssField)cssField.value=localStorage.getItem(GLOBAL_THEME_CSS_KEY)||'';show('settingsView')}
+}"></textarea><div class="toolbar"><button type="button" onclick="saveGlobalThemeCSS()">保存并应用</button><button type="button" class="secondary" onclick="resetGlobalThemeCSS()">恢复默认</button></div><p class="muted">CSS 只在此浏览器中保存。若要移到另一台设备，请复制这段 CSS。</p></div>
+<div class="card"><h2 style="margin-top:0">导出整本小说</h2><p class="muted">选择要导出的小说。每本小说会保留卷名、章节编号与标题、正文、作者有话说，以及作者有话说中的图片。导出为一个 ZIP，图片会与对应小说一起保存。</p><div class="toolbar"><button type="button" onclick="openBookExportPicker()">选择小说并导出 ZIP</button></div></div>
+<div class="card"><h2 style="margin-top:0">本地数据</h2><p class="muted">当前保存 ${db.books.length} 本小说。内容保存在此浏览器的本地存储中，不会自动同步到云端。</p><div class="toolbar"><button onclick="exportDB()">导出备份 JSON</button><button class="secondary" onclick="document.getElementById('importFile').click()">导入备份</button></div><p class="muted">建议定期导出备份到「文件」App。导入备份会用备份内容替换当前书架，请先导出当前版本。</p></div><div class="card"><h2 style="margin-top:0">使用提示</h2><p class="muted">1. 建议在 Safari 中使用。<br>2. 通过 Safari 的分享菜单添加到主屏幕。<br>3. 清除 Safari 网站数据可能删除书库。<br>4. 本版是原型，不会自动上传或公开内容。</p></div><div class="card"><h2 style="margin-top:0">危险操作</h2><button class="secondary" onclick="if(confirm('确定清空所有书籍吗？请先备份。')){db={books:[]};save();showSettings()}">清空书架</button></div>`;const cssField=document.getElementById('globalThemeCSS');if(cssField)cssField.value=localStorage.getItem(GLOBAL_THEME_CSS_KEY)||DEFAULT_GLOBAL_THEME_CSS;show('settingsView')}
+
+function sanitizeExportName(name,fallback='未命名'){return String(name||fallback).replace(/[\\/:*?"<>|\u0000-\u001f]/g,'_').replace(/[. ]+$/g,'').trim()||fallback}
+function exportTextForNote(note,images,bookName,chapterNo){
+ const used=[];let imageCounter=0;
+ const text=String(note||'').split(/(\[\[NOTE_IMAGE:\d+\]\])/g).map(part=>{
+  const m=part.match(/^\[\[NOTE_IMAGE:(\d+)\]\]$/);
+  if(!m)return part;
+  const idx=Number(m[1]),src=images&&images[idx];
+  if(!src)return '';
+  const ext=(src.match(/^data:image\/([a-zA-Z0-9.+-]+);/)||[])[1]||'jpeg';
+  const safeExt=ext.toLowerCase().replace(/[^a-z0-9]/g,'')||'jpeg';
+  const imageName=`images/${String(++imageCounter).padStart(3,'0')}.${safeExt==='jpg'?'jpeg':safeExt}`;
+  used.push({path:imageName,dataUrl:src});
+  return `\n【图片：${imageName}】\n`;
+ }).join('');
+ return {text,images:used};
+}
+function buildBookTxt(book){
+ let out=[];out.push(book.title||'未命名小说');if(book.author)out.push(`作者：${book.author}`);out.push('');
+ let currentVolume=null;
+ const imageFiles=[];
+ (book.chapters||[]).forEach((c,index)=>{
+  const volume=String(c.volume||'').trim()||'未分卷';
+  if(volume!==currentVolume){currentVolume=volume;out.push(`========== ${volume} ==========`,'');}
+  const no=c.chapterNumber??(index+1);out.push(`第${no}章　${c.title||'未命名章节'}`,'');
+  (c.paragraphs||[]).forEach(p=>{if(String(p.text||'').trim())out.push(String(p.text).trim(),'');});
+  if(String(c.note||'').trim()||((c.noteImages||[]).length)){
+   out.push('【作者有话说】','');
+   const note=exportTextForNote(c.note||'',c.noteImages||[],book.title,no);
+   out.push(note.text.trimEnd(),'');
+   note.images.forEach(img=>imageFiles.push(img));
+  }
+  out.push('');
+ });
+ return {text:out.join('\n').replace(/\n{4,}/g,'\n\n\n').trimEnd()+'\n',images:imageFiles};
+}
+function dataUrlToBytes(dataUrl){const m=String(dataUrl||'').match(/^data:([^;]+);base64,(.*)$/s);if(!m)return null;const bin=atob(m[2]);const bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);return {mime:m[1],bytes}}
+function crc32(bytes){let c=0xffffffff;for(let i=0;i<bytes.length;i++){c^=bytes[i];for(let k=0;k<8;k++)c=(c>>>1)^((c&1)?0xedb88320:0)}return (c^0xffffffff)>>>0}
+function u16(v){return new Uint8Array([v&255,(v>>>8)&255])}
+function u32(v){return new Uint8Array([v&255,(v>>>8)&255,(v>>>16)&255,(v>>>24)&255])}
+function concatBytes(parts){let n=0;parts.forEach(p=>n+=p.length);const out=new Uint8Array(n);let o=0;parts.forEach(p=>{out.set(p,o);o+=p.length});return out}
+function zipStore(files){
+ const encoder=new TextEncoder(),local=[],central=[];let offset=0;
+ files.forEach(file=>{
+  const name=encoder.encode(file.name),data=file.data instanceof Uint8Array?file.data:encoder.encode(file.data);const crc=crc32(data);
+  const localHeader=concatBytes([u32(0x04034b50),u16(20),u16(0x800),u16(0),u16(0),u16(0),u32(crc),u32(data.length),u32(data.length),u16(name.length),u16(0),name]);
+  local.push(localHeader,data);const centralHeader=concatBytes([u32(0x02014b50),u16(20),u16(20),u16(0x800),u16(0),u16(0),u16(0),u32(crc),u32(data.length),u32(data.length),u16(name.length),u16(0),u16(0),u16(0),u16(0),u32(0),u32(offset),name]);
+  central.push(centralHeader);offset+=localHeader.length+data.length;
+ });
+ const centralBytes=concatBytes(central),localBytes=concatBytes(local),end=concatBytes([u32(0x06054b50),u16(0),u16(0),u16(files.length),u16(files.length),u32(centralBytes.length),u32(localBytes.length),u16(0)]);
+ return new Blob([localBytes,centralBytes,end],{type:'application/zip'});
+}
+function openBookExportPicker(){
+ if(!db.books.length){alert('当前书架没有小说可导出。');return}
+ const old=document.getElementById('bookExportModal');if(old)old.remove();
+ const modal=document.createElement('div');modal.id='bookExportModal';modal.className='export-modal';
+ modal.innerHTML=`<div class="export-modal-card"><div class="export-modal-head"><h2>选择要导出的小说</h2><button type="button" class="secondary" onclick="closeBookExportPicker()">×</button></div><label class="export-select-all"><input id="exportSelectAll" type="checkbox" onchange="toggleAllBookExports(this.checked)"> 全选</label><div class="export-book-list">${db.books.map(b=>`<label class="export-book-item"><input class="export-book-check" type="checkbox" value="${esc(b.id)}"><span class="export-book-meta"><span class="export-book-title">${esc(b.title||'未命名小说')}</span><span class="export-book-sub">${b.chapters?.length||0} 章${b.author?`　·　${esc(b.author)}`:''}</span></span></label>`).join('')}</div><p class="muted">会生成一个 ZIP。每本小说一个文件夹，TXT 与作者有话说图片都放在里面。</p><div class="export-modal-actions"><button type="button" class="secondary" onclick="closeBookExportPicker()">取消</button><button type="button" onclick="exportSelectedBooksZip()">导出选中的小说</button></div></div>`;
+ modal.addEventListener('click',e=>{if(e.target===modal)closeBookExportPicker()});document.body.appendChild(modal);
+}
+function toggleAllBookExports(checked){document.querySelectorAll('#bookExportModal .export-book-check').forEach(x=>x.checked=checked)}
+function closeBookExportPicker(){document.getElementById('bookExportModal')?.remove()}
+function exportSelectedBooksZip(){
+ const ids=[...document.querySelectorAll('#bookExportModal .export-book-check:checked')].map(x=>x.value);if(!ids.length){alert('请至少选择一本小说。');return}
+ const files=[],usedNames=new Set();
+ ids.map(id=>bookBy(id)).filter(Boolean).forEach(book=>{
+  const folder=sanitizeExportName(book.title||'未命名小说');let unique=folder,seq=2;while(usedNames.has(unique.toLowerCase()))unique=`${folder}_${seq++}`;usedNames.add(unique.toLowerCase());
+  const built=buildBookTxt(book);const txtBytes=new Uint8Array([0xef,0xbb,0xbf,...new TextEncoder().encode(built.text)]);files.push({name:`${unique}/${unique}.txt`,data:txtBytes});
+  built.images.forEach(img=>{const decoded=dataUrlToBytes(img.dataUrl);if(decoded)files.push({name:`${unique}/${img.path}`,data:decoded.bytes})});
+ });
+ try{const blob=zipStore(files);const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`小说导出_${new Date().toISOString().slice(0,10)}.zip`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);closeBookExportPicker()}catch(e){console.error(e);alert('导出失败：'+(e?.message||e))}
+}
 function updateReaderBackgroundColor(value){readerPrefs.bgColor=value;localStorage.setItem('private_tomato_reader_bg_color',value);applyReaderPrefs()}
 function updateReaderBackgroundImage(input){const file=input.files&&input.files[0];if(!file)return;if(file.size>8*1024*1024){alert('图片请尽量选择 8MB 以内的文件。');input.value='';return}const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas'),m=1400,sc=Math.min(1,m/Math.max(im.width,im.height));c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext('2d').drawImage(im,0,0,c.width,c.height);readerPrefs.bgImage=c.toDataURL('image/jpeg',.78);localStorage.setItem('private_tomato_reader_bg_image',readerPrefs.bgImage);applyReaderPrefs()};im.src=r.result};r.readAsDataURL(file)}
 function clearReaderBackgroundImage(){readerPrefs.bgImage='';localStorage.removeItem('private_tomato_reader_bg_image');applyReaderPrefs();const i=document.getElementById('readerBgImage');if(i)i.value=''}
