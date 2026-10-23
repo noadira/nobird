@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f7f5f0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="自定义标题">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>自定义标题</title>
@@ -336,12 +336,7 @@ function applyNightMode(){
     b.setAttribute('aria-label',on?'切换浅色模式':'切换夜间模式');
     b.title=on?'切换浅色模式':'切换夜间模式';
   }
-  const meta=document.querySelector('meta[name="theme-color"]');
   applyReaderBackdrop();
-  if(meta){
-    const isReader=document.body.classList.contains('reading-active');
-    meta.setAttribute('content',isReader?(on?'#4D4D4D':'#E4E0D7'):(on?'#171715':'#f7f5f0'));
-  }
   updateReaderTintPickerVisibility();
 }
 function toggleNightMode(){
