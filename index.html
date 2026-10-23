@@ -24,7 +24,9 @@ body.reading-active{background:transparent !important}
 #readerBackdrop .reader-backdrop-tint{position:absolute;inset:0;background:#e6e6dd;mix-blend-mode:color;opacity:0;pointer-events:none}
 body.reading-active #readerBackdrop{display:block}
 body.reading-active:not(.header-collapsed) header{position:sticky;top:0;overflow:visible}
-body.reading-active:not(.header-collapsed) header::before{content:"";position:absolute;left:0;right:0;top:calc(-1 * env(safe-area-inset-top));height:env(safe-area-inset-top);background:rgba(247,245,240,.95);z-index:-1;pointer-events:none}
+body.reading-active:not(.header-collapsed) header{position:sticky;isolation:isolate}
+body.reading-active:not(.header-collapsed) header::before{content:"";position:absolute;left:0;right:0;top:calc(-1 * env(safe-area-inset-top));height:env(safe-area-inset-top);background:rgba(247,245,240,.95);z-index:0;pointer-events:none}
+body.reading-active:not(.header-collapsed) header > *{position:relative;z-index:1}
 .dark-mode body.reading-active:not(.header-collapsed) header::before, body.dark-mode.reading-active:not(.header-collapsed) header::before{background:rgba(23,23,21,.94)}
 
 body.reading-active main{background:transparent}
@@ -326,8 +328,11 @@ function applyNightMode(){
     b.title=on?'切换浅色模式':'切换夜间模式';
   }
   const meta=document.querySelector('meta[name="theme-color"]');
-  if(meta)meta.setAttribute('content',on?'#171715':'#f7f5f0');
   applyReaderBackdrop();
+  if(meta){
+    const isReader=document.body.classList.contains('reading-active');
+    meta.setAttribute('content',isReader?(on?'#4D4D4D':'#E4E0D7'):(on?'#171715':'#f7f5f0'));
+  }
   updateReaderTintPickerVisibility();
 }
 function toggleNightMode(){
