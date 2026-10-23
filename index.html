@@ -30,7 +30,7 @@ textarea{min-height:90px;resize:vertical;max-width:100%}#editorView{padding-bott
 .bottomnav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,254,250,.96);backdrop-filter:blur(15px);border-top:1px solid var(--line);padding:9px 10px calc(env(safe-area-inset-bottom) + 8px);display:flex;justify-content:space-around;z-index:10;transition:transform .18s,opacity .18s}body.reading-active .bottomnav{transform:translateY(110%);opacity:0;pointer-events:none}body.reading-active.nav-awake .bottomnav{transform:translateY(0);opacity:1;pointer-events:auto}.nav-icon{display:block;width:20px;height:20px;margin:0 auto 3px;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}.bottomnav button{min-width:62px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
 .bottomnav button{background:transparent;color:#777368;padding:7px 10px;font-size:12px}.bottomnav button.active{color:var(--accent);font-weight:800}
 .notice{background:#fff4dd;color:#7c5c2c;border-radius:12px;padding:12px;font-size:12px;line-height:1.7;margin-bottom:15px}
-.toolbar{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.toolbar button{font-size:12px;padding:8px 10px}
+.toolbar{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.toolbar button{font-size:12px;padding:8px 10px}.reading-bookmark{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0 4px;padding:10px 12px;background:rgba(255,254,250,.7);border:1px solid var(--line);border-radius:12px}.reading-bookmark button{flex:none}
 hr{border:0;border-top:1px solid var(--line);margin:18px 0}.empty{text-align:center;color:var(--muted);padding:36px 10px}
 @media(min-width:600px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
@@ -251,6 +251,7 @@ function keepFocusedFieldVisible(target){
     main.scrollTop+=rect.top-12;
   }
 }
+window.addEventListener('pagehide',saveReadingProgress);window.addEventListener('beforeunload',saveReadingProgress);
 window.addEventListener('resize',sizeMainArea);
 window.addEventListener('orientationchange',()=>setTimeout(sizeMainArea,150));
 if(window.visualViewport){
@@ -259,10 +260,13 @@ if(window.visualViewport){
 }
 document.addEventListener('focusin',e=>{if(e.target.matches('input,textarea,select'))setTimeout(()=>keepFocusedFieldVisible(e.target),300)});
 document.addEventListener('focusout',()=>setTimeout(sizeMainArea,250));
-function show(id){['homeView','detailView','readerView','editorView','settingsView'].forEach(x=>document.getElementById(x).classList.toggle('hide',x!==id));document.querySelectorAll('.bottomnav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id||(b.dataset.action==='directory'&&(id==='detailView'||id==='readerView'))));document.body.classList.toggle('reading-active',id==='readerView');document.body.classList.remove('nav-awake');sizeMainArea();const main=document.querySelector('main');if(main)main.scrollTop=0;}
+function show(id){if(id!=='readerView')saveReadingProgress();['homeView','detailView','readerView','editorView','settingsView'].forEach(x=>document.getElementById(x).classList.toggle('hide',x!==id));document.querySelectorAll('.bottomnav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id||(b.dataset.action==='directory'&&(id==='detailView'||id==='readerView'))));document.body.classList.toggle('reading-active',id==='readerView');document.body.classList.remove('nav-awake');sizeMainArea();const main=document.querySelector('main');if(main)main.scrollTop=0;}
 function bookBy(id){return db.books.find(b=>b.id===id)}
 function renderHome(){const grid=document.getElementById('bookGrid');let books=db.books.filter(b=>filter==='all'||b.status===filter);grid.innerHTML=books.length?books.map(b=>`<article class="book"><div class="cover ${b.coverImage?'has-image':''}" style="${b.coverImage?`background-image:url('${b.coverImage}')`:`background:${esc(b.color||'linear-gradient(135deg,#e6c9b6,#f5e7d3)')}`} ">${b.coverImage?'':esc(b.emoji||'📖')}</div><div class="bookbody"><div class="booktitle">${esc(b.title)}</div><div class="muted bookmeta">${esc(b.author||'佚名')} · ${esc(b.status)}</div><div class="row book-actions"><button onclick="openDetail('${b.id}')">阅读</button><button class="secondary management-control" onclick="editBook('${b.id}')">编辑</button></div></div></article>`).join(''):'<div class="empty" style="grid-column:1/-1">这里还空着。<br>点「新建小说」，创建你的第一本书吧。</div>'}
-function openDetail(id){currentBook=id;const b=bookBy(id);if(!b)return;const volumes=[];b.chapters.forEach((c,i)=>{const v=(c.volume||'').trim()||'未分卷';let item=volumes.find(x=>x.name===v);if(!item){item={name:v,chapters:[]};volumes.push(item)}item.chapters.push({c,i})});document.getElementById('detailView').innerHTML=`<button class="ghost" onclick="show('homeView')">‹ 返回书架</button><div class="coverbig ${b.coverImage?'has-image':''}" style="${b.coverImage?`background-image:url('${b.coverImage}')`: ''}">${b.coverImage?'':esc(b.emoji||'📖')}</div><h1>${esc(b.title)}</h1><div class="muted">${esc(b.author||'佚名')} · ${esc(b.status)} · ${b.chapters.length} 章</div><p>${esc(b.desc||'暂无简介')}</p><div class="toolbar"><button onclick="readBook('${b.id}', '${b.chapters[0]?.id||''}')">开始阅读</button><button class="secondary management-control" onclick="editBook('${b.id}')">编辑作品</button><button class="secondary management-control" onclick="addChapter('${b.id}')">＋ 添加章节</button></div><h2>目录 <span class="muted">共 ${b.chapters.length} 章</span></h2>${b.chapters.length?volumes.map((v,vi)=>`<details class="volume-group" ${vi===0?'open':''}><summary><span>${esc(v.name==='未分卷'?'未分卷':v.name)}</span><span class="muted">${v.chapters.length} 章　⌄</span></summary><div class="volume-chapters">${v.chapters.map(({c,i})=>`<div class="card row between"><div class="chapter-item-title"><b>第${esc(c.chapterNumber??(i+1))}章　${esc(c.title)}</b><div class="muted">${c.paragraphs.reduce((total,p)=>total+String(p.text||'').replace(/\\s/g,'').length,0)} 字</div></div><button class="secondary" onclick="readBook('${b.id}','${c.id}')">阅读</button></div>`).join('')}</div></details>`).join(''):'<div class="empty">还没有章节。<span class="management-control">请切换到编辑模式添加第一章。</span></div>'}`;show('detailView')}
+function chapterWordCount(c){return (c?.paragraphs||[]).reduce((total,p)=>total+String(p.text||'').replace(/\s/g,'').length,0)}
+function formatTotalWordCount(count){return `${(count/10000).toFixed(1)}万字`}
+function openDetail(id){currentBook=id;const b=bookBy(id);if(!b)return;const totalWordCount=b.chapters.reduce((total,c)=>total+chapterWordCount(c),0);const volumes=[];b.chapters.forEach((c,i)=>{const v=(c.volume||'').trim()||'未分卷';let item=volumes.find(x=>x.name===v);if(!item){item={name:v,chapters:[],wordCount:0};volumes.push(item)}item.chapters.push({c,i});item.wordCount+=chapterWordCount(c)});document.getElementById('detailView').innerHTML=`<button class="ghost" onclick="show('homeView')">‹ 返回书架</button><div class="coverbig ${b.coverImage?'has-image':''}" style="${b.coverImage?`background-image:url('${b.coverImage}')`: ''}">${b.coverImage?'':esc(b.emoji||'📖')}</div><h1>${esc(b.title)}</h1><div class="muted">${esc(b.author||'佚名')} · ${esc(b.status)} · ${b.chapters.length} 章 · 总字数：${formatTotalWordCount(totalWordCount)}</div><p>${esc(b.desc||'暂无简介')}</p>${(()=>{const rp=getReadingProgress(b.id);const rc=rp&&b.chapters.find(c=>c.id===rp.chapterId);if(!rc)return '';const ri=b.chapters.findIndex(c=>c.id===rc.id);return `<div class="reading-bookmark"><span class="muted">上次阅读：第${esc(rc.chapterNumber??(ri+1))}章 ${esc(rc.title)}</span><button class="secondary" onclick="continueReading('${b.id}')">继续阅读</button></div>`})()}<div class="toolbar"><button class="secondary management-control" onclick="editBook('${b.id}')">编辑作品</button><button class="secondary management-control" onclick="addChapter('${b.id}')">＋ 添加章节</button></div><h2>目录 <span class="muted">共 ${b.chapters.length} 章</span></h2>${b.chapters.length?volumes.map((v,vi)=>`<details class="volume-group" ${vi===0?'open':''}><summary><span>${esc(v.name==='未分卷'?'未分卷':v.name)}</span><span class="muted">${v.chapters.length} 章 · ${v.wordCount} 字　⌄</span></summary><div class="volume-chapters">${v.chapters.map(({c,i})=>`<div class="card row between"><div class="chapter-item-title"><b>第${esc(c.chapterNumber??(i+1))}章　${esc(c.title)}</b><div class="muted">${chapterWordCount(c)} 字</div></div><button class="secondary" onclick="readBook('${b.id}','${c.id}')">阅读</button></div>`).join('')}</div></details>`).join(''):'<div class="empty">还没有章节。<span class="management-control">请切换到编辑模式添加第一章。</span></div>'}`;show('detailView')}
+
 function editBook(id){editorBook=id||null;const b=id?bookBy(id):{title:'',author:'',desc:'',status:'连载中',emoji:'📖',chapters:[]};document.getElementById('editorView').innerHTML=`<button class="ghost" onclick="${id?`openDetail('${id}')`:`show('homeView')`}">‹ 返回</button><h1>${id?'编辑小说':'新建小说'}</h1><label class="label">书名</label><input id="fTitle" value="${esc(b.title)}" placeholder="给故事起个名字"><label class="label">作者名</label><input id="fAuthor" value="${esc(b.author)}" placeholder="作者名 / 笔名"><label class="label">简介</label><textarea id="fDesc" placeholder="写一段吸引自己的简介">${esc(b.desc)}</textarea><div class="row"><div style="flex:1"><label class="label">状态</label><select id="fStatus"><option ${b.status==='连载中'?'selected':''}>连载中</option><option ${b.status==='已完结'?'selected':''}>已完结</option></select></div><div style="width:90px"><label class="label">封面符号</label><input id="fEmoji" value="${esc(b.emoji||'📖')}" maxlength="4"></div></div><label class="label">封面图片（可选）</label><input id="fCoverImage" type="file" accept="image/*" onchange="previewCoverImage(this)"><div id="coverPreview" class="cover ${b.coverImage?'has-image':''}" style="${b.coverImage?`background-image:url('${b.coverImage}')`: ''}margin:8px 0 14px">${b.coverImage?'':esc(b.emoji||'📖')}</div><button class="secondary" type="button" onclick="clearCoverImage()">移除封面图片</button><button onclick="saveBookForm()">保存作品</button> ${id?`<button class="secondary" onclick="addChapter('${id}')">＋ 添加章节</button><button class="secondary" onclick="deleteBook('${id}')">删除作品</button>`:''}`;show('editorView')}
 function saveBookForm(){const title=document.getElementById('fTitle').value.trim();if(!title){alert('请先填写书名');return}let b=editorBook?bookBy(editorBook):null;if(!b){b={id:uid(),chapters:[]};db.books.unshift(b)}Object.assign(b,{title,author:document.getElementById('fAuthor').value.trim()||'佚名',desc:document.getElementById('fDesc').value.trim(),status:document.getElementById('fStatus').value,emoji:document.getElementById('fEmoji').value.trim()||'📖'});if(window.pendingCoverImage!==undefined){if(window.pendingCoverImage)b.coverImage=window.pendingCoverImage;else delete b.coverImage;window.pendingCoverImage=undefined}save();openDetail(b.id)}
 function previewCoverImage(input){const file=input.files&&input.files[0];if(!file)return;if(file.size>8*1024*1024){alert('图片请尽量选择 8MB 以内的文件。');input.value='';return}const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas'),m=800,sc=Math.min(1,m/Math.max(im.width,im.height));c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext('2d').drawImage(im,0,0,c.width,c.height);window.pendingCoverImage=c.toDataURL('image/jpeg',.82);const el=document.getElementById('coverPreview');el.classList.add('has-image');el.style.backgroundImage=`url('${window.pendingCoverImage}')`;el.textContent=''};im.src=r.result};r.readAsDataURL(file)}
@@ -351,8 +355,37 @@ function saveChapterForm(bookId,chapterId){
  else{b.chapters.push({id:uid(),title,chapterNumber,volume,paragraphs:paras,note,noteImages,comments:[]})}
  save();openDetail(bookId);
 }
+const READING_PROGRESS_KEY='private_tomato_reading_progress';
+function loadReadingProgress(){try{return JSON.parse(localStorage.getItem(READING_PROGRESS_KEY))||{}}catch(e){return {}}}
+function getReadingProgress(bookId){const all=loadReadingProgress();return all[bookId]||null}
+function saveReadingProgress(){
+  if(!currentBook||!currentChapter)return;
+  const main=document.querySelector('main');
+  if(!main||document.getElementById('readerView').classList.contains('hide'))return;
+  const b=bookBy(currentBook);if(!b)return;
+  const idx=b.chapters.findIndex(c=>c.id===currentChapter);if(idx<0)return;
+  const all=loadReadingProgress();
+  all[currentBook]={chapterId:currentChapter,chapterIndex:idx,scrollTop:Math.max(0,main.scrollTop||0),updatedAt:Date.now()};
+  try{localStorage.setItem(READING_PROGRESS_KEY,JSON.stringify(all))}catch(e){}
+}
+function restoreReadingProgress(){
+  const progress=getReadingProgress(currentBook);if(!progress)return;
+  const b=bookBy(currentBook);if(!b)return;
+  const idx=b.chapters.findIndex(c=>c.id===progress.chapterId);
+  if(idx<0)return;
+  if(currentChapter!==progress.chapterId)return;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    const main=document.querySelector('main');if(main&&!document.getElementById('readerView').classList.contains('hide'))main.scrollTop=Math.max(0,Number(progress.scrollTop)||0);
+  }));
+}
+function continueReading(bookId){
+  const b=bookBy(bookId);if(!b)return;
+  const p=getReadingProgress(bookId);
+  const chapterId=p&&b.chapters.some(c=>c.id===p.chapterId)?p.chapterId:(b.chapters[0]?.id||'');
+  if(chapterId)readBook(bookId,chapterId);
+}
 function readBook(bookId,chapterId){currentBook=bookId;const b=bookBy(bookId);currentChapter=chapterId||b.chapters[0]?.id;renderReader();show('readerView');hideHeader()}
-function switchChapter(direction){const b=bookBy(currentBook);if(!b)return;const idx=b.chapters.findIndex(c=>c.id===currentChapter);const next=b.chapters[idx+direction];if(!next)return;currentChapter=next.id;renderReader();const el=document.querySelector('#readerView .chaptertext');if(el){el.scrollLeft=0;el.scrollTop=0;}const main=document.querySelector('main');if(main)main.scrollTop=0;window.scrollTo(0,0)}
+function switchChapter(direction){const b=bookBy(currentBook);if(!b)return;saveReadingProgress();const idx=b.chapters.findIndex(c=>c.id===currentChapter);const next=b.chapters[idx+direction];if(!next)return;currentChapter=next.id;renderReader();const el=document.querySelector('#readerView .chaptertext');if(el){el.scrollLeft=0;el.scrollTop=0;}window.scrollTo(0,0)}
 function renderReader(){
   const b=bookBy(currentBook);
   if(!b)return;
@@ -389,6 +422,8 @@ function renderReader(){
 `;
   applyReaderPrefs();bindReaderKeys();scheduleLineEndPunctuation();
   const pageArea=document.querySelector('#readerView .chaptertext');if(pageArea){pageArea.addEventListener('scroll',updateChapterSwitchVisibility,{passive:true});requestAnimationFrame(updateChapterSwitchVisibility)}
+  restoreReadingProgress();
+  const mainForProgress=document.querySelector('main');if(mainForProgress&&!mainForProgress.__readingProgressBound){mainForProgress.__readingProgressBound=true;mainForProgress.__readingProgressTimer=0;mainForProgress.addEventListener('scroll',()=>{if(document.getElementById('readerView').classList.contains('hide'))return;clearTimeout(mainForProgress.__readingProgressTimer);mainForProgress.__readingProgressTimer=setTimeout(saveReadingProgress,180)},{passive:true})}
   const rv=document.getElementById('readerView');
   rv.onclick=function(e){if(e.target.closest('button, input, textarea, select, a'))return;document.body.classList.toggle('nav-awake')};
 }
