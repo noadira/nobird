@@ -275,7 +275,7 @@ function applyReaderBackdrop(){
     body.style.backgroundColor='';
   }
   const themeMeta=document.querySelector('meta[name="theme-color"]');
-  if(themeMeta)themeMeta.setAttribute('content',isReader?pageColor:(night?'#171715':'#f7f5f0'));
+  if(themeMeta)themeMeta.setAttribute('content',isReader?pageColor:(night?'#272727':'#f7f5f0'));
   root.style.setProperty('--reader-tint',opt.color);
   if(image)image.style.filter='none';
   const tint=root.querySelector('.reader-backdrop-tint');
