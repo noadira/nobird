@@ -15,7 +15,7 @@
 *{box-sizing:border-box;overflow-anchor:none} html{scroll-behavior:auto;overflow-anchor:none} body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif}
 button,input,textarea,select{font:inherit} button{cursor:pointer;border:0;border-radius:12px;padding:10px 13px;background:var(--accent);color:white} button.secondary{background:#eee9df;color:#4a473f} button.ghost{background:transparent;color:var(--muted);padding:7px}
 header{position:sticky;top:0;z-index:15;background:rgba(247,245,240,.95);backdrop-filter:blur(14px);padding:calc(env(safe-area-inset-top) + 10px) 16px 10px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}
-.brand{font-weight:800;font-size:19px;letter-spacing:1px;min-width:0}.brand small{display:block;font-size:10px;color:var(--muted);font-weight:500;letter-spacing:2px;margin-top:2px}.brand-titleline{display:flex;align-items:center;gap:4px;min-width:0}.brand-emoji{flex:none}.brand-title{overflow-wrap:anywhere}.brand small{overflow-wrap:anywhere}.header-actions{display:flex;align-items:center;gap:6px;flex:none}.header-actions button{white-space:nowrap}.header-reveal{position:fixed;top:calc(env(safe-area-inset-top) - 38px);right:12px;z-index:25;box-shadow:none;padding:8px 10px;font-size:18px;opacity:.22;background:rgba(238,233,223,.18);color:#4a473f;border-radius:50%;min-width:38px;min-height:38px}body.header-collapsed header{display:none}
+.brand{font-weight:800;font-size:19px;letter-spacing:1px;min-width:0}.brand small{display:block;font-size:10px;color:var(--muted);font-weight:500;letter-spacing:2px;margin-top:2px}.brand-titleline{display:flex;align-items:center;gap:4px;min-width:0}.brand-emoji{flex:none}.brand-title{overflow-wrap:anywhere}.brand small{overflow-wrap:anywhere}.header-actions{display:flex;align-items:center;gap:6px;flex:none}.header-actions button{white-space:nowrap}.header-reveal{position:fixed;top:calc(env(safe-area-inset-top) + 12px);right:12px;z-index:25;box-shadow:none;padding:8px 10px;font-size:18px;opacity:.22;background:rgba(238,233,223,.18);color:#4a473f;border-radius:50%;min-width:38px;min-height:38px}body.header-collapsed header{display:none}.header-night-btn{font-size:18px;padding:5px 6px;line-height:1;opacity:.72;min-width:30px}.dark-mode{--bg:#171715;--paper:#22211e;--ink:#e7e4dc;--muted:#aaa69b;--line:#3a3833;--soft:#302d29;--accent:#d87862}.dark-mode header{background:rgba(23,23,21,.94)}.dark-mode .book,.dark-mode .card{background:var(--paper);border-color:var(--line)}.dark-mode input,.dark-mode textarea,.dark-mode select{background:#282722;color:var(--ink);border-color:var(--line)}.dark-mode .tabs button{background:#302e29;color:#b9b5aa}.dark-mode .tabs button.active{background:var(--accent);color:#fff}.dark-mode .volume-group{background:rgba(34,33,30,.75)}.dark-mode .volume-group[open] summary{border-color:var(--line)}.dark-mode .comment{background:#2d2b27}.dark-mode .authornote{background:#302823}.dark-mode .secondary{background:#302e29;color:#d2cec4}.dark-mode .bottomnav{background:rgba(34,33,30,.96);border-color:var(--line)}.dark-mode .reading-bookmark{background:rgba(34,33,30,.8);border-color:var(--line)}.dark-mode .notice{background:#332d21;color:#d8c49b}.dark-mode .cover,.dark-mode .coverbig{background:linear-gradient(135deg,#3a302b,#282621)}.dark-mode #readerView{background-color:#171715}.dark-mode .header-reveal{background:rgba(45,43,39,.5);color:#d8d3c9}
 main{width:100%;max-width:720px;height:var(--main-available-height,calc(100dvh - 220px));min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;overflow-anchor:none;margin:0 auto;padding:16px 15px calc(90px + env(safe-area-inset-bottom));scroll-padding-bottom:90px;position:relative;isolation:isolate}.tabs{display:flex;gap:8px;margin:5px 0 18px}.tabs button{flex:1;background:#ece8df;color:#6f6b61}.tabs button.active{background:var(--accent);color:white}
 h1{font-size:24px;margin:8px 0} h2{font-size:18px;margin:20px 0 12px} p{line-height:1.85}.muted{color:var(--muted);font-size:13px}.row{display:flex;gap:10px;align-items:center}.between{justify-content:space-between}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.home-heading{margin-bottom:14px}
 .book{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden}.cover{width:100%;height:auto;aspect-ratio:12 / 11;display:flex;align-items:center;justify-content:center;font-size:38px;background:linear-gradient(135deg,#e6c9b6,#f5e7d3);background-size:cover;background-position:center;color:#875f4f}.cover.has-image{font-size:0}.coverbig.has-image{font-size:0;background-size:cover;background-position:center}.bookbody{padding:10px 12px 10px;display:flex;flex-direction:column}.booktitle{font-weight:750;margin-bottom:4px;line-height:1.4}.bookmeta{line-height:1.5;margin-bottom:7px}.book-actions{margin-top:auto;gap:10px}.bookdesc{font-size:12px;line-height:1.55;color:var(--muted);height:38px;overflow:hidden}
@@ -151,7 +151,7 @@ body.keyboard-open #chapterBodyInput{min-height:120px;height:30vh}
 </style>
 </head>
 <body>
-<header id="appHeader"><div class="brand"><div class="brand-titleline"><span class="brand-emoji" id="brandEmoji">📖</span><span class="brand-title" id="brandTitle">自定义标题</span></div><small id="brandSubtitle">自定义文本</small></div><div class="header-actions"><button class="ghost" id="hideHeaderBtn" type="button" aria-label="隐藏顶部表头" title="隐藏顶部表头">收起</button></div></header>
+<header id="appHeader"><div class="brand"><div class="brand-titleline"><span class="brand-emoji" id="brandEmoji">📖</span><span class="brand-title" id="brandTitle">自定义标题</span></div><small id="brandSubtitle">自定义文本</small></div><div class="header-actions"><button class="ghost header-night-btn" id="nightModeBtn" type="button" aria-label="切换夜间模式" title="切换夜间模式">☾</button><button class="ghost" id="hideHeaderBtn" type="button" aria-label="隐藏顶部表头" title="隐藏顶部表头">收起</button></div></header>
 <button class="header-reveal secondary hide" id="showHeaderBtn" type="button" aria-label="显示表头" title="显示表头">☰</button>
 <main>
 <section id="homeView">
@@ -208,6 +208,23 @@ function hideHeader(){
 function showHeader(){
   document.body.classList.remove('header-collapsed');
   document.getElementById('showHeaderBtn').classList.add('hide');
+}
+const NIGHT_MODE_KEY='private_tomato_night_mode';
+function applyNightMode(){
+  const on=localStorage.getItem(NIGHT_MODE_KEY)==='1';
+  document.body.classList.toggle('dark-mode',on);
+  const b=document.getElementById('nightModeBtn');
+  if(b){
+    b.textContent=on?'☀':'☾';
+    b.setAttribute('aria-label',on?'切换浅色模式':'切换夜间模式');
+    b.title=on?'切换浅色模式':'切换夜间模式';
+  }
+  const meta=document.querySelector('meta[name="theme-color"]');
+  if(meta)meta.setAttribute('content',on?'#171715':'#f7f5f0');
+}
+function toggleNightMode(){
+  localStorage.setItem(NIGHT_MODE_KEY,localStorage.getItem(NIGHT_MODE_KEY)==='1'?'0':'1');
+  applyNightMode();
 }
 function fontStack(){return '-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif'}
 function applyReaderPrefs(){readerPrefs.pageMode='scroll';localStorage.setItem('private_tomato_page_mode','scroll');document.body.classList.remove('cover-reader');document.body.style.setProperty('--reader-font',fontStack());document.body.style.setProperty('--reader-size',readerPrefs.size+'px');document.body.style.setProperty('--reader-line',readerPrefs.line);const rv=document.getElementById('readerView');rv.style.setProperty('--reader-bg-color',readerPrefs.bgColor);rv.style.setProperty('--reader-bg-image',readerPrefs.bgImage?'url(\"'+readerPrefs.bgImage+'\")':'none')}
@@ -846,13 +863,7 @@ const GLOBAL_THEME_CSS_KEY='private_tomato_global_theme_css';
 function applyGlobalThemeCSS(){let node=document.getElementById('userGlobalThemeCSS');if(!node){node=document.createElement('style');node.id='userGlobalThemeCSS';document.head.appendChild(node)}node.textContent=localStorage.getItem(GLOBAL_THEME_CSS_KEY)||DEFAULT_GLOBAL_THEME_CSS}
 function saveGlobalThemeCSS(){const field=document.getElementById('globalThemeCSS');if(!field)return;const css=field.value;try{localStorage.setItem(GLOBAL_THEME_CSS_KEY,css);applyGlobalThemeCSS();alert('全局主题 CSS 已保存并应用。')}catch(e){alert('保存失败，可能是浏览器本地存储空间不足。')}}
 function resetGlobalThemeCSS(){if(!confirm('确定清除自定义 CSS 并恢复默认主题吗？'))return;localStorage.removeItem(GLOBAL_THEME_CSS_KEY);applyGlobalThemeCSS();const field=document.getElementById('globalThemeCSS');if(field)field.value=DEFAULT_GLOBAL_THEME_CSS;alert('已恢复默认主题。')}
-function showSettings(){document.getElementById('settingsView').innerHTML=`<h1>设置与数据</h1><div class="card"><h2 style="margin-top:0">阅读设置</h2>
-<p class="muted">阅读方式：上下滚动</p>
-
-<div class="setting-control"><label class="label" for="fontSizeChoice">字号</label><div class="setting-range"><input id="fontSizeChoice" type="range" min="14" max="28" step="1" value="${readerPrefs.size}" oninput="updateReaderPrefLive('size',this.value)"><span class="setting-value" id="fontSizeValue">${readerPrefs.size}px</span></div></div>
-<div class="setting-control"><label class="label" for="lineHeightChoice">行距</label><div class="setting-range"><input id="lineHeightChoice" type="range" min="1.4" max="2.5" step="0.05" value="${readerPrefs.line}" oninput="updateReaderPrefLive('line',this.value)"><span class="setting-value" id="lineHeightValue">${Number(readerPrefs.line).toFixed(2)}</span></div></div>
-<div class="setting-control"><label class="label" for="readerBgColor">阅读背景颜色</label><input id="readerBgColor" type="color" value="${readerPrefs.bgColor}" onchange="updateReaderBackgroundColor(this.value)"><p class="muted">可以直接选择喜欢的纯色背景。</p></div><div class="setting-control"><label class="label" for="readerBgImage">阅读背景图片（可选）</label><input id="readerBgImage" type="file" accept="image/*" onchange="updateReaderBackgroundImage(this)"><button class="secondary" type="button" onclick="clearReaderBackgroundImage()">移除背景图片</button><p class="muted">图片会压缩后保存在当前浏览器本地。</p></div><p class="muted">建议使用柔和、低对比度的图片。</p></div><p class="muted">以上选择会自动保存。字号、行距和背景只影响阅读界面。</p></div>
-<div class="card"><h2 style="margin-top:0">界面模式</h2><p class="muted">阅读模式会隐藏作品和章节管理按钮，保留正文、段评气泡、作者有话说，以及淡色的小「＋」。编辑模式会显示全部管理功能。</p><div class="mode-switch"><button class="${appMode==='read'?'selected':'secondary'}" onclick="setMode('read')">阅读模式</button><button class="${appMode==='edit'?'selected':'secondary'}" onclick="setMode('edit')">编辑模式</button></div><p class="muted">会自动记住你的选择，下次打开时继续使用上次的模式。</p></div>
+function showSettings(){document.getElementById('settingsView').innerHTML=`<h1>设置与数据</h1><div class="card"><h2 style="margin-top:0">界面模式</h2><p class="muted">阅读模式会隐藏作品和章节管理按钮，保留正文、段评气泡、作者有话说，以及淡色的小「＋」。编辑模式会显示全部管理功能。</p><div class="mode-switch"><button class="${appMode==='read'?'selected':'secondary'}" onclick="setMode('read')">阅读模式</button><button class="${appMode==='edit'?'selected':'secondary'}" onclick="setMode('edit')">编辑模式</button></div><p class="muted">会自动记住你的选择，下次打开时继续使用上次的模式。</p></div>
 <div class="card"><h2 style="margin-top:0">顶部表头</h2><p class="muted">可以自定义顶部显示的 emoji、标题和副标题。修改后会自动保存。</p>
 <div class="setting-control"><label class="label" for="headerEmojiChoice">Emoji</label><input id="headerEmojiChoice" type="text" maxlength="12" value="${esc(brandPrefs.emoji)}" placeholder="例如：📖" onchange="updateBrandPref('emoji',this.value)"></div>
 <div class="setting-control"><label class="label" for="headerTitleChoice">标题</label><input id="headerTitleChoice" type="text" maxlength="40" value="${esc(brandPrefs.title)}" placeholder="输入标题" onchange="updateBrandPref('title',this.value)"></div>
@@ -985,7 +996,8 @@ applyGlobalThemeCSS();
 applyReaderPrefs();
 applyBrandPrefs();
 document.getElementById('hideHeaderBtn').onclick=hideHeader;
-document.getElementById('showHeaderBtn').onclick=showHeader;
+document.getElementById('showHeaderBtn').onclick=showHeader;document.getElementById('nightModeBtn').onclick=toggleNightMode;
+applyNightMode();
 bindReaderKeys();
 renderHome();
 </script>
