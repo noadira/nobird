@@ -149,9 +149,14 @@ body.keyboard-open #chapterBodyInput{min-height:120px;height:30vh}
   opacity: 1 !important;
 }
 </style>
+<style id="ui-fade-final">
+/* 阅读模式的段评添加按钮与收起表头后的呼出按钮仅保留功能，视觉上完全隐去 */
+body.read-mode .chaptertext .add-comment-link { opacity: 0 !important; }
+.header-reveal { opacity: 0 !important; }
+</style>
 </head>
 <body>
-<header id="appHeader"><div class="brand"><div class="brand-titleline"><span class="brand-emoji" id="brandEmoji">📖</span><span class="brand-title" id="brandTitle">自定义标题</span></div><small id="brandSubtitle">自定义文本</small></div><div class="header-actions"><button class="ghost header-night-btn" id="nightModeBtn" type="button" aria-label="切换夜间模式" title="切换夜间模式"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 15.6A8.5 8.5 0 0 1 8.4 3.8 8.5 8.5 0 1 0 20.2 15.6Z"/></svg></button><button class="ghost" id="hideHeaderBtn" type="button" aria-label="隐藏顶部表头" title="隐藏顶部表头">收起</button></div></header>
+<header id="appHeader"><div class="brand"><div class="brand-titleline"><span class="brand-emoji" id="brandEmoji">📖</span><span class="brand-title" id="brandTitle">自定义标题</span></div><small id="brandSubtitle">自定义文本</small></div><div class="header-actions"><button class="ghost header-night-btn" id="nightModeBtn" type="button" aria-label="切换夜间模式" title="切换夜间模式">☾</button><button class="ghost" id="hideHeaderBtn" type="button" aria-label="隐藏顶部表头" title="隐藏顶部表头">收起</button></div></header>
 <button class="header-reveal secondary hide" id="showHeaderBtn" type="button" aria-label="显示表头" title="显示表头">☰</button>
 <main>
 <section id="homeView">
@@ -215,7 +220,7 @@ function applyNightMode(){
   document.body.classList.toggle('dark-mode',on);
   const b=document.getElementById('nightModeBtn');
   if(b){
-    b.innerHTML=on?'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 15.6A8.5 8.5 0 0 1 8.4 3.8 8.5 8.5 0 1 0 20.2 15.6Z"></path></svg>';
+    b.innerHTML=on?'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>':'☾';
     b.setAttribute('aria-label',on?'切换浅色模式':'切换夜间模式');
     b.title=on?'切换浅色模式':'切换夜间模式';
   }
