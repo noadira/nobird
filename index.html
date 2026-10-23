@@ -190,6 +190,12 @@ body.read-mode .chaptertext .add-comment-link { opacity: 0 !important; }
 .reader-tint-option[data-reader-tint="blue"]{background:#C2D7E6 !important}
 .reader-tint-option{appearance:none;-webkit-appearance:none}
 </style>
+<style id="dark-reader-text-color-fix">
+/* 暗色阅读模式：正文使用柔和灰色，避免纯白刺眼；不改变评论、按钮等其他元素 */
+body.dark-mode.reading-active #readerView .chaptertext .para-text {
+  color: #8C8C8C !important;
+}
+</style>
 </head>
 <body>
 <header id="appHeader"><div class="brand"><div class="brand-titleline"><span class="brand-emoji" id="brandEmoji">📖</span><span class="brand-title" id="brandTitle">自定义标题</span></div><small id="brandSubtitle">自定义文本</small></div><div class="header-actions"><div class="reader-tint-picker" id="readerTintPicker"><button class="reader-tint-trigger" id="readerTintTrigger" type="button" aria-label="选择阅读底图颜色" title="选择阅读底图颜色"></button><div class="reader-tint-menu" id="readerTintMenu"><button class="reader-tint-option" type="button" data-reader-tint="original" aria-label="原始米白" title="原始米白"></button><button class="reader-tint-option" type="button" data-reader-tint="green" aria-label="绿色" title="绿色"></button><button class="reader-tint-option" type="button" data-reader-tint="blue" aria-label="蓝色" title="蓝色"></button></div></div><button class="ghost header-night-btn" id="nightModeBtn" type="button" aria-label="切换夜间模式" title="切换夜间模式">☾</button><button class="ghost" id="hideHeaderBtn" type="button" aria-label="隐藏顶部表头" title="隐藏顶部表头">收起</button></div></header>
