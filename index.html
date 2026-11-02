@@ -148,6 +148,18 @@ body.keyboard-open #chapterBodyInput{min-height:120px;height:30vh}
   -webkit-text-stroke: 0 !important;
   -webkit-font-smoothing: antialiased;
 }
+
+/* 作品编辑：状态、文字封面颜色与符号同排，符号占用剩余宽度 */
+.book-cover-options{display:flex;align-items:flex-end;gap:8px;width:100%;min-width:0;margin:8px 0 14px}
+.book-cover-select{flex:0 0 auto;width:max-content;min-width:0}
+.book-cover-select select{width:max-content;max-width:100%;white-space:nowrap}
+.book-cover-symbol{flex:1 1 0;min-width:0}
+.book-cover-symbol input{width:100%;min-width:0}
+.book-description p{margin:0 0 1em;line-height:1.8}
+.book-description p:last-child{margin-bottom:0}
+.authornote-label{color:color-mix(in srgb,var(--accent) 50%,transparent)}
+.authornote-content{color:color-mix(in srgb,var(--ink) 80%,transparent)}
+.comment-text{color:color-mix(in srgb,var(--ink) 80%,transparent)}
 </style>
 
 <style id="comment-unified-opacity-fix">
@@ -192,6 +204,40 @@ body.read-mode .chaptertext .add-comment-link { opacity: 0 !important; }
 
 body.dark-mode.reading-active #readerView .chaptertext .para-text {
   color: #8C8C8C !important;
+}
+</style>
+
+<style id="comment-darkmode-and-spacing-fix">
+/* 评论文字跟随正文主题色；评论换行统一行高 */
+.comment, .comment-body, .comment-text {
+  color: var(--ink) !important;
+  line-height: 1.6 !important;
+}
+.comment-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+body.dark-mode .comment,
+body.dark-mode .comment-body,
+body.dark-mode .comment-text {
+  color: var(--ink) !important;
+}
+/* 回复、删除按钮缩小，避免抢占评论文字空间 */
+.comment-actions {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  margin-left: 4px;
+}
+.comment-actions button,
+.comment-manage-control {
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 1px 4px !important;
+  margin: 0 !important;
+  font-size: 10px !important;
+  line-height: 1.35 !important;
+  font-weight: 400 !important;
 }
 </style>
 </head>
@@ -450,9 +496,10 @@ function chapterWordCount(c){return (c?.paragraphs||[]).reduce((total,p)=>total+
 function formatTotalWordCount(count){return `${(count/10000).toFixed(1)}万字`}
 function chapterDisplayTitle(c,index){const no=c?.chapterNumber??((index??0)+1);const title=String(c?.title||'').trim();return `第${no}章${title?' '+title:''}`}
 function renderChapterDirectoryCard(bookId,c,i){const hasAuthorNote=!!(c.note||((c.noteImages||[]).length));return `<div class="card row between"><div class="chapter-item-title"><b>${esc(chapterDisplayTitle(c,i))}</b><div class="muted">${chapterWordCount(c)} 字${hasAuthorNote?' ^':''}</div></div><button class="secondary" onclick="readBook('${bookId}','${c.id}')">阅读</button></div>`}
-function openDetail(id){currentBook=id;const b=bookBy(id);if(!b)return;const totalWordCount=b.chapters.reduce((total,c)=>total+chapterWordCount(c),0);const namedVolumes=[],unvolumed=[];b.chapters.forEach((c,i)=>{const name=String(c.volume||'').trim();if(!name){unvolumed.push({c,i});return}let item=namedVolumes.find(x=>x.name===name);if(!item){item={name,chapters:[],wordCount:0};namedVolumes.push(item)}item.chapters.push({c,i});item.wordCount+=chapterWordCount(c)});const hasVolumeDirectory=namedVolumes.length>0;const directoryHTML=!b.chapters.length?'<div class="empty">还没有章节。<span class="management-control">请切换到编辑模式添加第一章。</span></div>':hasVolumeDirectory?namedVolumes.map((v,vi)=>`<details class="volume-group" ${vi===0?'open':''}><summary><span>${esc(v.name)}</span><span class="muted">${v.chapters.length} 章 · ${v.wordCount} 字　⌄</span></summary><div class="volume-chapters">${v.chapters.map(({c,i})=>renderChapterDirectoryCard(b.id,c,i)).join('')}</div></details>`).join('')+(unvolumed.length?`<div class="volume-chapters">${unvolumed.map(({c,i})=>renderChapterDirectoryCard(b.id,c,i)).join('')}</div>`:''):b.chapters.map((c,i)=>renderChapterDirectoryCard(b.id,c,i)).join('');document.getElementById('detailView').innerHTML=`<button class="ghost" onclick="show('homeView')">‹ 返回书架</button><div class="coverbig ${b.coverImage?'has-image':''}" style="${b.coverImage?`background-image:url('${b.coverImage}')`: ''}">${b.coverImage?'':esc(b.emoji||'📖')}</div><h1>${esc(b.title)}</h1><div class="muted">${esc(b.author||'佚名')} · ${esc(b.status)} · ${formatTotalWordCount(totalWordCount)}</div><p>${esc(b.desc||'暂无简介')}</p>${(()=>{const rp=getReadingProgress(b.id);const rc=rp&&b.chapters.find(c=>c.id===rp.chapterId);if(!rc)return '';const ri=b.chapters.findIndex(c=>c.id===rc.id);return `<div class="reading-bookmark"><span class="muted">上次阅读：${esc(chapterDisplayTitle(rc,ri))}</span><button class="secondary" onclick="continueReading('${b.id}')">继续阅读</button></div>`})()}<div class="toolbar"><button class="secondary management-control" onclick="editBook('${b.id}')">编辑作品</button><button class="secondary management-control" onclick="addChapter('${b.id}')">＋ 添加章节</button></div><h2>目录 <span class="muted">共 ${b.chapters.length} 章 · ${totalWordCount} 字</span></h2>${directoryHTML}`;show('detailView')}
+function renderBookDescription(value){return String(value||'').split(/\n\s*\n+/).map(part=>`<p>${esc(part).replace(/\n/g,'<br>')}</p>`).join('')}
+function openDetail(id){currentBook=id;const b=bookBy(id);if(!b)return;const totalWordCount=b.chapters.reduce((total,c)=>total+chapterWordCount(c),0);const namedVolumes=[],unvolumed=[];b.chapters.forEach((c,i)=>{const name=String(c.volume||'').trim();if(!name){unvolumed.push({c,i});return}let item=namedVolumes.find(x=>x.name===name);if(!item){item={name,chapters:[],wordCount:0};namedVolumes.push(item)}item.chapters.push({c,i});item.wordCount+=chapterWordCount(c)});const hasVolumeDirectory=namedVolumes.length>0;const directoryHTML=!b.chapters.length?'<div class="empty">还没有章节。<span class="management-control">请切换到编辑模式添加第一章。</span></div>':hasVolumeDirectory?namedVolumes.map((v,vi)=>`<details class="volume-group" ${vi===0?'open':''}><summary><span>${esc(v.name)}</span><span class="muted">${v.chapters.length} 章 · ${v.wordCount} 字　⌄</span></summary><div class="volume-chapters">${v.chapters.map(({c,i})=>renderChapterDirectoryCard(b.id,c,i)).join('')}</div></details>`).join('')+(unvolumed.length?`<div class="volume-chapters">${unvolumed.map(({c,i})=>renderChapterDirectoryCard(b.id,c,i)).join('')}</div>`:''):b.chapters.map((c,i)=>renderChapterDirectoryCard(b.id,c,i)).join('');document.getElementById('detailView').innerHTML=`<button class="ghost" onclick="show('homeView')">‹ 返回书架</button><div class="coverbig ${b.coverImage?'has-image':''}" style="${b.coverImage?`background-image:url('${b.coverImage}')`: ''}">${b.coverImage?'':esc(b.emoji||'📖')}</div><h1>${esc(b.title)}</h1><div class="muted">${esc(b.author||'佚名')} · ${esc(b.status)} · ${formatTotalWordCount(totalWordCount)}</div><div class="book-description">${renderBookDescription(b.desc||'暂无简介')}</div>${(()=>{const rp=getReadingProgress(b.id);const rc=rp&&b.chapters.find(c=>c.id===rp.chapterId);if(!rc)return '';const ri=b.chapters.findIndex(c=>c.id===rc.id);return `<div class="reading-bookmark"><span class="muted">上次阅读：${esc(chapterDisplayTitle(rc,ri))}</span><button class="secondary" onclick="continueReading('${b.id}')">继续阅读</button></div>`})()}<div class="toolbar"><button class="secondary management-control" onclick="editBook('${b.id}')">编辑作品</button><button class="secondary management-control" onclick="addChapter('${b.id}')">＋ 添加章节</button></div><h2>目录 <span class="muted">共 ${b.chapters.length} 章 · ${totalWordCount} 字</span></h2>${directoryHTML}`;show('detailView')}
 
-function editBook(id){editorBook=id||null;const b=id?bookBy(id):{title:'',author:'',desc:'',status:'连载中',emoji:'📖',chapters:[]};document.getElementById('editorView').innerHTML=`<button class="ghost" onclick="${id?`openDetail('${id}')`:`show('homeView')`}">‹ 返回</button><h1>${id?'编辑小说':'新建小说'}</h1><label class="label">书名</label><input id="fTitle" value="${esc(b.title)}" placeholder="给故事起个名字"><label class="label">作者名</label><input id="fAuthor" value="${esc(b.author)}" placeholder="作者名 / 笔名"><label class="label">简介</label><textarea id="fDesc" placeholder="写一段吸引自己的简介">${esc(b.desc)}</textarea><div class="row"><div style="flex:1"><label class="label">状态</label><select id="fStatus"><option ${b.status==='连载中'?'selected':''}>连载中</option><option ${b.status==='已完结'?'selected':''}>已完结</option></select></div><div style="width:90px"><label class="label">封面符号</label><input id="fEmoji" value="${esc(b.emoji||'📖')}" maxlength="4"></div></div><label class="label">无封面时的文字封面颜色</label><select id="fCoverTone"><option value="paper" ${(b.coverTone||'paper')==='paper'?'selected':''}>纸白 · 米灰</option><option value="sage" ${b.coverTone==='sage'?'selected':''}>鼠尾草绿</option><option value="blue" ${b.coverTone==='blue'?'selected':''}>雾蓝</option><option value="rose" ${b.coverTone==='rose'?'selected':''}>灰粉</option><option value="lavender" ${b.coverTone==='lavender'?'selected':''}>灰紫</option><option value="ochre" ${b.coverTone==='ochre'?'selected':''}>复古麦黄</option><option value="charcoal" ${b.coverTone==='charcoal'?'selected':''}>深炭灰</option></select><label class="label">封面图片（可选）</label><input id="fCoverImage" type="file" accept="image/*" onchange="previewCoverImage(this)"><div id="coverPreview" class="cover ${b.coverImage?'has-image':''}" style="${b.coverImage?`background-image:url('${b.coverImage}')`: ''}margin:8px 0 14px">${b.coverImage?'':esc(b.emoji||'📖')}</div><button class="secondary" type="button" onclick="clearCoverImage()">移除封面图片</button><button onclick="saveBookForm()">保存作品</button> ${id?`<button class="secondary" onclick="addChapter('${id}')">＋ 添加章节</button><button class="secondary" onclick="deleteBook('${id}')">删除作品</button>`:''}`;show('editorView')}
+function editBook(id){editorBook=id||null;const b=id?bookBy(id):{title:'',author:'',desc:'',status:'连载中',emoji:'📖',chapters:[]};document.getElementById('editorView').innerHTML=`<button class="ghost" onclick="${id?`openDetail('${id}')`:`show('homeView')`}">‹ 返回</button><h1>${id?'编辑小说':'新建小说'}</h1><label class="label">书名</label><input id="fTitle" value="${esc(b.title)}" placeholder="给故事起个名字"><label class="label">作者名</label><input id="fAuthor" value="${esc(b.author)}" placeholder="作者名 / 笔名"><label class="label">简介</label><textarea id="fDesc" placeholder="段落之间空一行，即可分成不同段落。">${esc(b.desc)}</textarea><div class="book-cover-options"><div class="book-cover-select"><label class="label">状态</label><select id="fStatus"><option ${b.status==='连载中'?'selected':''}>连载中</option><option ${b.status==='已完结'?'selected':''}>已完结</option></select></div><div class="book-cover-select"><label class="label">文字封面颜色</label><select id="fCoverTone"><option value="paper" ${(b.coverTone||'paper')==='paper'?'selected':''}>纸白 · 米灰</option><option value="sage" ${b.coverTone==='sage'?'selected':''}>鼠尾草绿</option><option value="blue" ${b.coverTone==='blue'?'selected':''}>雾蓝</option><option value="rose" ${b.coverTone==='rose'?'selected':''}>灰粉</option><option value="lavender" ${b.coverTone==='lavender'?'selected':''}>灰紫</option><option value="ochre" ${b.coverTone==='ochre'?'selected':''}>复古麦黄</option><option value="charcoal" ${b.coverTone==='charcoal'?'selected':''}>深炭灰</option></select></div><div class="book-cover-symbol"><label class="label">符号</label><input id="fEmoji" value="${esc(b.emoji||'📖')}"></div></div><label class="label">封面图片（可选）</label><input id="fCoverImage" type="file" accept="image/*" onchange="previewCoverImage(this)"><div id="coverPreview" class="cover ${b.coverImage?'has-image':''}" style="${b.coverImage?`background-image:url('${b.coverImage}')`: ''}margin:8px 0 14px">${b.coverImage?'':esc(b.emoji||'📖')}</div><button class="secondary" type="button" onclick="clearCoverImage()">移除封面图片</button><button onclick="saveBookForm()">保存作品</button> ${id?`<button class="secondary" onclick="addChapter('${id}')">＋ 添加章节</button><button class="secondary" onclick="deleteBook('${id}')">删除作品</button>`:''}`;show('editorView')}
 function saveBookForm(){const title=document.getElementById('fTitle').value.trim();if(!title){alert('请先填写书名');return}let b=editorBook?bookBy(editorBook):null;if(!b){b={id:uid(),chapters:[]};db.books.unshift(b)}Object.assign(b,{title,author:document.getElementById('fAuthor').value.trim()||'佚名',desc:document.getElementById('fDesc').value.trim(),status:document.getElementById('fStatus').value,emoji:document.getElementById('fEmoji').value.trim()||'📖',coverTone:document.getElementById('fCoverTone').value});if(window.pendingCoverImage!==undefined){if(window.pendingCoverImage)b.coverImage=window.pendingCoverImage;else delete b.coverImage;window.pendingCoverImage=undefined}save();openDetail(b.id)}
 function previewCoverImage(input){const file=input.files&&input.files[0];if(!file)return;if(file.size>8*1024*1024){alert('图片请尽量选择 8MB 以内的文件。');input.value='';return}const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas'),m=800,sc=Math.min(1,m/Math.max(im.width,im.height));c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext('2d').drawImage(im,0,0,c.width,c.height);window.pendingCoverImage=c.toDataURL('image/jpeg',.82);const el=document.getElementById('coverPreview');el.classList.add('has-image');el.style.backgroundImage=`url('${window.pendingCoverImage}')`;el.textContent=''};im.src=r.result};r.readAsDataURL(file)}
 function clearCoverImage(){window.pendingCoverImage='';const el=document.getElementById('coverPreview');if(el){el.classList.remove('has-image');el.style.backgroundImage='';el.textContent=document.getElementById('fEmoji').value||'📖'}}
@@ -603,7 +650,7 @@ function renderReader(){
         ${p.comments.length ? `<div class="para-comments hide" id="comments-${p.id}">${p.comments.map((cm,j)=>renderCommentHTML(cm,j,'para',b.id,c.id,p.id)).join('')}<button class="secondary management-control" onclick="addParaComment('${b.id}','${c.id}','${p.id}')">＋ 评论</button></div>` : ''}
       </div>`).join('')||'<p class="muted">本章还没有正文。可通过编辑章节添加。</p>'}</div>
     <div class="chapter-end-matter">
-      ${c.note?`<div class="authornote"><b>作者有话说</b><br>${renderAuthorNote(c.note,c.noteImages||[])}</div>`:''}
+      ${c.note?`<div class="authornote"><b class="authornote-label">作者有话说</b><div class="authornote-content">${renderAuthorNote(c.note,c.noteImages||[])}</div></div>`:''}
       <div class="chapter-switch toolbar">
         <button class="secondary" ${idx===0?'disabled':''} onclick="switchChapter(-1)">‹ 上一章</button>
         <button class="secondary" ${idx===b.chapters.length-1?'disabled':''} onclick="switchChapter(1)">下一章 ›</button>
