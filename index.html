@@ -149,14 +149,14 @@ body.keyboard-open #chapterBodyInput{min-height:120px;height:30vh}
   -webkit-font-smoothing: antialiased;
 }
 
-/* 作品编辑：状态、文字封面颜色与符号同排，符号占用剩余宽度 */
-.book-cover-options{display:flex;align-items:flex-end;gap:8px;width:100%;min-width:0;margin:8px 0 14px}
-.book-cover-select{flex:0 0 auto;width:max-content;min-width:0}
-.book-cover-select select{width:max-content;max-width:100%;white-space:nowrap}
-.book-cover-symbol{flex:1 1 0;min-width:0}
-.book-cover-symbol input{width:100%;min-width:0}
-.book-description p{margin:0 0 1em;line-height:1.8}
-.book-description p:last-child{margin-bottom:0}
+/* 作品编辑：三个选项等宽排列，输入控件统一高度 */
+.book-cover-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end;gap:8px;width:100%;min-width:0;margin:8px 0 14px}
+.book-cover-select,.book-cover-symbol{width:100%;min-width:0}
+.book-cover-select select,.book-cover-symbol input{display:block;box-sizing:border-box;width:100%;min-width:0;height:40px;min-height:40px;padding:8px 7px;margin:5px 0 12px;font-size:13px}
+.book-cover-select select{white-space:nowrap;text-overflow:ellipsis}
+.book-description{line-height:1.5}
+.book-description p{margin:0;line-height:inherit}
+.authornote{font-size:16px}
 .authornote-label{color:color-mix(in srgb,var(--accent) 50%,transparent)}
 .authornote-content{color:color-mix(in srgb,var(--ink) 80%,transparent)}
 .comment-text{color:color-mix(in srgb,var(--ink) 80%,transparent)}
