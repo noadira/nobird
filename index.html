@@ -45,7 +45,7 @@ textarea{min-height:90px;resize:vertical;max-width:100%}#editorView{padding-bott
 .bottomnav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,254,250,.96);backdrop-filter:blur(15px);border-top:1px solid var(--line);padding:9px 10px calc(env(safe-area-inset-bottom) + 8px);display:flex;justify-content:space-around;z-index:10;transition:transform .18s,opacity .18s}body.reading-active .bottomnav{transform:translateY(110%);opacity:0;pointer-events:none}body.reading-active.nav-awake .bottomnav{transform:translateY(0);opacity:1;pointer-events:auto}.nav-icon{display:block;width:20px;height:20px;margin:0 auto 3px;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}.bottomnav button{min-width:62px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
 .bottomnav button{background:transparent;color:#777368;padding:7px 10px;font-size:12px}.bottomnav button.active{color:var(--accent);font-weight:800}
 .notice{background:#fff4dd;color:#7c5c2c;border-radius:12px;padding:12px;font-size:12px;line-height:1.7;margin-bottom:15px}
-.toolbar{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.toolbar button{font-size:12px;padding:8px 10px}.reading-bookmark{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0 4px;padding:10px 12px;background:rgba(255,254,250,.7);border:1px solid var(--line);border-radius:12px}.reading-bookmark button{flex:none}
+.toolbar{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.toolbar button{font-size:12px;padding:8px 10px}
 hr{border:0;border-top:1px solid var(--line);margin:18px 0}.empty{text-align:center;color:var(--muted);padding:36px 10px}
 @media(min-width:600px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
@@ -103,7 +103,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}.empty{text-align:cen
 .reader-extra .comment-floor,.reader-extra .comment-body,.reader-extra .comment-text,.reader-extra .comment-reply-prefix{display:inline}
 
 body.read-mode .management-control { display: none !important; }
-/* 阅读模式下恢复原先「阅读」按钮的自然宽度，避免单按钮占满整行 */
+
 body.read-mode .book-actions>.primary-actions{flex:0 0 auto}
 body.read-mode .book-actions>.primary-actions button{flex:0 0 auto;min-width:0}
 body.read-mode .book-actions>.order-controls{display:none}
@@ -153,7 +153,7 @@ body.keyboard-open #chapterBodyInput{min-height:120px;height:30vh}
   -webkit-font-smoothing: antialiased;
 }
 
-/* 作品编辑：三个选项等宽排列，输入控件统一高度 */
+
 .book-cover-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end;gap:8px;width:100%;min-width:0;margin:8px 0 14px}
 .book-cover-select,.book-cover-symbol{width:100%;min-width:0}
 .book-cover-select select,.book-cover-symbol input{display:block;box-sizing:border-box;width:100%;min-width:0;height:40px;min-height:40px;padding:8px 7px;margin:5px 0 12px;font-size:13px}
@@ -164,7 +164,7 @@ body.keyboard-open #chapterBodyInput{min-height:120px;height:30vh}
 .authornote-label{color:color-mix(in srgb,var(--accent) 50%,transparent)}
 .authornote-content{color:color-mix(in srgb,var(--ink) 80%,transparent)}
 .comment-text{color:color-mix(in srgb,var(--ink) 80%,transparent)}
-/* 手机窄屏：阅读/编辑沿用历史版本的双按钮横排；排序按钮缩为右侧竖列 */
+
 @media(max-width:599px){
   .book-actions{display:flex;flex-wrap:nowrap;gap:5px;align-items:center}
   .book-actions>.primary-actions{display:flex;flex:1 1 auto;width:auto;min-width:0;gap:10px}
@@ -172,6 +172,9 @@ body.keyboard-open #chapterBodyInput{min-height:120px;height:30vh}
   .book-actions>.order-controls{display:flex;flex:0 0 16px;width:16px;flex-direction:column;gap:2px;margin-left:0}
   .book-actions>.order-controls button{width:16px;height:14px;min-width:16px;min-height:14px;padding:0;border-radius:4px;font-size:10px;line-height:1}
 }
+
+
+.chapter-directory-card{cursor:pointer;position:relative;padding-right:42px!important}.chapter-directory-card .reading-mark{position:absolute;right:18px;top:0;width:17px;height:23px;color:var(--line);pointer-events:none}.chapter-directory-card .reading-mark svg{display:block;width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round}.directory-heading-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0 12px}.directory-heading-row h2{margin:0}.excerpt-switch{flex:0 0 auto;width:42px;height:36px;padding:7px 10px;border:1px solid var(--line);border-radius:9px;background:var(--paper);color:var(--muted);display:grid;place-items:center;box-shadow:0 1px 2px #00000008}.excerpt-switch svg{width:19px;height:22px;display:block;fill:currentColor;stroke:currentColor;stroke-width:1.2;stroke-linejoin:round}.excerpt-switch[aria-pressed="true"]{background:var(--soft);color:var(--ink);border-color:var(--line)}.directory-excerpt-list{margin-top:8px}.chapter-directory-card .chapter-sort-controls{position:relative;z-index:2}.selection-tools{position:fixed;z-index:1200;display:flex;gap:5px;padding:7px;background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:0 5px 24px #0002}.selection-tools button{font-size:13px;padding:7px 10px}.excerpt-mark{background:transparent!important;color:inherit;border-radius:0;text-decoration-line:underline;text-decoration-color:rgba(120,120,120,.38);text-decoration-thickness:1.25px;text-underline-offset:.18em;-webkit-box-decoration-break:clone;box-decoration-break:clone}.excerpt-mark-dashed{text-decoration-style:dashed;text-decoration-color:rgba(120,120,120,.38);text-decoration-thickness:1.25px}.excerpt-panel{margin:14px 0;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--paper)}.excerpt-card{min-height:0;overflow:hidden;padding:11px 12px;margin:8px 0;border:1px solid var(--line);border-radius:10px;background:var(--paper);cursor:pointer}.excerpt-card-title{font-size:12px;color:var(--muted);margin:0 0 5px}.excerpt-card-text{font-size:14px;line-height:1.6;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}.excerpt-card-text p{margin:0 0 2px}.chapter-bookmark-menu{position:fixed;z-index:1500;padding:6px;background:var(--paper);border:1px solid var(--line);border-radius:10px;box-shadow:0 5px 24px #0002}.chapter-bookmark-menu button{display:block;width:100%;white-space:nowrap;text-align:left}.excerpt-preview{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;white-space:normal;line-height:1.65}.excerpt-preview p{margin:0 0 4px}
 </style>
 
 <style id="comment-unified-opacity-fix">
@@ -220,7 +223,7 @@ body.dark-mode.reading-active #readerView .chaptertext .para-text {
 </style>
 
 <style id="comment-darkmode-and-spacing-fix">
-/* 评论文字跟随正文主题色；评论换行统一行高 */
+
 .comment, .comment-body, .comment-text {
   color: var(--ink) !important;
   line-height: 1.6 !important;
@@ -234,7 +237,7 @@ body.dark-mode .comment-body,
 body.dark-mode .comment-text {
   color: var(--ink) !important;
 }
-/* 回复、删除按钮缩小，避免抢占评论文字空间 */
+
 .comment-actions {
   display: inline-flex;
   align-items: baseline;
@@ -283,6 +286,7 @@ const safeStorage=(()=>{
 })();
 const KEY='private_tomato_v1';
 let db=loadDB(), filter='all', currentBook=null,currentChapter=null, editorBook=null;
+let directoryPanelMode='directory';
 let appMode=safeStorage.getItem('private_tomato_mode')||'edit';
 let readerPrefs={
   pageMode:'scroll',
@@ -492,7 +496,6 @@ function keepFocusedFieldVisible(target){
     main.scrollTop+=rect.top-12;
   }
 }
-window.addEventListener('pagehide',saveReadingProgress);window.addEventListener('beforeunload',saveReadingProgress);
 window.addEventListener('resize',sizeMainArea);
 window.addEventListener('orientationchange',()=>setTimeout(sizeMainArea,150));
 if(window.visualViewport){
@@ -501,14 +504,21 @@ if(window.visualViewport){
 }
 document.addEventListener('focusin',e=>{if(e.target.matches('input,textarea,select'))setTimeout(()=>keepFocusedFieldVisible(e.target),300)});
 document.addEventListener('focusout',()=>setTimeout(sizeMainArea,250));
-function show(id){if(id!=='readerView')saveReadingProgress();['homeView','detailView','readerView','editorView','settingsView'].forEach(x=>document.getElementById(x).classList.toggle('hide',x!==id));document.querySelectorAll('.bottomnav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id||(b.dataset.action==='directory'&&(id==='detailView'||id==='readerView'))));document.body.classList.toggle('reading-active',id==='readerView');document.body.classList.remove('nav-awake');applyReaderBackdrop();updateReaderTintPickerVisibility();sizeMainArea();}
+function show(id){['homeView','detailView','readerView','editorView','settingsView'].forEach(x=>document.getElementById(x).classList.toggle('hide',x!==id));document.querySelectorAll('.bottomnav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id||(b.dataset.action==='directory'&&(id==='detailView'||id==='readerView'))));document.body.classList.toggle('reading-active',id==='readerView');document.body.classList.remove('nav-awake');applyReaderBackdrop();updateReaderTintPickerVisibility();sizeMainArea();}
 function bookBy(id){return db.books.find(b=>b.id===id)}
 function moveBook(id,direction){const i=db.books.findIndex(b=>b.id===id),j=i+direction;if(i<0||j<0||j>=db.books.length)return;[db.books[i],db.books[j]]=[db.books[j],db.books[i]];save();renderHome()}
-function renderHome(){const grid=document.getElementById('bookGrid');let books=db.books.filter(b=>filter==='all'||b.status===filter);grid.innerHTML=books.length?books.map(b=>{const i=db.books.findIndex(x=>x.id===b.id);return `<article class="book"><div class="cover ${b.coverImage?'has-image':`no-image tone-${['paper','sage','blue','rose','lavender','ochre','charcoal'].includes(b.coverTone)?b.coverTone:'paper'}`}" style="${b.coverImage?`background-image:url('${b.coverImage}')`:''}">${b.coverImage?'':`<div class="text-cover-inner"><div class="text-cover-title">${esc(b.title||'未命名作品')}</div><div class="text-cover-rule"></div><div class="text-cover-author">${esc(b.author||'佚名')}</div></div>`}</div><div class="bookbody"><div class="booktitle">${esc(b.title)}</div><div class="muted bookmeta">${esc(b.author||'佚名')} · ${esc(b.status)}</div><div class="row book-actions"><div class="primary-actions"><button onclick="openDetail('${b.id}')">阅读</button><button class="secondary management-control" onclick="editBook('${b.id}')">编辑</button></div><div class="order-controls"><button class="secondary management-control" onclick="moveBook('${b.id}',-1)" ${i===0?'disabled':''} aria-label="上移" title="上移">↑</button><button class="secondary management-control" onclick="moveBook('${b.id}',1)" ${i===db.books.length-1?'disabled':''} aria-label="下移" title="下移">↓</button></div></div></div></article>`}).join(''):'<div class="empty" style="grid-column:1/-1">这里还空着。<br>点「新建小说」，创建你的第一本书吧。</div>'}
+function renderHome(){const grid=document.getElementById('bookGrid');let books=db.books.filter(b=>filter==='all'||b.status===filter);grid.innerHTML=books.length?books.map(b=>{const i=db.books.findIndex(x=>x.id===b.id);return `<article class="book"><div class="cover ${b.coverImage?'has-image':`no-image tone-${['paper','sage','blue','rose','lavender','ochre','charcoal'].includes(b.coverTone)?b.coverTone:'paper'}`}" style="${b.coverImage?`background-image:url('${b.coverImage}')`:''}">${b.coverImage?'':`<div class="text-cover-inner"><div class="text-cover-title">${esc(b.title||'未命名作品')}</div><div class="text-cover-rule"></div><div class="text-cover-author">${esc(b.author||'佚名')}</div></div>`}</div><div class="bookbody"><div class="booktitle">${esc(b.title)}</div><div class="muted bookmeta">${esc(b.author||'佚名')} · ${esc(b.status)}</div><div class="row book-actions"><div class="primary-actions"><button onclick="openBookFromShelf('${b.id}')">阅读</button><button class="secondary management-control" onclick="editBook('${b.id}')">编辑</button></div><div class="order-controls"><button class="secondary management-control" onclick="moveBook('${b.id}',-1)" ${i===0?'disabled':''} aria-label="上移" title="上移">↑</button><button class="secondary management-control" onclick="moveBook('${b.id}',1)" ${i===db.books.length-1?'disabled':''} aria-label="下移" title="下移">↓</button></div></div></div></article>`}).join(''):'<div class="empty" style="grid-column:1/-1">这里还空着。<br>点「新建小说」，创建你的第一本书吧。</div>'}
 function chapterWordCount(c){return (c?.paragraphs||[]).reduce((total,p)=>total+String(p.text||'').replace(/\s/g,'').length,0)}
 function formatTotalWordCount(count){return `${(count/10000).toFixed(1)}万字`}
 function chapterDisplayTitle(c,index){const no=String(c?.chapterNumber??'').trim();const title=String(c?.title||'').trim();return [no?`第${no}章`: '',title].filter(Boolean).join(' ')||'未命名章节'}
-function renderChapterDirectoryCard(bookId,c,i){const hasAuthorNote=!!(c.note||((c.noteImages||[]).length));const mode=chapterSortMode;return `<div class="card row between"><div class="chapter-item-title"><b>${esc(chapterDisplayTitle(c,i))}</b><div class="muted">${chapterWordCount(c)} 字${hasAuthorNote?' ^':''}</div></div>${mode?`<div class="chapter-sort-controls"><button class="secondary" onclick="moveChapter('${bookId}','${c.id}',-1)" aria-label="上移">↑</button><button class="secondary" onclick="moveChapter('${bookId}','${c.id}',1)" aria-label="下移">↓</button></div>`:`<button class="secondary" onclick="readBook('${bookId}','${c.id}')">阅读</button>`}</div>`}
+const DIRECTORY_BOOKMARK_KEY='private_tomato_directory_bookmarks_v2';
+const LAST_READ_CHAPTER_KEY='private_tomato_last_read_chapter_v1';
+function getDirectoryBookmarks(){try{return JSON.parse(safeStorage.getItem(DIRECTORY_BOOKMARK_KEY)||'{}')}catch(e){return {}}}
+function getLastReadChapters(){try{return JSON.parse(safeStorage.getItem(LAST_READ_CHAPTER_KEY)||'{}')}catch(e){return {}}}
+function getMarkedChapter(bookId){const manual=getDirectoryBookmarks()[bookId];if(manual)return manual;return getLastReadChapters()[bookId]||null}
+function renderChapterDirectoryCard(bookId,c,i){const hasAuthorNote=!!(c.note||((c.noteImages||[]).length));const mode=chapterSortMode;const marked=getMarkedChapter(bookId)===c.id;return `<div class="card row between chapter-directory-card" data-book-id="${bookId}" data-chapter-id="${c.id}" ${mode?'':'onclick="readBook(\''+bookId+'\',\''+c.id+'\')"'}><div class="chapter-item-title"><b>${esc(chapterDisplayTitle(c,i))}</b><div class="muted">${chapterWordCount(c)} 字${hasAuthorNote?' ^':''}</div></div>${marked?'<span class="reading-mark" aria-label="上次阅读位置"><svg viewBox="0 0 24 30"><path d="M5 0v27l7-5.2 7 5.2V0"/></svg></span>':''}${mode?`<div class="chapter-sort-controls"><button class="secondary" onclick="event.stopPropagation();moveChapter('${bookId}','${c.id}',-1)" aria-label="上移">↑</button><button class="secondary" onclick="event.stopPropagation();moveChapter('${bookId}','${c.id}',1)" aria-label="下移">↓</button></div>`:''}</div>`}
+function setSelectionBookmark(){const all=getDirectoryBookmarks();all[currentBook]=currentChapter;safeStorage.setItem(DIRECTORY_BOOKMARK_KEY,JSON.stringify(all));document.querySelector('.selection-tools')?.remove();getSelection()?.removeAllRanges();}
+
 function getBookReadingOrder(book){const groups=[],unvolumed=[];(book.chapters||[]).forEach(c=>{const name=String(c.volume||'').trim();if(!name){unvolumed.push(c);return}let g=groups.find(x=>x.name===name);if(!g){g={name,items:[]};groups.push(g)}g.items.push(c)});return groups.flatMap(g=>g.items).concat(unvolumed)}
 
 function renderBookDescription(value){return String(value||'').split(/\n\s*\n+/).map(part=>`<p>${esc(part).replace(/\n/g,'<br>')}</p>`).join('')}
@@ -556,7 +566,7 @@ function moveChapter(bookId,chapterId,direction){
   [b.chapters[i],b.chapters[target]]=[b.chapters[target],b.chapters[i]];
   save();openDetail(bookId,true);restoreDetailScroll(scrollY,mainScrollTop);
 }
-function openDetail(id,preservePosition=false){const previousScrollY=window.scrollY,previousMain=document.querySelector('main'),previousMainScrollTop=previousMain?previousMain.scrollTop:0;currentBook=id;const b=bookBy(id);if(!b)return;const totalWordCount=b.chapters.reduce((total,c)=>total+chapterWordCount(c),0);const namedVolumes=[],unvolumed=[];b.chapters.forEach((c,i)=>{const name=String(c.volume||'').trim();if(!name){unvolumed.push({c,i});return}let item=namedVolumes.find(x=>x.name===name);if(!item){item={name,chapters:[],wordCount:0};namedVolumes.push(item)}item.chapters.push({c,i});item.wordCount+=chapterWordCount(c)});const hasVolumeDirectory=namedVolumes.length>0;const volumeStates=getVolumeDirectoryStates()[id]||{};const directoryHTML=!b.chapters.length?'<div class="empty">还没有章节。<span class="management-control">请切换到编辑模式添加第一章。</span></div>':hasVolumeDirectory?namedVolumes.map((v,vi)=>`<details class="volume-group" data-volume-name="${esc(v.name)}" ${Object.prototype.hasOwnProperty.call(volumeStates,v.name)?(volumeStates[v.name]?"open":""):"open"}><summary><span>${esc(v.name)}</span><span class="muted">${v.chapters.length} 章 · ${v.wordCount} 字　⌄</span></summary><div class="volume-chapters">${v.chapters.map(({c,i})=>renderChapterDirectoryCard(b.id,c,i)).join('')}</div></details>`).join('')+(unvolumed.length?`<div class="volume-chapters">${unvolumed.map(({c,i})=>renderChapterDirectoryCard(b.id,c,i)).join('')}</div>`:''):b.chapters.map((c,i)=>renderChapterDirectoryCard(b.id,c,i)).join('');document.getElementById('detailView').innerHTML=`<button class="ghost" onclick="show('homeView')">‹ 返回书架</button><div class="coverbig ${b.coverImage?'has-image':''}" style="${b.coverImage?`background-image:url('${b.coverImage}')`: ''}">${b.coverImage?'':esc(b.emoji||'📖')}</div><h1>${esc(b.title)}</h1><div class="muted">${esc(b.author||'佚名')} · ${esc(b.status)} · ${formatTotalWordCount(totalWordCount)}</div><div class="book-description">${renderBookDescription(b.desc||'暂无简介')}</div>${(()=>{const rp=getReadingProgress(b.id);const rc=rp&&b.chapters.find(c=>c.id===rp.chapterId);if(!rc)return '';const ri=b.chapters.findIndex(c=>c.id===rc.id);return `<div class="reading-bookmark"><span class="muted">上次阅读：${esc(chapterDisplayTitle(rc,ri))}</span><button class="secondary" onclick="continueReading('${b.id}')">继续阅读</button></div>`})()}<div class="toolbar" style="display:flex;align-items:center;justify-content:space-between"><div><button class="secondary management-control" onclick="editBook('${b.id}')">编辑作品</button><button class="secondary management-control" onclick="addChapter('${b.id}')">＋ 添加章节</button></div><button class="secondary management-control" style="width:42px;min-width:42px;padding:8px" onclick="toggleChapterSort()" aria-label="${chapterSortMode?'完成排序':'调整章节顺序'}" title="${chapterSortMode?'完成排序':'调整章节顺序'}">${chapterSortMode?'✓':'⇅'}</button></div><h2>目录 <span class="muted">共 ${b.chapters.length} 章 · ${totalWordCount} 字</span></h2>${directoryHTML}`;show('detailView');if(preservePosition)restoreDetailScroll(previousScrollY,previousMainScrollTop);else requestAnimationFrame(()=>{const main=document.querySelector('main');if(main)main.scrollTop=0;window.scrollTo(0,0)})}
+function openDetail(id,preservePosition=false){const previousScrollY=window.scrollY,previousMain=document.querySelector('main'),previousMainScrollTop=previousMain?previousMain.scrollTop:0;currentBook=id;const b=bookBy(id);if(!b)return;const totalWordCount=b.chapters.reduce((total,c)=>total+chapterWordCount(c),0);const namedVolumes=[],unvolumed=[];b.chapters.forEach((c,i)=>{const name=String(c.volume||'').trim();if(!name){unvolumed.push({c,i});return}let item=namedVolumes.find(x=>x.name===name);if(!item){item={name,chapters:[],wordCount:0};namedVolumes.push(item)}item.chapters.push({c,i});item.wordCount+=chapterWordCount(c)});const hasVolumeDirectory=namedVolumes.length>0;const volumeStates=getVolumeDirectoryStates()[id]||{};const directoryHTML=!b.chapters.length?'<div class="empty">还没有章节。<span class="management-control">请切换到编辑模式添加第一章。</span></div>':hasVolumeDirectory?namedVolumes.map((v)=>`<details class="volume-group" data-volume-name="${esc(v.name)}" ${Object.prototype.hasOwnProperty.call(volumeStates,v.name)?(volumeStates[v.name]?"open":""): "open"}><summary><span>${esc(v.name)}</span><span class="muted">${v.chapters.length} 章 · ${v.wordCount} 字　⌄</span></summary><div class="volume-chapters">${v.chapters.map(({c,i})=>renderChapterDirectoryCard(b.id,c,i)).join('')}</div></details>`).join('')+(unvolumed.length?`<div class="volume-chapters">${unvolumed.map(({c,i})=>renderChapterDirectoryCard(b.id,c,i)).join('')}</div>`:''):b.chapters.map((c,i)=>renderChapterDirectoryCard(b.id,c,i)).join('');const isExcerpts=directoryPanelMode==='excerpts';document.getElementById('detailView').innerHTML=`<button class="ghost" onclick="show('homeView')">‹ 返回书架</button><div class="coverbig ${b.coverImage?'has-image':''}" style="${b.coverImage?`background-image:url('${b.coverImage}')`: ''}">${b.coverImage?'':esc(b.emoji||'📖')}</div><h1>${esc(b.title)}</h1><div class="muted">${esc(b.author||'佚名')} · ${esc(b.status)} · ${formatTotalWordCount(totalWordCount)}</div><div class="book-description">${renderBookDescription(b.desc||'暂无简介')}</div><div class="toolbar" style="display:flex;align-items:center;justify-content:space-between"><div><button class="secondary management-control" onclick="editBook('${b.id}')">编辑作品</button><button class="secondary management-control" onclick="addChapter('${b.id}')">＋ 添加章节</button></div><button class="secondary management-control" style="width:42px;min-width:42px;padding:8px" onclick="toggleChapterSort()" aria-label="${chapterSortMode?'完成排序':'调整章节顺序'}" title="${chapterSortMode?'完成排序':'调整章节顺序'}">${chapterSortMode?'✓':'⇅'}</button></div><div class="directory-heading-row"><h2>目录 <span class="muted">共 ${b.chapters.length} 章 · ${totalWordCount} 字</span></h2><button class="excerpt-switch" onclick="toggleDirectoryExcerptView()" aria-label="${isExcerpts?'返回目录':'查看书摘'}" title="${isExcerpts?'返回目录':'书摘'}" aria-pressed="${isExcerpts}"><svg viewBox="0 0 24 30" aria-hidden="true"><path d="M4 2.5h16v25l-8-5.8-8 5.8z"/></svg></button></div><div id="directoryContent" class="${isExcerpts?'directory-excerpt-list':''}">${isExcerpts?renderDirectoryExcerptCards(id):directoryHTML}</div>`;show('detailView');if(preservePosition)restoreDetailScroll(previousScrollY,previousMainScrollTop);else requestAnimationFrame(()=>{const main=document.querySelector('main');if(main)main.scrollTop=0;window.scrollTo(0,0)})}
 
 function editBook(id){editorBook=id||null;const b=id?bookBy(id):{title:'',author:'',desc:'',status:'连载中',emoji:'📖',chapters:[]};document.getElementById('editorView').innerHTML=`<button class="ghost" onclick="${id?`openDetail('${id}')`:`show('homeView')`}">‹ 返回</button><h1>${id?'编辑小说':'新建小说'}</h1><label class="label">书名</label><input id="fTitle" value="${esc(b.title)}" placeholder="给故事起个名字"><label class="label">作者名</label><input id="fAuthor" value="${esc(b.author)}" placeholder="作者名 / 笔名"><label class="label">简介</label><textarea id="fDesc" placeholder="段落之间空一行，即可分成不同段落。">${esc(b.desc)}</textarea><div class="book-cover-options"><div class="book-cover-select"><label class="label">状态</label><select id="fStatus"><option ${b.status==='连载中'?'selected':''}>连载中</option><option ${b.status==='已完结'?'selected':''}>已完结</option></select></div><div class="book-cover-select"><label class="label">文字封面颜色</label><select id="fCoverTone"><option value="paper" ${(b.coverTone||'paper')==='paper'?'selected':''}>纸白 · 米灰</option><option value="sage" ${b.coverTone==='sage'?'selected':''}>鼠尾草绿</option><option value="blue" ${b.coverTone==='blue'?'selected':''}>雾蓝</option><option value="rose" ${b.coverTone==='rose'?'selected':''}>灰粉</option><option value="lavender" ${b.coverTone==='lavender'?'selected':''}>灰紫</option><option value="ochre" ${b.coverTone==='ochre'?'selected':''}>复古麦黄</option><option value="charcoal" ${b.coverTone==='charcoal'?'selected':''}>深炭灰</option></select></div><div class="book-cover-symbol"><label class="label">符号</label><input id="fEmoji" value="${esc(b.emoji||'📖')}"></div></div><label class="label">封面图片（可选）</label><input id="fCoverImage" type="file" accept="image/*" onchange="previewCoverImage(this)"><div id="coverPreview" class="cover ${b.coverImage?'has-image':''}" style="${b.coverImage?`background-image:url('${b.coverImage}')`: ''}margin:8px 0 14px">${b.coverImage?'':esc(b.emoji||'📖')}</div><button class="secondary" type="button" onclick="clearCoverImage()">移除封面图片</button><button onclick="saveBookForm()">保存作品</button> ${id?`<button class="secondary" onclick="addChapter('${id}')">＋ 添加章节</button><button class="secondary" onclick="deleteBook('${id}')">删除作品</button>`:''}`;show('editorView')}
 function saveBookForm(){const title=document.getElementById('fTitle').value.trim();if(!title){alert('请先填写书名');return}let b=editorBook?bookBy(editorBook):null;if(!b){b={id:uid(),chapters:[]};db.books.unshift(b)}Object.assign(b,{title,author:document.getElementById('fAuthor').value.trim()||'佚名',desc:document.getElementById('fDesc').value.trim(),status:document.getElementById('fStatus').value,emoji:document.getElementById('fEmoji').value.trim()||'📖',coverTone:document.getElementById('fCoverTone').value});if(window.pendingCoverImage!==undefined){if(window.pendingCoverImage)b.coverImage=window.pendingCoverImage;else delete b.coverImage;window.pendingCoverImage=undefined}save();openDetail(b.id)}
@@ -646,37 +656,9 @@ function saveChapterForm(bookId,chapterId){
  else{b.chapters.push({id:uid(),title,chapterNumber,volume,paragraphs:paras,note,noteImages,comments:[]})}
  save();openDetail(bookId);
 }
-const READING_PROGRESS_KEY='private_tomato_reading_progress';
-function loadReadingProgress(){try{return JSON.parse(safeStorage.getItem(READING_PROGRESS_KEY))||{}}catch(e){return {}}}
-function getReadingProgress(bookId){const all=loadReadingProgress();return all[bookId]||null}
-function saveReadingProgress(){
-  if(!currentBook||!currentChapter)return;
-  const main=document.querySelector('main');
-  if(!main||document.getElementById('readerView').classList.contains('hide'))return;
-  const b=bookBy(currentBook);if(!b)return;
-  const idx=b.chapters.findIndex(c=>c.id===currentChapter);if(idx<0)return;
-  const all=loadReadingProgress();
-  all[currentBook]={chapterId:currentChapter,chapterIndex:idx,scrollTop:Math.max(0,main.scrollTop||0),updatedAt:Date.now()};
-  try{safeStorage.setItem(READING_PROGRESS_KEY,JSON.stringify(all))}catch(e){}
-}
-function restoreReadingProgress(){
-  const progress=getReadingProgress(currentBook);if(!progress)return;
-  const b=bookBy(currentBook);if(!b)return;
-  const idx=b.chapters.findIndex(c=>c.id===progress.chapterId);
-  if(idx<0)return;
-  if(currentChapter!==progress.chapterId)return;
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    const main=document.querySelector('main');if(main&&!document.getElementById('readerView').classList.contains('hide'))main.scrollTop=Math.max(0,Number(progress.scrollTop)||0);
-  }));
-}
-function continueReading(bookId){
-  const b=bookBy(bookId);if(!b)return;
-  const p=getReadingProgress(bookId);
-  const chapterId=p&&b.chapters.some(c=>c.id===p.chapterId)?p.chapterId:(b.chapters[0]?.id||'');
-  if(chapterId)readBook(bookId,chapterId);
-}
-function readBook(bookId,chapterId){currentBook=bookId;const b=bookBy(bookId);currentChapter=chapterId||b.chapters[0]?.id;renderReader();show('readerView');hideHeader()}
-function switchChapter(direction){const b=bookBy(currentBook);if(!b)return;saveReadingProgress();const chapters=getBookReadingOrder(b);const idx=chapters.findIndex(c=>c.id===currentChapter);const next=chapters[idx+direction];if(!next)return;currentChapter=next.id;renderReader();const el=document.querySelector('#readerView .chaptertext');if(el){el.scrollLeft=0;el.scrollTop=0;}}
+function openBookFromShelf(bookId){openDetail(bookId)}
+function readBook(bookId,chapterId){currentBook=bookId;const b=bookBy(bookId);currentChapter=chapterId||getLastReadChapters()[bookId]||b.chapters[0]?.id;const last=getLastReadChapters();last[bookId]=currentChapter;safeStorage.setItem(LAST_READ_CHAPTER_KEY,JSON.stringify(last));renderReader();show('readerView');hideHeader();}
+function switchChapter(direction){const b=bookBy(currentBook);if(!b)return;const chapters=getBookReadingOrder(b);const idx=chapters.findIndex(c=>c.id===currentChapter);const next=chapters[idx+direction];if(!next)return;currentChapter=next.id;const last=getLastReadChapters();last[currentBook]=currentChapter;safeStorage.setItem(LAST_READ_CHAPTER_KEY,JSON.stringify(last));renderReader();const el=document.querySelector('#readerView .chaptertext');if(el){el.scrollLeft=0;el.scrollTop=0;}}
 document.addEventListener('click',function(e){
   const btn=e.target.closest('button.comment-manage-control');
   if(!btn)return;
@@ -704,12 +686,12 @@ function renderReader(){
     <button class="ghost" onclick="openDetail('${b.id}')">‹ 返回目录</button>
     <div class="muted">${esc(b.title)} · ${esc(chapterDisplayTitle(c,idx))} · ${idx+1}/${orderedChapters.length}</div>
     <div class="chaptertext">${c.paragraphs.map((p,i)=>`
-      <div class="para">
-        <div class="para-text">${esc(p.text).replace(/\n/g,'<br>')} ${p.comments.length
-          ? `<button class="bubble-button inline-bubble" aria-label="查看段评 ${p.comments.length} 条" title="查看段评" onclick="toggleParaComments('${p.id}')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14a2.5 2.5 0 0 1 2.5 2.5v8a2.5 2.5 0 0 1-2.5 2.5h-8l-5 3v-3A2.5 2.5 0 0 1 3.5 15V7A2.5 2.5 0 0 1 5 4.5Z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg><span>${p.comments.length}</span></button>`
+      <div class="para" data-paragraph-id="${esc(p.id)}">
+        <div class="para-text">${renderParagraphWithHighlights(currentBook,c.id,p)} ${(p.comments||[]).length
+          ? `<button class="bubble-button inline-bubble" aria-label="查看段评 ${p.comments.length} 条" title="查看段评" onclick="toggleParaComments('${p.id}')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14a2.5 2.5 0 0 1 2.5 2.5v8a2.5 2.5 0 0 1-2.5 2.5h-8l-5 3v-3A2.5 2.5 0 0 1 3.5 15V7A2.5 2.5 0 0 1 5 4.5Z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg><span>${(p.comments||[]).length}</span></button>`
           : `<button class="add-comment-link" onclick="addParaComment('${b.id}','${c.id}','${p.id}')" aria-label="添加段评" title="添加段评">＋</button>`
         }</div>
-        ${p.comments.length ? `<div class="para-comments hide" id="comments-${p.id}">${p.comments.map((cm,j)=>renderCommentHTML(cm,j,'para',b.id,c.id,p.id)).join('')}<button class="secondary management-control" onclick="addParaComment('${b.id}','${c.id}','${p.id}')">＋ 评论</button></div>` : ''}
+        ${(p.comments||[]).length ? `<div class="para-comments hide" id="comments-${p.id}">${p.comments.map((cm,j)=>renderCommentHTML(cm,j,'para',b.id,c.id,p.id)).join('')}<button class="secondary management-control" onclick="addParaComment('${b.id}','${c.id}','${p.id}')">＋ 评论</button></div>` : ''}
       </div>`).join('')||'<p class="muted">本章还没有正文。可通过编辑章节添加。</p>'}</div>
     <div class="chapter-end-matter">
       ${c.note?`<div class="authornote"><b class="authornote-label">作者有话说</b><div class="authornote-content">${renderAuthorNote(c.note,c.noteImages||[])}</div></div>`:''}
@@ -723,14 +705,60 @@ function renderReader(){
       <div class="toolbar management-control"><button class="secondary" onclick="addChapter('${b.id}','${c.id}')">编辑本章</button><button class="secondary" onclick="editBook('${b.id}')">编辑作品</button></div>
     </div>
 `;
-  applyReaderPrefs();bindReaderKeys();scheduleLineEndPunctuation();
+  applyReaderPrefs();bindReaderKeys();bindExcerptSelection();scheduleLineEndPunctuation();
   const pageArea=document.querySelector('#readerView .chaptertext');if(pageArea){pageArea.addEventListener('scroll',updateChapterSwitchVisibility,{passive:true});requestAnimationFrame(updateChapterSwitchVisibility)}
-  restoreReadingProgress();
-  const mainForProgress=document.querySelector('main');if(mainForProgress&&!mainForProgress.__readingProgressBound){mainForProgress.__readingProgressBound=true;mainForProgress.__readingProgressTimer=0;mainForProgress.addEventListener('scroll',()=>{if(document.getElementById('readerView').classList.contains('hide'))return;clearTimeout(mainForProgress.__readingProgressTimer);mainForProgress.__readingProgressTimer=setTimeout(saveReadingProgress,180)},{passive:true})}
   const rv=document.getElementById('readerView');
   rv.onclick=function(e){if(e.target.closest('button, input, textarea, select, a'))return;document.body.classList.toggle('nav-awake')};
 }
 
+const EXCERPT_KEY='private_tomato_excerpts_v1';
+function renderParagraphWithHighlights(bookId,chapterId,p){const text=String(p.text||''),ranges=[];getExcerpts().filter(x=>x.bookId===bookId&&x.chapterId===chapterId).forEach(x=>(x.parts||[]).forEach(a=>{if(a.paragraphId===p.id&&Number.isFinite(a.start)&&Number.isFinite(a.end)&&a.end>a.start)ranges.push([Math.max(0,a.start),Math.min(text.length,a.end),'dashed'])}));ranges.sort((a,b)=>a[0]-b[0]);let out='',at=0;ranges.forEach(([a,b,style])=>{if(a<at)return;out+=esc(text.slice(at,a)).replace(/\n/g,'<br>')+'<mark class="excerpt-mark excerpt-mark-'+style+'">'+esc(text.slice(a,b)).replace(/\n/g,'<br>')+'</mark>';at=b});return out+esc(text.slice(at)).replace(/\n/g,'<br>')}
+
+function getExcerpts(){try{return JSON.parse(safeStorage.getItem(EXCERPT_KEY)||'[]')}catch(e){return []}}
+function renderExcerptCard(x){return `<div class="excerpt-card" onclick="openExcerpt('${x.id}')"><div class="excerpt-card-title">${esc(x.chapterTitle||'章节')}</div><div class="excerpt-card-text">${(x.parts||[]).map(p=>`<p>${esc(p.text)}</p>`).join('')}</div></div>`}
+function renderDirectoryExcerptCards(bookId){const b=bookBy(bookId),order=new Map((b?.chapters||[]).map((c,i)=>[c.id,i]));const items=getExcerpts().filter(x=>x.bookId===bookId).sort((a,b)=>{const d=(order.get(a.chapterId)??999999)-(order.get(b.chapterId)??999999);if(d)return d;const ap=Math.min(...(a.parts||[]).map(p=>p.start??0)),bp=Math.min(...(b.parts||[]).map(p=>p.start??0));return ap-bp});return items.length?items.map(renderExcerptCard).join(''):'<p class="muted">还没有书摘。选中文章内容后点击「划线」即可保存。</p>'}
+function toggleDirectoryExcerptView(){directoryPanelMode=directoryPanelMode==='excerpts'?'directory':'excerpts';openDetail(currentBook,true)}
+function saveExcerpts(items){safeStorage.setItem(EXCERPT_KEY,JSON.stringify(items))}
+function selectionParagraphData(){
+ const sel=getSelection();
+ if(!sel||sel.isCollapsed||!sel.rangeCount)return null;
+ const selected=sel.getRangeAt(0),root=document.querySelector('#readerView .chaptertext');
+ if(!root||!root.contains(selected.commonAncestorContainer))return null;
+ const out=[];
+ for(const el of root.querySelectorAll('.para')){
+  const textEl=el.querySelector('.para-text');if(!textEl)continue;
+  const pieces=[];let offset=0;
+  const walker=document.createTreeWalker(textEl,NodeFilter.SHOW_TEXT);
+  let node;
+  while((node=walker.nextNode())){
+   const value=node.nodeValue||'',len=value.length;if(!len)continue;
+   let a=0,b=len;
+   while(a<len&&selected.comparePoint(node,a)!==0)a++;
+   if(a>=len){offset+=len;continue;}
+   b=a;while(b<len&&selected.comparePoint(node,b)===0)b++;
+   if(b>a)pieces.push({start:offset+a,end:offset+b,text:value.slice(a,b)});
+   offset+=len;
+  }
+  if(!pieces.length)continue;
+  const text=pieces.map(x=>x.text).join('');
+  out.push({paragraphId:el.dataset.paragraphId||null,start:pieces[0].start,end:pieces[pieces.length-1].end,text});
+ }
+ return out.length?out:null;
+}
+function bindExcerptSelection(){const root=document.querySelector('#readerView .chaptertext');if(!root||root.__excerptBound)return;root.__excerptBound=true;root.addEventListener('mouseup',()=>setTimeout(showSelectionTools,20));root.addEventListener('touchend',()=>setTimeout(showSelectionTools,350));}
+function showSelectionTools(){const data=selectionParagraphData();document.querySelector('.selection-tools')?.remove();if(!data)return;const sel=getSelection(),r=sel.getRangeAt(0).getBoundingClientRect(),box=document.createElement('div');box.className='selection-tools';box.style.left=Math.max(8,Math.min(innerWidth-210,r.left))+'px';box.style.top=Math.max(8,r.top-48)+'px';box.innerHTML='<button data-sel="comment">评论</button><button data-sel="highlight">划线</button><button data-sel="bookmark">书签</button><button data-sel="copy">复制</button>';box.onclick=e=>{const a=e.target.closest('[data-sel]');if(!a)return;if(a.dataset.sel==='copy'){navigator.clipboard?.writeText(getSelection().toString());box.remove();return}if(a.dataset.sel==='highlight')toggleSelectedExcerpt(data);if(a.dataset.sel==='bookmark'){setSelectionBookmark();return}if(a.dataset.sel==='comment')commentSelectedParagraphs(data);box.remove();getSelection()?.removeAllRanges()};document.body.appendChild(box)}
+function toggleSelectedExcerpt(data){
+ const items=getExcerpts();
+ const overlaps=(saved)=>saved.bookId===currentBook&&saved.chapterId===currentChapter&&(saved.parts||[]).some(p=>data.some(d=>p.paragraphId===d.paragraphId&&Number.isFinite(p.start)&&Number.isFinite(p.end)&&Number.isFinite(d.start)&&Number.isFinite(d.end)&&d.start<p.end&&d.end>p.start));
+ const hit=items.filter(overlaps);
+ if(hit.length){const ids=new Set(hit.map(x=>x.id));saveExcerpts(items.filter(x=>!ids.has(x.id)));}
+ else {const b=bookBy(currentBook),c=b?.chapters.find(x=>x.id===currentChapter);if(!c)return;items.push({id:uid(),bookId:currentBook,chapterId:currentChapter,chapterTitle:chapterDisplayTitle(c,b.chapters.indexOf(c)),style:'dashed',parts:data.map(x=>({paragraphId:x.paragraphId,text:x.text,start:x.start,end:x.end})),createdAt:Date.now()});saveExcerpts(items);}
+ const main=document.querySelector('main'),y=main?.scrollTop||0;renderReader();if(main)main.scrollTop=y;
+}
+function saveSelectedExcerpt(data,style='dashed'){toggleSelectedExcerpt(data);}
+function commentSelectedParagraphs(data){const b=bookBy(currentBook),c=b?.chapters.find(x=>x.id===currentChapter);if(!c)return;const ids=new Set(data.map(x=>x.paragraphId).filter(Boolean));ids.forEach(id=>{const p=c.paragraphs.find(x=>x.id===id);if(!p)return;const role=chooseCommentRole();if(!role)return;const text=prompt('写下这段的段评：');if(text?.trim()){p.comments=p.comments||[];p.comments.push({text:text.trim(),role,replies:[]})}});save();renderReader()}
+function showExcerptList(){const old=document.getElementById('excerptOverlay');old?.remove();const items=getExcerpts().filter(x=>x.bookId===currentBook);const div=document.createElement('div');div.id='excerptOverlay';div.className='modal';div.innerHTML=`<div class="modal-card"><div class="row between"><h2>书摘</h2><button class="secondary" onclick="document.getElementById('excerptOverlay').remove()">关闭</button></div>${items.length?items.map(renderExcerptCard).join(''):'<p class="muted">还没有书摘。选中文章内容后点击「划线」即可保存。</p>'}</div>`;document.body.appendChild(div)}
+function openExcerpt(id){const x=getExcerpts().find(a=>a.id===id);if(!x)return;document.getElementById('excerptOverlay')?.remove();readBook(x.bookId,x.chapterId);setTimeout(()=>{const p=x.parts[0],el=document.querySelector(`#readerView .para`);if(el){const main=document.querySelector('main');main.scrollTop=el.offsetTop-30}},100)}
 function applyLineEndPunctuation(){
   const root=document.querySelector('#readerView .chaptertext');
   if(!root)return;
@@ -1324,4 +1352,34 @@ applyNightMode();
 bindReaderKeys();
 renderHome();
 </script>
+
+<style id="directory-bookmark-excerpt-layout-refinement">
+
+.chapter-directory-card .reading-mark{top:-2px !important;}
+.chapter-directory-card .reading-mark svg{overflow:visible;}
+.chapter-directory-card .reading-mark svg path{transform:translateY(-1.5px);}
+
+.excerpt-switch svg{opacity:.48 !important;}
+
+main{scrollbar-gutter:stable;}
+</style>
+
 </body></html>
+
+<style id="directory-bookmark-icon-opacity-only">
+
+.excerpt-switch svg{opacity:.55}
+
+</style>
+<style id="directory-bookmark-excerpt-final-tweak">
+
+.chapter-directory-card .reading-mark{top:-0.5px !important;}
+.chapter-directory-card .reading-mark svg{overflow:visible;}
+.chapter-directory-card .reading-mark svg path{transform:none !important;}
+
+.excerpt-switch{border:0 !important;outline:0 !important;box-shadow:none !important;background:#fcfbf7 !important;}
+.excerpt-switch[aria-pressed="true"]{border:0 !important;background:#fcfbf7 !important;}
+
+.excerpt-switch svg{width:14px !important;height:17px !important;opacity:.48 !important;}
+</style>
+
